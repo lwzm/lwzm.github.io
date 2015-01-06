@@ -1,4 +1,3 @@
-<meta charset="utf-8"><xmp theme="q" style="display:none;">
 pip 的子命令 [wheel](http://wheel.readthedocs.org/en/latest/)
 可以用于打包第三方库到 whl 文件,
 whl 一般用于本地安装.
@@ -18,4 +17,3 @@ whl 一般用于本地安装.
 对了, pip 默认没有带 wheel, 最开始还需要自己安装:
 
     pip install wheel
-</xmp><script src="/static/strapdown.js"></script>
