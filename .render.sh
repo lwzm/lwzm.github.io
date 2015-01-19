@@ -1,6 +1,8 @@
 #!/bin/sh
 wc "$1"
-OF="${1#md/}.html"
+OF="${1#md/}"
+OF="${OF%.*}.html"
+exit
 {
     echo '<meta charset="utf-8"><xmp theme="q" style="display:none;">'
     cat "$1"
