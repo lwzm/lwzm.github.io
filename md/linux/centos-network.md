@@ -1,4 +1,4 @@
-#CentOS 的网络配置
+# CentOS 的网络配置
 
 #### CentOS 的网络配置其实很简单, ip, mask, gateway, dns 等等都可以在一个地方搞定(最佳实践):
 

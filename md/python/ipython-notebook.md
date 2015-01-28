@@ -1,3 +1,5 @@
+# IPython 与 notebook
+
 IPython 好用,
 [IPython notebook](http://ipython.org/ipython-doc/stable/notebook/index.html)
 通过 web 方式提供更方便好用的 Python 交互.
