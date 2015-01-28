@@ -1,2 +1,2 @@
 #!/bin/sh
-find md -type f -exec ./.render.sh {} \;
+find .md -type f -exec ./.render.sh {} \;
