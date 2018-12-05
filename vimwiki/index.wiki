@@ -1,6 +1,7 @@
-= My knowledge base =
-    * [[Tasks]] -- things to be done _yesterday_!!!
-    * [[任务]] 中文描述
-    * [[unix/supervisor]]
-    * Project Gutenberg -- good books are power.
-    * Scratchpad -- various temporary stuff.
+%title Wiki
+
+* [[sentry]] 错误收集
+* [[supervisor]]
+* [[selenium]]
+* [[jupyter]]
+* [[timezone]]

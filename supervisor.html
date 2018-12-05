@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>supervisor</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<div id="进程管理工具"><h1 id="进程管理工具">进程管理工具</h1></div>
+
+<p>
+一般使用 <code>CWD</code> 下的配置 <code>etc/supervisord.conf</code>
+</p>
+
+<p>
+例子：
+</p>
+<pre>
+[rpcinterface:supervisor]
+supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
+
+[unix_http_server]
+file  = etc/.supervisor.sock
+chmod = 0766
+
+[supervisord]
+pidfile = etc/.supervisord.pid
+logfile = etc/.supervisord.log
+
+[supervisorctl]
+serverurl = unix://etc/.supervisor.sock
+
+[program:foo]
+command        = cat
+stdout_logfile = log/%(program_name)s.out
+stderr_logfile = log/%(program_name)s.err
+
+[program:bar]
+command         = cat
+redirect_stderr = true
+stdout_logfile  = log/%(program_name)s.log
+
+# 开 256 个测试程序, 这里用到了 127.0.0.0/8 这个地址段, 并用满了 127.0.1.0/24
+[program:t]
+command         = nc -l 127.0.1.%(process_num)d 1111
+process_name    = %(process_num)03d
+numprocs        = 256
+redirect_stderr = true
+stdout_logfile  = log/%(program_name)s-%(process_num)03d.log
+
+[program:ssh_tunnel]
+command         = ssh -C -N -R 22222:localhost:22 ali.tyio.net
+redirect_stderr = true
+stdout_logfile  = log/%(program_name)s.log
+startretries    = 1000
+
+[program:ssh_tunnel_hk]
+command         = ssh -C -N -L 0.0.0.0:58388:127.1.1.1:58388 hk.tyio.net
+redirect_stderr = true
+stdout_logfile  = log/%(program_name)s.log
+startretries    = 1000
+
+[program:crawler]
+command        = ./loop.sh
+numprocs       = 16
+process_name   = %(process_num)03d
+stdout_logfile = log/%(program_name)s-%(process_num)03d.out
+stderr_logfile = log/%(program_name)s-%(process_num)03d.err
+
+[program:redis]
+command         = redis-server etc/redis.conf
+redirect_stderr = true
+stdout_logfile  = log/%(program_name)s.log
+umask           = 002
+priority        = 5
+stopwaitsecs    = 30
+
+# amd做傀儡, 本机 127.1.1.1 才是真正的 sss
+[program:s]
+command         = ssserver -s 127.1.1.1 -p 58388 -k z
+redirect_stderr = true
+stdout_logfile  = log/%(program_name)s.log
+
+</pre>
+
+
+<p>
+supervisor events 参考： <a href="http://supervisord.org/events.html">http://supervisord.org/events.html</a>
+</p>
+
+</body>
+</html>

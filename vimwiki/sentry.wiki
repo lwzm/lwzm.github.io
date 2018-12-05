@@ -1,0 +1,19 @@
+= Sentry =
+
+错误收集工具
+
+https://sentry.io
+
+可以不用自己搭建，直接使用官网的服务，我用的 github 登录。
+
+代码里面，只需要初始化：
+{{{python
+import sentry_sdk
+dsn = "https://6862cdc845fd4683b994a890d21aafeb@sentry.io/1320801"
+sentry_sdk.init(dsn=dsn)
+  }}}
+  
+
+然后所有错误都会上报到服务器，目前也就是 sentry.io，可以在 https://sentry.io/tyio/test/issues/ 看到。
+
+以后有需要再自己搭建，目前就享用官方的服务吧。

@@ -1,0 +1,16 @@
+= 时区 =
+
+Linux 下设置系统时区，不要用直接改文件的方式，因为 `/etc/localtime` 是一个软链接。
+
+使用：
+
+{{{
+timedatectl list-timezones | grep Shanghai    # 查找中国时区的完整名称
+Asia/Shanghai
+
+timedatectl set-timezone Asia/Shanghai    # 其他时区以此类推
+  }}}
+
+参考：https://www.cnblogs.com/st-jun/p/7737188.html
+
+Python 的标准库对时区的支持不好，用 `pendulum` 更好。

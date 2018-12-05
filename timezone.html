@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>timezone</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<div id="时区"><h1 id="时区">时区</h1></div>
+
+<p>
+Linux 下设置系统时区，不要用直接改文件的方式，因为 <code>/etc/localtime</code> 是一个软链接。
+</p>
+
+<p>
+使用：
+</p>
+
+<pre>
+timedatectl list-timezones | grep Shanghai    # 查找中国时区的完整名称
+Asia/Shanghai
+
+timedatectl set-timezone Asia/Shanghai    # 其他时区以此类推
+</pre>
+
+<p>
+参考：<a href="https://www.cnblogs.com/st-jun/p/7737188.html">https://www.cnblogs.com/st-jun/p/7737188.html</a>
+</p>
+
+<p>
+Python 的标准库对时区的支持不好，用 <code>pendulum</code> 更好。
+</p>
+
+</body>
+</html>
