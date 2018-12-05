@@ -1,5 +1,7 @@
 = 浏览器端的开发调试环境 =
 
+=== 配置 ===
+
 扔几篇文档：
 
 http://ipython.org/ipython-doc/stable/interactive/notebook.html
@@ -7,3 +9,13 @@ http://ipython.org/ipython-doc/stable/interactive/notebook.html
 http://jupyter-notebook.readthedocs.io/en/latest/public_server.html
 
 我的常用配置已保存，且一般把服务放在 nginx 后面。
+
+=== nbextensions ===
+
+https://github.com/ipython-contrib/jupyter_contrib_nbextensions
+
+{{{
+pip install jupyter_contrib_nbextensions
+jupyter contrib nbextension install --user
+  }}}
+
