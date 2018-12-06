@@ -78,7 +78,7 @@ stopwaitsecs    = 30
 
 # amd做傀儡, 本机 127.1.1.1 才是真正的 sss
 [program:s]
-command         = ssserver -s 127.1.1.1 -p 58388 -k z
+command         = ssserver -s 127.1.1.1 -p 58388 -k xxxxxxxx
 redirect_stderr = true
 stdout_logfile  = log/%(program_name)s.log
 
