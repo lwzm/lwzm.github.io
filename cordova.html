@@ -28,6 +28,13 @@ android sdk
 
 </ol>
 
+<div id="Cordova Hybrid App-简单例子"><h3 id="简单例子">简单例子</h3></div>
+<pre>
+#cordova create &lt;PATH&gt; [ID [NAME [CONFIG]]] [options]
+cordova create demo net.tyio.c "My App"
+cordova platform add android
+cordova build android
+</pre>
 
 <div id="Cordova Hybrid App-安卓签名"><h3 id="安卓签名">安卓签名</h3></div>
 
@@ -110,9 +117,8 @@ yum install java java-devel
 
 # 去 https://gradle.org/releases/ 下载 gradle
 wget https://downloads.gradle.org/distributions/gradle-4.10.2-bin.zip
-# cordova 编译时，又会自己下载 4.1 版的，原因未知，那么我们也用 4.1 吧：
-wget https://services.gradle.org/distributions/gradle-4.1-all.zip
 unzip gradle-4.10.2-bin.zip
+# cordova 编译时，又会自己去下载 4.1 版的，原因未知...
 
 # 下载 android sdk
 https://developer.android.com/studio/#downloads
@@ -132,7 +138,48 @@ export ANDROID_HOME="/opt/android"
 
 # 激活后, 就可以正常编译了
 cordova build android
+</pre>
 
+
+<div id="Cordova Hybrid App-Crosswalk"><h3 id="Crosswalk">Crosswalk</h3></div>
+
+<p>
+<a href="https://github.com/crosswalk-project/cordova-plugin-crosswalk-webview">https://github.com/crosswalk-project/cordova-plugin-crosswalk-webview</a>
+</p>
+
+<p>
+cordova 8.x 不兼容，所以：
+</p>
+<pre>
+npm i -g cordova@7
+</pre>
+
+<p>
+如果需要启用 crosswalk, 则：
+</p>
+
+<pre>
+cordova plugin add cordova-android-support-gradle-release
+cordova plugin add cordova-plugin-crosswalk-webview
+</pre>
+
+
+<p>
+集成 crosswalk 如果遇到 Failed to execute aapt 错误, 则：
+</p>
+<pre>
+cordova plugin add cordova-android-support-gradle-release
+</pre>
+<p>
+参考：
+<a href="https://stackoverflow.com/questions/49183917/failed-to-execute-aapt-with-cordova">https://stackoverflow.com/questions/49183917/failed-to-execute-aapt-with-cordova</a>
+</p>
+
+<p>
+Lite 版(好像没效)
+</p>
+<pre>
+cordova plugin add cordova-plugin-crosswalk-webview --variable XWALK_MODE="lite"
 </pre>
 
 </body>
