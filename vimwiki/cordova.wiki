@@ -1,0 +1,102 @@
+= Cordova Hybrid App =
+
+文档参见：
+http://cordova.apache.org/docs/en/latest/guide/overview/index.html
+
+=== 基础环境 ===
+
+1. nodejs
+2. java
+3. android sdk
+
+
+=== 安卓签名 ===
+
+官方的签名步骤有点问题，经验先记下来。
+{{{
+
+生成自己的签名
+==> gen-my-key.sh <==
+rm -f q.keystore
+keytool -genkey \
+    -storetype pkcs12 \
+    -alias q \
+    -validity 36500 \
+    -storepass qqqqqq \
+    -dname "CN=cordova.tyio.net, OU=t, O=t, L=bj, ST=bj, C=china" \
+    -keystore q.keystore
+
+打包未签名的apk
+==> build.sh <==
+cordova build android --release
+
+最后再签名
+==> sign.sh <==
+cp platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk app.apk
+
+jarsigner -keystore q.keystore -storepass qqqqqq \
+    app.apk \
+    q
+exit
+  }}}
+
+
+=== 使用远程入口 ===
+
+cordova 会把
+{{{
+./platforms/android/platform_www/
+./www
+  }}}
+  
+下的数据(视情况 release or debug)都拷贝到
+{{{
+./platforms/android/app/build/intermediates/assets/release/www/
+./platforms/android/app/build/intermediates/assets/debug/www/
+  }}}
+
+然后再打包apk。
+
+我们可以打包一个最简的apk，然后所有的逻辑都走在线，操作如下：
+
+正常 build 后，拷贝 `./platforms/android/app/build/intermediates/assets/release/www/*` 到网站目录，
+
+修改 config.xml
+
+```
+    <content src="https://cordova.tyio.net" />
+```
+
+清空 www，再build，出一个 apk。
+
+
+=== Linux 搭建编译环境===
+{{{
+yum install java java-devel
+
+# 去 https://gradle.org/releases/ 下载 gradle
+wget https://downloads.gradle.org/distributions/gradle-4.10.2-bin.zip
+# cordova 编译时，又会自己下载 4.1 版的，原因未知，那么我们也用 4.1 吧：
+wget https://services.gradle.org/distributions/gradle-4.1-all.zip
+unzip gradle-4.10.2-bin.zip
+
+# 下载 android sdk
+https://developer.android.com/studio/#downloads
+Command line tools only
+
+cd /opt
+wget https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
+mkdir android && cd android && unzip ../sdk-tools*.zip
+
+# 查看合适的 build-tools 版本
+./tools/bin/sdkmanager --list
+# 安装 build-tools
+./tools/bin/sdkmanager 'build-tools;28.0.3'
+
+# 需要用的时候, 激活环境
+export ANDROID_HOME="/opt/android"
+
+# 激活后, 就可以正常编译了
+cordova build android
+
+}}}
