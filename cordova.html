@@ -1,21 +1,42 @@
-= Cordova Hybrid App =
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>cordova</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
 
+<div id="Cordova Hybrid App"><h1 id="Cordova Hybrid App">Cordova Hybrid App</h1></div>
+
+<p>
 文档参见：
-http://cordova.apache.org/docs/en/latest/guide/overview/index.html
+<a href="http://cordova.apache.org/docs/en/latest/guide/overview/index.html">http://cordova.apache.org/docs/en/latest/guide/overview/index.html</a>
+</p>
 
-=== 基础环境 ===
+<div id="Cordova Hybrid App-基础环境"><h3 id="基础环境">基础环境</h3></div>
 
-1. nodejs
-2. java
-3. android sdk
+<ol>
+<li>
+nodejs
+
+<li>
+java
+
+<li>
+android sdk
+
+</ol>
 
 
-=== 安卓签名 ===
+<div id="Cordova Hybrid App-安卓签名"><h3 id="安卓签名">安卓签名</h3></div>
 
+<p>
 官方的签名步骤有点问题，经验先记下来。
-{{{
+</p>
+<pre>
 #生成自己的签名
-#==> gen-my-key.sh <==
+#==&gt; gen-my-key.sh &lt;==
 rm -f q.keystore
 keytool -genkey \
     -storetype pkcs12 \
@@ -26,51 +47,65 @@ keytool -genkey \
     -keystore q.keystore
 
 #打包未签名的apk
-#==> build.sh <==
+#==&gt; build.sh &lt;==
 cordova build android --release
 
 #最后再签名
-#==> sign.sh <==
+#==&gt; sign.sh &lt;==
 cp platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk app.apk
 
 jarsigner -keystore q.keystore -storepass qqqqqq \
     app.apk \
     q
 exit
-}}}
+</pre>
 
 
-=== 使用远程入口 ===
+<div id="Cordova Hybrid App-使用远程入口"><h3 id="使用远程入口">使用远程入口</h3></div>
 
+<p>
 cordova 会把
-{{{
+</p>
+<pre>
 ./platforms/android/platform_www/
 ./www
-}}}
+</pre>
   
+<p>
 下的数据(视情况 release or debug)都拷贝到
-{{{
+</p>
+<pre>
 ./platforms/android/app/build/intermediates/assets/release/www/
 ./platforms/android/app/build/intermediates/assets/debug/www/
-}}}
+</pre>
 
+<p>
 然后再打包apk。
+</p>
 
+<p>
 我们可以打包一个最简的apk，然后所有的逻辑都走在线，操作如下：
+</p>
 
-正常 build 后，拷贝 `./platforms/android/app/build/intermediates/assets/release/www/*` 到网站目录，
+<p>
+正常 build 后，拷贝 <code>./platforms/android/app/build/intermediates/assets/release/www/*</code> 到网站目录，
+</p>
 
+<p>
 修改 config.xml
+</p>
 
-{{{
-<content src="https://cordova.tyio.net" />
-}}}
+<pre>
+&lt;content src="https://cordova.tyio.net" /&gt;
+</pre>
 
+<p>
 清空 www，再build，出一个 apk。
+</p>
 
 
-=== Linux 搭建编译环境===
-{{{
+<div id="Cordova Hybrid App-Linux 搭建编译环境"><h3 id="Linux 搭建编译环境">Linux 搭建编译环境</h3></div>
+<pre>
 yum install java java-devel
 
 # 去 https://gradle.org/releases/ 下载 gradle
@@ -85,7 +120,7 @@ Command line tools only
 
 cd /opt
 wget https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
-mkdir android && cd android && unzip ../sdk-tools*.zip
+mkdir android &amp;&amp; cd android &amp;&amp; unzip ../sdk-tools*.zip
 
 # 查看合适的 build-tools 版本
 ./tools/bin/sdkmanager --list
@@ -98,4 +133,7 @@ export ANDROID_HOME="/opt/android"
 # 激活后, 就可以正常编译了
 cordova build android
 
-}}}
+</pre>
+
+</body>
+</html>
