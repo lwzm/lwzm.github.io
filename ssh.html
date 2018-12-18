@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>ssh</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<div id="SSH"><h1 id="SSH">SSH</h1></div>
+
+<div id="SSH-/etc/ssh/sshd_config"><h3 id="/etc/ssh/sshd_config">/etc/ssh/sshd_config</h3></div>
+
+<pre>
+UseDNS no
+Port 6NNNN
+ClientAliveInterval 60
+ClientAliveCountMax 3
+PermitRootLogin without-password
+GatewayPorts clientspecified
+</pre>
+
+<div id="SSH-~/.ssh/config"><h3 id="~/.ssh/config">~/.ssh/config</h3></div>
+
+<pre>
+GSSAPIAuthentication no
+StrictHostKeyChecking no
+Compression yes
+ServerAliveInterval 60
+ServerAliveCountMax 2
+</pre>
+
+
+<div id="SSH-sshfs"><h3 id="sshfs">sshfs</h3></div>
+<pre>
+yum install sshfs
+chmod +s $(which sshfs)  # 方便普通用户
+
+# 挂载
+sshfs HOST:DIR MNT
+
+# 如果需要符号链接可用
+sshfs HOST:DIR MNT -o follow_symlinks
+
+# 卸载
+fusermount -u test/mnt
+</pre>
+
+</body>
+</html>

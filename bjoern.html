@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>bjoern</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<div id="高速的 wsgi 容器"><h1 id="高速的 wsgi 容器">高速的 wsgi 容器</h1></div>
+
+<p>
+<a href="https://github.com/jonashaag/bjoern">https://github.com/jonashaag/bjoern</a>
+</p>
+
+
+<div id="高速的 wsgi 容器-Usage"><h3 id="Usage">Usage</h3></div>
+
+<pre>
+# Bind to TCP host/port pair:
+bjoern.run(wsgi_application, host, port)
+
+# TCP host/port pair, enabling SO_REUSEPORT if available.
+bjoern.run(wsgi_application, host, port, reuse_port=True)
+
+# Bind to Unix socket:
+bjoern.run(wsgi_application, 'unix:/path/to/socket')
+
+# Bind to abstract Unix socket: (Linux only)
+bjoern.run(wsgi_application, 'unix:@socket_name')
+</pre>
+
+</body>
+</html>

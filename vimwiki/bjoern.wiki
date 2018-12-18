@@ -1,0 +1,20 @@
+= 高速的 wsgi 容器 =
+
+https://github.com/jonashaag/bjoern
+
+
+=== Usage ===
+
+{{{
+# Bind to TCP host/port pair:
+bjoern.run(wsgi_application, host, port)
+
+# TCP host/port pair, enabling SO_REUSEPORT if available.
+bjoern.run(wsgi_application, host, port, reuse_port=True)
+
+# Bind to Unix socket:
+bjoern.run(wsgi_application, 'unix:/path/to/socket')
+
+# Bind to abstract Unix socket: (Linux only)
+bjoern.run(wsgi_application, 'unix:@socket_name')
+}}}

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>dnsmasq</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<div id="DNSmasq"><h1 id="DNSmasq">DNSmasq</h1></div>
+
+<p>
+可以用 dnsmasq 做一个自己的 dns 服务器, 有个好处就是通过编辑本机的 /etc/hosts 可以支持自定义的负载均衡, 自定义 ttl 和反向解析功能.
+</p>
+
+<p>
+开启 dnsmasq
+</p>
+
+<p>
+/etc/dnsmasq.conf
+</p>
+<pre>
+no-resolv
+no-poll
+no-hosts
+server=114.114.114.114
+server=8.8.8.8
+interface=lo
+bind-interfaces
+dns-forward-max=1000
+cache-size=10000
+</pre>
+
+<p>
+or
+</p>
+
+<pre>
+local-ttl=30
+no-poll
+no-resolv
+server=8.8.4.4
+server=8.8.8.8
+server=114.114.114.114
+dns-forward-max=1000
+cache-size=10000
+address=/s/192.168.88.3
+</pre>
+
+<p>
+如果是打算利用 hosts 文件, ttl 建议设置.
+</p>
+
+<p>
+DNS 指向本地:
+</p>
+<pre>
+vi /etc/resolv.conf
+nameserver 127.0.0.1
+</pre>
+
+<p>
+重新载入 /etc/hosts
+</p>
+<pre>
+kill -SIGHUP $(cat /var/run/dnsmasq.pid)
+</pre>
+
+<p>
+查看当前状态:
+</p>
+<pre>
+kill -SIGUSR1 $(cat /var/run/dnsmasq.pid) &amp;&amp; sleep 0.1 &amp;&amp; tail /var/log/messages
+</pre>
+
+<div id="DNSmasq-运维建议"><h3 id="运维建议">运维建议</h3></div>
+
+<p>
+所有的服务器都指向一台自定义的 dns 服务器:
+</p>
+<pre>
+vi /etc/resolv.conf
+nameserver 119.23.106.10
+
+# 选配, 不让 NetworkManager 自动设置 /etc/resolv.conf
+vi /etc/NetworkManager/NetworkManager.conf
+[main]
+dns=none
+</pre>
+
+<p>
+然后删掉或清空 <code>/etc/hostname</code>, 这样主机名就会直接参考 dns 给的结果, 方便统一管理.
+</p>
+
+<p>
+另, <code>/etc/sysconfig/network</code> 的 <code>HOSTNAME</code> 字段会干扰主机名, 建议删掉.
+</p>
+
+<div id="DNSmasq-增加几条客户机永久修改DNS地址的方法"><h3 id="增加几条客户机永久修改DNS地址的方法">增加几条客户机永久修改DNS地址的方法</h3></div>
+
+<ol>
+<li>
+配置ip地址文件 /etc/sysconfig/network-scripts/ifcfg-ethXXX 添加
+<pre>
+DNS1=8.8.8.8
+</pre>
+
+</ol>
+
+<p>
+/etc/resolv.conf 会自动添加地址。
+</p>
+
+<ol>
+<li>
+手动编辑 /etc/resolv.conf
+
+</ol>
+<p>
+nameserver 8.8.8.8  
+配置ip地址文件 /etc/sysconfig/network-scripts/ifcfg-ethXXX 添加
+</p>
+<pre>
+PEERDNS=no    # 添加后不会去打扰 /etc/resolv.conf 文件  
+</pre>
+
+<p>
+实践中, 方案 2 比较好, 方案 1 会添加 search 字段, 有点问题.
+</p>
+
+<p>
+后面发现 PEERDNS=no 的方案并不能阻止 search 的自动添加, 猜测是系统获取到 domain name 时, 自己取后缀添加的, 如 1.this.is.suffix 对应 search this.is.suffix.
+</p>
+
+<p>
+network-scripts/ifcfg-ethXXX 的配置见 <a href="https://www.centos.org/docs/5/html/Deployment_Guide-en-US/s1-networkscripts-interfaces.html">https://www.centos.org/docs/5/html/Deployment_Guide-en-US/s1-networkscripts-interfaces.html</a>
+</p>
+
+<div id="DNSmasq-`/etc/resolv.conf`"><h3 id="`/etc/resolv.conf`"><code>/etc/resolv.conf</code></h3></div>
+
+<p>
+nameserver 不用多说, 说说 search 这个字段.
+</p>
+
+<p>
+如果这个字段指定了, 就会自动补全你的解析域名, 比如我们设置:
+</p>
+<pre>
+search tyio.net
+</pre>
+
+<p>
+你解析 x, 系统发现不是个有意义的域名(尽管 DNS 服务器的 hosts 有配置), 就会补全为 x.tyio.net 并解析.
+</p>
+
+<p>
+这个 search 用好了, 会很方便.
+</p>
+
+<div id="DNSmasq-DNS 本地缓存"><h3 id="DNS 本地缓存">DNS 本地缓存</h3></div>
+
+<p>
+Linux 本身是没有 dns 缓存的, 想使用 dns 缓存的话需要自己安装 NSCD, 自己去网上找资料吧. 其实我觉得没缓存也好, 除非你请求 dns 非常频繁.
+</p>
+
+</body>
+</html>

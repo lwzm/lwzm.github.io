@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>inotify</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<div id="inotify inotify-tools"><h1 id="inotify inotify-tools">inotify inotify-tools</h1></div>
+
+<pre>
+yum install -y inotify-tools
+</pre>
+
+<p>
+包含两个工具： <code>inotifywait</code> <code>inotifywatch</code>。
+</p>
+
+<p>
+用法举例：
+</p>
+
+<pre>
+while find -name "*.as" | inotifywait --fromfile - &gt;/dev/null 2&gt;&amp;1; do date; done
+</pre>
+
+<pre>
+inotifywait -m .
+
+Setting up watches.
+Watches established.
+./ CLOSE_WRITE,CLOSE dhcpd.leases
+./ OPEN dhcpd.leases
+./ ACCESS dhcpd.leases
+./ CLOSE_NOWRITE,CLOSE dhcpd.leases
+./ OPEN dhcpd.leases
+./ CREATE dhcpd.leases.1425809672
+./ OPEN dhcpd.leases.1425809672
+./ ATTRIB dhcpd.leases.1425809672
+./ CLOSE_WRITE,CLOSE dhcpd.leases
+./ MODIFY dhcpd.leases.1425809672
+./ DELETE dhcpd.leases~
+./ CREATE dhcpd.leases~
+./ MOVED_FROM dhcpd.leases.1425809672
+./ MOVED_TO dhcpd.leases
+
+
+inotifywait -m run/
+
+Setting up watches.
+Watches established.
+run/ ACCESS launch
+run/ ACCESS launch
+run/ MODIFY launch
+run/ ACCESS online
+</pre>
+
+<p>
+<code>watch_build.sh</code>
+</p>
+<pre>
+while true; do
+    inotifywait -e modify definitions.js postgrest.js
+    yarn build
+done
+</pre>
+
+</body>
+</html>

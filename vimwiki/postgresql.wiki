@@ -1,0 +1,122 @@
+= PostgreSQL =
+
+=== yum source ===
+
+http://yum.postgresql.org/repopackages.php
+
+{{{
+yum install postgresql-server
+# Python 的包 psycopg2 要 devel
+yum install postgresql-devel
+}}}
+
+启动服务
+
+{{{
+systemctl enable postgresql
+systemctl start postgresql
+}}}
+
+安装好后, 先切换到 postgres 用户, 用来创建其他用户
+{{{
+su postgres
+cd
+createuser q
+}}}
+
+再切换回 q 用户, 创建同名的数据库, 方便使用
+{{{
+createdb  # 不指定数据库名表示创建同名数据库
+psql
+}}}
+
+=== 工作目录 ===
+
+`/var/lib/pgsql/data/`
+
+`/var/lib/pgsql/<VERSION>/data/`
+
+`postgresql.conf` 基础配置
+
+{{{
+listen_addresses = '*'
+fsync = off
+
+# 日志相关配置，可选
+log_destination = 'csvlog'
+log_filename = '%m-%d'
+log_statement = 'mod'
+log_min_duration_statement = 0
+log_connections = on
+log_disconnections = on
+
+}}}
+
+
+`pg_hba.conf` 登录配置
+{{{
+local   all         all                               trust
+host    all         all         127.0.0.1/32          trust
+host    all         all         ::1/128               trust
+host    all         all         172.16.16.0/24        trust
+host    replication all         172.16.16.0/24        trust
+
+host    all         all         0.0.0.0/0             md5
+}}}
+
+=== 密码管理 ===
+
+{{{
+CREATE USER foo WITH PASSWORD 'bar';
+ALTER USER q WITH PASSWORD 'xxxx';
+}}}
+
+=== 插件系统 ===
+
+{{{
+pip install pgxnclient
+pgxn install safeupdate
+
+vi /var/lib/pgsql/9.6/data/postgresql.conf
+shared_preload_libraries=safeupdate
+}}}
+
+=== 主备 master-standby ===
+
+仅做参考，具体问题具体学习分析。
+
+主机 postgresql.conf
+{{{
+wal_level = hot_standby
+max_wal_senders = 8
+}}}
+
+主机 pg_hba.conf 不要漏了
+{{{
+host    replication all         172.16.16.0/24        trust
+}}}
+
+备机 postgresql.conf
+
+{{{
+hot_standby = on
+}}}
+
+备机 recovery.conf
+{{{
+standby_mode = on
+primary_conninfo = 'host=<MASTER_HOST>'
+}}}
+
+初始化操作
+{{{
+# -> psql
+$ -> shell
+
+# select pg_start_backup('flag_name');
+$ tar czf /tmp/pg_bak.tgz data/
+
+把 pg_bak.tgz 拷贝到备机, 解压, 当作备机的数据库主目录, 修改好配置文件, 启动备机. 最后, 主机结束备份状态:
+
+# select pg_stop_backup();
+}}}

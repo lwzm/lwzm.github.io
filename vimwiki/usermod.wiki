@@ -1,0 +1,49 @@
+= 生产环境用户管理 =
+
+
+假设， 普通操作用户 `q` 服务运行用户 `qq`。
+
+追加 q 用户 到 qq 组
+
+{{{
+usermod -a -G qq q
+
+OR
+
+useradd -g qq q
+}}}
+
+
+追加 apache, nginx 到 q 组
+{{{
+usermod -a -G q apache 
+usermod -a -G q nginx
+}}}
+
+
+
+qq 用户更改 umask，在 .bashrc 设置
+{{{
+umask 027
+}}}
+
+这样, 对 qq 的文件, q 只能读不能写
+
+
+把用户 q 加到 wheel 组里面, 因为 CentOS 的 wheel 组默认可以 sudo 
+{{{
+usermod -a -G wheel q
+}}}
+
+
+批量操作
+{{{
+adduser q && yes xxxxxx | passwd q && usermod -a -G wheel q
+
+usermod -a -G adm q
+
+usermod -a -G nginx q
+
+usermod -a -G q postgres
+
+}}}

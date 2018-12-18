@@ -1,0 +1,20 @@
+= 小巧极速的 web 框架 =
+
+https://falcon.readthedocs.io/en/stable/
+
+https://github.com/falconry/falcon
+
+有部分 tornado 的路由风格，和 bjoern 一起用，单进程能搞到 `30000+ req/s`。
+
+{{{
+import bjoern
+import falcon
+
+class ThingsResource:
+    def on_get(self, req: falcon.Request, resp: falcon.Response):
+        resp.body = 'falcon'
+
+application = falcon.API()
+application.add_route('/', ThingsResource())
+bjoern.run(application, "", 1111)
+}}}

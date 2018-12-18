@@ -2,7 +2,28 @@
 
 * [[sentry]] 错误收集
 * [[supervisor]]
-* [[selenium]]
+* [[selenium]] 桌面浏览器桥梁
 * [[jupyter]]
 * [[timezone]]
 * [[cordova]]
+* [[sqlite]] 拾零
+* [[pytest]] 单元测试
+* [[falcon]] web 框架
+* [[bjoern]] wsgi 容器
+* [[nvim]]
+* [[tldr]] 太长不想看
+* [[inotify]] Linux 专用的文件改动监测
+* [[ssh]] 配置
+* [[usermod]] 用户管理
+* [[postgresql]]
+* [[setcap]] 非 root 用户程序使用小于 1024 端口
+* [[yum]] 拾零
+* [[taskset]] 限制程序的 CPU 核心使用量
+* [[mkswap]] Linux 内存交换文件
+* [[proxychains]]
+* [[posix-message-queue]] 系统自带的消息队列
+* [[mysql]] 拾零
+* [[gotty]]
+* [[gogs]]
+* [[dnsmasq]]
+* [[aliyun]] 使用技巧拾零

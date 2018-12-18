@@ -1,0 +1,9 @@
+= 非 root 用户程序使用小于 1024 端口 =
+
+从 2.1 开始，Linux 内核有了能力的概念，这使得普通用户也能够做只有超级用户才能完成的工作。
+
+`CAP_NET_BIND_SERVICE`，使得服务程序运行在非 root 帐户下，也能够使用 `<1024` 端口：
+
+{{{
+setcap cap_net_bind_service=+ep /path/to/application
+}}}

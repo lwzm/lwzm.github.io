@@ -1,0 +1,19 @@
+= Linux 用文件做 swap =
+
+创建
+{{{
+dd if=/dev/zero of=file_swap bs=1M count=512
+mkswap file_swap
+swapon file_swap
+}}}
+
+删除
+{{{
+swapoff file_swap
+}}}
+
+开机启动加载
+{{{
+vi /etc/fstab
+/path/of/file_swap swap swap defaults 0 0
+}}}

@@ -1,0 +1,29 @@
+= 系统自带的消息队列 =
+
+用起来简单，效果不错，可以不用 redis list 了
+
+python 版参见： http://semanchuk.com/philip/posix_ipc/
+
+本质就是 /dev/mqueue/ 下的文件：
+
+{{{
+
+$ head /dev/mqueue/*
+==> /dev/mqueue/q <==
+QSIZE:48         NOTIFY:0     SIGNO:0     NOTIFY_PID:0     
+
+==> /dev/mqueue/qq <==
+QSIZE:108        NOTIFY:0     SIGNO:0     NOTIFY_PID:0     
+
+==> /dev/mqueue/qw <==
+QSIZE:0          NOTIFY:0     SIGNO:0     NOTIFY_PID:0 
+参数见：
+
+head /proc/sys/fs/mqueue/*
+暂时不需要调
+
+}}}
+
+例子：
+
+https://github.com/lwzm/timeouts

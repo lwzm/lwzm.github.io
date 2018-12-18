@@ -1,0 +1,38 @@
+= SSH =
+
+=== /etc/ssh/sshd_config ===
+
+{{{
+UseDNS no
+Port 6NNNN
+ClientAliveInterval 60
+ClientAliveCountMax 3
+PermitRootLogin without-password
+GatewayPorts clientspecified
+}}}
+
+=== ~/.ssh/config ===
+
+{{{
+GSSAPIAuthentication no
+StrictHostKeyChecking no
+Compression yes
+ServerAliveInterval 60
+ServerAliveCountMax 2
+}}}
+
+
+=== sshfs ===
+{{{
+yum install sshfs
+chmod +s $(which sshfs)  # 方便普通用户
+
+# 挂载
+sshfs HOST:DIR MNT
+
+# 如果需要符号链接可用
+sshfs HOST:DIR MNT -o follow_symlinks
+
+# 卸载
+fusermount -u test/mnt
+}}}

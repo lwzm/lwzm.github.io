@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>posix-message-queue</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<div id="系统自带的消息队列"><h1 id="系统自带的消息队列">系统自带的消息队列</h1></div>
+
+<p>
+用起来简单，效果不错，可以不用 redis list 了
+</p>
+
+<p>
+python 版参见： <a href="http://semanchuk.com/philip/posix_ipc/">http://semanchuk.com/philip/posix_ipc/</a>
+</p>
+
+<p>
+本质就是 /dev/mqueue/ 下的文件：
+</p>
+
+<pre>
+
+$ head /dev/mqueue/*
+==&gt; /dev/mqueue/q &lt;==
+QSIZE:48         NOTIFY:0     SIGNO:0     NOTIFY_PID:0     
+
+==&gt; /dev/mqueue/qq &lt;==
+QSIZE:108        NOTIFY:0     SIGNO:0     NOTIFY_PID:0     
+
+==&gt; /dev/mqueue/qw &lt;==
+QSIZE:0          NOTIFY:0     SIGNO:0     NOTIFY_PID:0 
+参数见：
+
+head /proc/sys/fs/mqueue/*
+暂时不需要调
+
+</pre>
+
+<p>
+例子：
+</p>
+
+<p>
+<a href="https://github.com/lwzm/timeouts">https://github.com/lwzm/timeouts</a>
+</p>
+
+</body>
+</html>

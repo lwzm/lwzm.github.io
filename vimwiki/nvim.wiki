@@ -1,0 +1,6 @@
+= neovim =
+
+添加 Python 支持
+{{{
+pip install pynvim
+}}}

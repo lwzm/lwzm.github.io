@@ -1,0 +1,15 @@
+= YUM =
+
+=== epel ===
+
+epel 包含有更多的软件, 建议安装:
+
+{{{
+yum install -y epel-release
+}}}
+
+有了它, 可以装更多的软件比如:
+
+{{{
+yum install nginx htop python36-devel
+}}}

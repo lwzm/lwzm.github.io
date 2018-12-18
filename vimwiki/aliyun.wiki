@@ -1,0 +1,71 @@
+= Aliyun =
+
+建立专有网络后, 在一台 「头脑机」如 `10.0.0.1` 上准备好模板文件(例x.tgz), 搭建 http 服务和 dns 服务, 参考 nginx 和 dnsmasq.
+
+x.tgz 的作用:
+
+* 清空 hostname
+* 使用干净的 hosts
+* 配置 sshd
+* 配置 root authorized_keys
+* resolve.conf and ifcfg-XXX
+ 
+在控制台申请机器时, 用户自定义数据如下
+
+{{{
+#!/bin/sh
+cd /
+curl 10.0.0.1/x.tgz | tar xz
+echo '
+DNS1=10.0.0.1
+DNS2=10.0.0.1
+' >>/etc/sysconfig/network-scripts/ifcfg-eth0
+adduser q && yes qw | passwd q && usermod -a -G wheel q
+systemctl disable tuned
+yum install -y dstat htop lsof nc openssh
+reboot
+}}}
+
+or
+
+{{{
+#!/bin/sh
+cd /
+curl 10.0.0.1/x.tgz | tar xz
+curl 10.0.0.1/init.sh | sh
+reboot
+}}}
+
+我们为了方便, 直接用专有网络自动分配的地址(dhcp), 因为 ip 地址的分配顺序是可预见的, 所以还算可控.
+
+连续设置 DNS1 DNS2 是为了避免默认 dns 的干扰.
+
+x.tgz 例子:
+
+{{{
+tar xf x.tgz
+tail $(find etc/ root/ -type f)
+
+==> etc/hostname <==
+
+==> etc/hosts <==
+127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1       localhost6 localhost6.localdomain6
+
+==> etc/ssh/sshd_config <==
+Port 65522
+UseDNS no
+AddressFamily inet
+PermitRootLogin without-password
+SyslogFacility AUTHPRIV
+GatewayPorts clientspecified
+ClientAliveInterval 60
+ClientAliveCountMax 3
+
+==> root/.ssh/authorized_keys <==
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHWrD5V10X9SWTYnfIGQcglQmjiCK6KyMDKyTgwb3Vx+Dfpa5EiRFerAKzxM+IiL8lQmUVKzoRk5rl36iQMRCcN5QNQJCtuhJSos94OMWotfvspIqhIuRig8S7CI7SNgvPRkzup8a/J78EQAr40ukjKRlQzJkuWtD22RhqdpPZRrF/JNE+8m/+sHt0UyVJ3GD0dcBDO7vrfGukjSZ3XqM+CDi/5xBgOOG0PR3K0VWQjtuqQoJbkFBGAFwZqTFk32nF7RzE+JyyUE0TPnfrNaNBCFJQcr9jr5icaGgEY7J5R2B55FwwDAPK6qfJ1P4srEm9zcL1g3LtZjMwIm2hx9a1 tc@box
+
+==> root/.inputrc <==
+"\C-p": history-search-backward
+"\C-n": history-search-forward
+}}}

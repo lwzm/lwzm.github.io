@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>falcon</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<div id="小巧极速的 web 框架"><h1 id="小巧极速的 web 框架">小巧极速的 web 框架</h1></div>
+
+<p>
+<a href="https://falcon.readthedocs.io/en/stable/">https://falcon.readthedocs.io/en/stable/</a>
+</p>
+
+<p>
+<a href="https://github.com/falconry/falcon">https://github.com/falconry/falcon</a>
+</p>
+
+<p>
+有部分 tornado 的路由风格，和 bjoern 一起用，单进程能搞到 <code>30000+ req/s</code>。
+</p>
+
+<pre>
+import bjoern
+import falcon
+
+class ThingsResource:
+    def on_get(self, req: falcon.Request, resp: falcon.Response):
+        resp.body = 'falcon'
+
+application = falcon.API()
+application.add_route('/', ThingsResource())
+bjoern.run(application, "", 1111)
+</pre>
+
+</body>
+</html>

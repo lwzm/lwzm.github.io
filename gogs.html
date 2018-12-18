@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>gogs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<div id="GOGS 一款极易搭建的自助 Git 服务"><h1 id="GOGS 一款极易搭建的自助 Git 服务">GOGS 一款极易搭建的自助 Git 服务</h1></div>
+
+<p>
+<a href="https://gogs.io/">https://gogs.io/</a>
+</p>
+
+<p>
+<a href="https://github.com/gogits/gogs">https://github.com/gogits/gogs</a>
+</p>
+
+<p>
+用来取代 github, gitlab
+</p>
+
+<p>
+下载后解压即可用
+</p>
+
+<p>
+可以使用本地 sqlite 做数据库, 并使用自带的 ssh, 基本无依赖, 部署方便.
+</p>
+
+<p>
+为了使用 22 端口 建议用 setcap 工具设置程序属性.
+</p>
+
+<div id="GOGS 一款极易搭建的自助 Git 服务-配置参考"><h3 id="配置参考">配置参考</h3></div>
+<pre>
+APP_NAME = Gogs
+RUN_USER = git
+RUN_MODE = prod
+
+[database]
+DB_TYPE  = sqlite3
+PATH     = data/gogs.db
+
+[repository]
+ROOT = ../gogs-repositories
+
+[server]
+DOMAIN           = gogs.tyio.net
+HTTP_PORT        = 63000
+ROOT_URL         = http://gogs.tyio.net/
+DISABLE_SSH      = false
+SSH_PORT         = 22
+START_SSH_SERVER = true
+OFFLINE_MODE     = true
+
+[log]
+MODE      = file
+LEVEL     = Info
+ROOT_PATH = log
+</pre>
+
+<div id="GOGS 一款极易搭建的自助 Git 服务-nginx"><h3 id="nginx">nginx</h3></div>
+<pre>
+upstream gogs {
+    server localhost6:63000;
+    keepalive 16;
+}
+
+server {
+    server_name  gogs.*;
+    location / {
+        proxy_pass http://gogs;
+    }
+}
+</pre>
+
+</body>
+</html>

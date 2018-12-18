@@ -1,0 +1,56 @@
+= GOGS 一款极易搭建的自助 Git 服务=
+
+https://gogs.io/
+
+https://github.com/gogits/gogs
+
+用来取代 github, gitlab
+
+下载后解压即可用
+
+可以使用本地 sqlite 做数据库, 并使用自带的 ssh, 基本无依赖, 部署方便.
+
+为了使用 22 端口 建议用 setcap 工具设置程序属性.
+
+=== 配置参考 ===
+{{{
+APP_NAME = Gogs
+RUN_USER = git
+RUN_MODE = prod
+
+[database]
+DB_TYPE  = sqlite3
+PATH     = data/gogs.db
+
+[repository]
+ROOT = ../gogs-repositories
+
+[server]
+DOMAIN           = gogs.tyio.net
+HTTP_PORT        = 63000
+ROOT_URL         = http://gogs.tyio.net/
+DISABLE_SSH      = false
+SSH_PORT         = 22
+START_SSH_SERVER = true
+OFFLINE_MODE     = true
+
+[log]
+MODE      = file
+LEVEL     = Info
+ROOT_PATH = log
+}}}
+
+=== nginx ===
+{{{
+upstream gogs {
+    server localhost6:63000;
+    keepalive 16;
+}
+
+server {
+    server_name  gogs.*;
+    location / {
+        proxy_pass http://gogs;
+    }
+}
+}}}

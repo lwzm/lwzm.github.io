@@ -1,0 +1,8 @@
+= TLDR to long didn't read =
+
+https://tldr.ostera.io/
+
+https://github.com/ostera/tldr.jsx/
+
+
+Unix 常用命令都可以找到简单的使用文档。

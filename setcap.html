@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>setcap</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<div id="非 root 用户程序使用小于 1024 端口"><h1 id="非 root 用户程序使用小于 1024 端口">非 root 用户程序使用小于 1024 端口</h1></div>
+
+<p>
+从 2.1 开始，Linux 内核有了能力的概念，这使得普通用户也能够做只有超级用户才能完成的工作。
+</p>
+
+<p>
+<code>CAP_NET_BIND_SERVICE</code>，使得服务程序运行在非 root 帐户下，也能够使用 <code>&lt;1024</code> 端口：
+</p>
+
+<pre>
+setcap cap_net_bind_service=+ep /path/to/application
+</pre>
+
+</body>
+</html>

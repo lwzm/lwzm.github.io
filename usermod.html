@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>usermod</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<div id="生产环境用户管理"><h1 id="生产环境用户管理">生产环境用户管理</h1></div>
+
+
+<p>
+假设， 普通操作用户 <code>q</code> 服务运行用户 <code>qq</code>。
+</p>
+
+<p>
+追加 q 用户 到 qq 组
+</p>
+
+<pre>
+usermod -a -G qq q
+
+OR
+
+useradd -g qq q
+</pre>
+
+
+<p>
+追加 apache, nginx 到 q 组
+</p>
+<pre>
+usermod -a -G q apache 
+usermod -a -G q nginx
+</pre>
+
+
+
+<p>
+qq 用户更改 umask，在 .bashrc 设置
+</p>
+<pre>
+umask 027
+</pre>
+
+<p>
+这样, 对 qq 的文件, q 只能读不能写
+</p>
+
+
+<p>
+把用户 q 加到 wheel 组里面, 因为 CentOS 的 wheel 组默认可以 sudo 
+</p>
+<pre>
+usermod -a -G wheel q
+</pre>
+
+
+<p>
+批量操作
+</p>
+<pre>
+adduser q &amp;&amp; yes xxxxxx | passwd q &amp;&amp; usermod -a -G wheel q
+
+usermod -a -G adm q
+
+usermod -a -G nginx q
+
+usermod -a -G q postgres
+
+</pre>
+
+</body>
+</html>

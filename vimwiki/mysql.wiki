@@ -1,0 +1,49 @@
+= Mysql =
+
+一直以来都会用到, 但是经常忘记, 做记录:
+
+创建用户：
+{{{
+CREATE USER q;
+# same as:
+CREATE USER q@'%';
+}}}
+
+设置密码：
+
+{{{
+# 用户信息以及权限都在 mysql.user 表
+# 注意 user, host 字段
+
+use mysql;
+UPDATE user SET password=PASSWORD('q') WHERE user='q';
+权限赋予, 并刷新:
+
+grant all on DB_NAME.TABLE_NAME to q;
+grant all on DB_NAME.* to q;
+
+FLUSH PRIVILEGES;
+}}}
+
+主从：
+
+{{{
+# master
+server-id=174
+log-bin=log-bin
+binlog_format=MIXED
+
+GRANT REPLICATION SLAVE ON *.* to rep identified by 'x';
+FLUSH PRIVILEGES;
+
+show master status;
+
+
+# slave
+server-id=175
+slave-skip-errors=all
+
+change master to master_host='n174',master_user='rep',master_password='x',master_log_file='mysql-bin.000003',master_log_pos=851;
+
+start slave;
+}}}

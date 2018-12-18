@@ -1,0 +1,8 @@
+= pytest =
+
+{{{shell
+python -m pytest tests
+while find -name "*.py" | inotifywait --fromfile - ; do
+    python -m pytest tests
+done
+}}}

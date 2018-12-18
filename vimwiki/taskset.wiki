@@ -1,0 +1,7 @@
+= taskset =
+
+{{{
+taskset -c 0,1 ./postgrest rest.conf
+# or
+taskset -c 0,1 -p $PID_OF_FOO
+}}}

@@ -1,0 +1,18 @@
+= Sqlite 使用技巧拾零 =
+
+=== 时间格式 ===
+
+{{{
+select datetime('now', 'localtime');
+
+CREATE TABLE whatever (
+     ...
+     ts DATETIME DEFAULT (datetime('now', 'localtime')),
+     ...
+);
+}}}
+
+参考 https://stackoverflow.com/questions/381371/sqlite-current-timestamp-is-in-gmt-not-the-timezone-of-the-machine  
+
+
+

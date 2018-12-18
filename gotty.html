@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>gotty</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<div id="把终端放到浏览器里面"><h1 id="把终端放到浏览器里面">把终端放到浏览器里面</h1></div>
+
+<p>
+<a href="https://github.com/yudai/gotty">https://github.com/yudai/gotty</a>
+</p>
+
+<p>
+使用 Golang 编写, 使用方便, 一般是用于通过 Web 来分享你的终端, 也可以用 -w 参数, 允许控制终端. 我一般把它当作一个 Web Shell 来使用, 同类产品相比, 部署更方便, 资源占用更优.
+</p>
+<pre>
+gotty -a localhost6 -p 58080 -w bash
+</pre>
+
+<p>
+就可以通过浏览器访问了, 一般, 我会加上 nginx 反向代理, 并作身份验证:
+</p>
+
+<pre>
+upstream gotty {
+    server localhost6:58080;
+    keepalive 16;
+}
+
+server {
+    server_name  gotty.*;
+
+    auth_basic "login gotty";
+    auth_basic_user_file htpw;
+
+    location / {
+        proxy_pass http://gotty;
+    }
+}
+</pre>
+
+</body>
+</html>

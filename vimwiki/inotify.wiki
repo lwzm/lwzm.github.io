@@ -1,0 +1,52 @@
+= inotify inotify-tools =
+
+{{{
+yum install -y inotify-tools
+}}}
+
+包含两个工具： `inotifywait` `inotifywatch`。
+
+用法举例：
+
+{{{
+while find -name "*.as" | inotifywait --fromfile - >/dev/null 2>&1; do date; done
+}}}
+
+{{{
+inotifywait -m .
+
+Setting up watches.
+Watches established.
+./ CLOSE_WRITE,CLOSE dhcpd.leases
+./ OPEN dhcpd.leases
+./ ACCESS dhcpd.leases
+./ CLOSE_NOWRITE,CLOSE dhcpd.leases
+./ OPEN dhcpd.leases
+./ CREATE dhcpd.leases.1425809672
+./ OPEN dhcpd.leases.1425809672
+./ ATTRIB dhcpd.leases.1425809672
+./ CLOSE_WRITE,CLOSE dhcpd.leases
+./ MODIFY dhcpd.leases.1425809672
+./ DELETE dhcpd.leases~
+./ CREATE dhcpd.leases~
+./ MOVED_FROM dhcpd.leases.1425809672
+./ MOVED_TO dhcpd.leases
+
+
+inotifywait -m run/
+
+Setting up watches.
+Watches established.
+run/ ACCESS launch
+run/ ACCESS launch
+run/ MODIFY launch
+run/ ACCESS online
+}}}
+
+`watch_build.sh`
+{{{
+while true; do
+    inotifywait -e modify definitions.js postgrest.js
+    yarn build
+done
+}}}

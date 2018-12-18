@@ -1,0 +1,36 @@
+= proxychains 透明代理 =
+
+
+https://github.com/rofl0r/proxychains-ng
+
+proxychains程序如其名，强行接管了程序的网络连接，让任何程序都能使用代理。
+
+一般, 配置 `~/.proxychains/proxychains.conf`，加上
+{{{
+[ProxyList]
+socks5  127.0.0.1 1080
+}}}
+
+然后测试一下 curl 在 proxychains 的环境下运行:
+
+proxychains4 curl cip.cc
+
+甚至可以使用任意基于 TCP 的程序:
+
+proxychains4 ssh your-remote-host
+
+=== 安装 ===
+git clone 后
+
+{{{
+./configure
+make
+
+# output
+
+proxychains4
+libproxychains4.so
+
+# 理论上, libproxychains4.so 要放到 /usr/lib64/ 下面, 但是可以指定位置:
+./configure --libdir=/home/bae/app/bin
+}}}
