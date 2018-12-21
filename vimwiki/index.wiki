@@ -27,3 +27,4 @@
 * [[gogs]]
 * [[dnsmasq]]
 * [[aliyun]] 使用技巧拾零
+* [[httpie]] HTTP 命令行客户端

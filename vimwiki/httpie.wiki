@@ -1,0 +1,11 @@
+= HTTPie 比 cURL 更好用 =
+
+https://httpie.org/doc#examples
+
+例子
+{{{
+http post 'https://ng/api/person' name=q age:=0
+http patch 'https://ng/api/person?id=eq.1' name=q
+http patch 'https://ng/api/person?id=eq.1' age:=3
+http patch https://ng/api/person id==eq.1 age:=3
+}}}

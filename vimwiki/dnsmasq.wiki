@@ -68,15 +68,17 @@ dns=none
 
 === 增加几条客户机永久修改DNS地址的方法 ===
 
-1. 配置ip地址文件 /etc/sysconfig/network-scripts/ifcfg-ethXXX 添加
+配置ip地址文件 /etc/sysconfig/network-scripts/ifcfg-ethXXX 添加
 {{{
 DNS1=8.8.8.8
 }}}
 
 /etc/resolv.conf 会自动添加地址。
 
-2. 手动编辑 /etc/resolv.conf
+手动编辑 /etc/resolv.conf
+{{{
 nameserver 8.8.8.8  
+}}}
 配置ip地址文件 /etc/sysconfig/network-scripts/ifcfg-ethXXX 添加
 {{{
 PEERDNS=no    # 添加后不会去打扰 /etc/resolv.conf 文件  

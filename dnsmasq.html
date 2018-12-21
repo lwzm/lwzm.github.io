@@ -99,26 +99,24 @@ dns=none
 
 <div id="DNSmasq-增加几条客户机永久修改DNS地址的方法"><h3 id="增加几条客户机永久修改DNS地址的方法">增加几条客户机永久修改DNS地址的方法</h3></div>
 
-<ol>
-<li>
+<p>
 配置ip地址文件 /etc/sysconfig/network-scripts/ifcfg-ethXXX 添加
+</p>
 <pre>
 DNS1=8.8.8.8
 </pre>
-
-</ol>
 
 <p>
 /etc/resolv.conf 会自动添加地址。
 </p>
 
-<ol>
-<li>
-手动编辑 /etc/resolv.conf
-
-</ol>
 <p>
+手动编辑 /etc/resolv.conf
+</p>
+<pre>
 nameserver 8.8.8.8  
+</pre>
+<p>
 配置ip地址文件 /etc/sysconfig/network-scripts/ifcfg-ethXXX 添加
 </p>
 <pre>
