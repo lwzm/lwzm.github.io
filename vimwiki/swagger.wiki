@@ -1,0 +1,12 @@
+= Swagger =
+
+在线编辑器地址
+https://editor.swagger.io/
+
+=== swagger-codegen ===
+{{{
+brew install swagger-codegen
+swagger-codegen generate -i https://ng.tyio.net/api -l html2
+}}}
+
+生成的 `index.html` 就是文档，详细使用方法参考 https://github.com/swagger-api/swagger-codegen 。

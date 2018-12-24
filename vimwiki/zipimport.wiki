@@ -1,0 +1,16 @@
+= zipimport — Import modules from Zip archives =
+
+Python 可以自定义导入模块的过程，见 `PEP 302`，以后再研究。
+
+如果涉及到打包发布各种模块，建议先使用 `compileall`，预编译好二进制，然后 `zip`：
+{{{
+python -OO -m compileall -b -f .
+rm -f m.zip && find . -name '*.pyc' | xargs zip -r m.zip
+
+PYTHONPATH="m.zip:/another/zip/archive.zip" python your_app.py
+}}}
+
+注：指定 `PYTHONPATH` 后，`sys.path` 将会是 
+{{{
+[your_app.py 工作目录, m.zip, /another/zip/archive.zip, ...]
+}}}
