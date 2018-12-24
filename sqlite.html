@@ -11,7 +11,7 @@
 
 <div id="Sqlite 使用技巧拾零-时间格式"><h3 id="时间格式">时间格式</h3></div>
 
-<pre>
+<pre sql>
 select datetime('now', 'localtime');
 
 CREATE TABLE whatever (
@@ -24,6 +24,38 @@ CREATE TABLE whatever (
 <p>
 参考 <a href="https://stackoverflow.com/questions/381371/sqlite-current-timestamp-is-in-gmt-not-the-timezone-of-the-machine">https://stackoverflow.com/questions/381371/sqlite-current-timestamp-is-in-gmt-not-the-timezone-of-the-machine</a>  
 </p>
+
+
+<p>
+签到逻辑例子
+</p>
+<pre sql>
+create table user (
+  id integer primary key,
+  name varchar(64) not null,
+  ts datetime default (datetime('now', 'localtime'))
+);
+
+create table checkin (
+  id integer primary key,
+  user integer not null references "user" ("id"),
+  date date not null default (date('now', 'localtime')),
+  ts datetime default (datetime('now', 'localtime')),
+  unique (user, date)
+);
+
+-- create index idx_checkin__user on checkin (user);
+
+insert into user (name) values('q1');
+insert into user (name) values('q2');
+insert into user (name) values('q3');
+
+insert into checkin (user) values(1);
+insert into checkin (user) values(1);
+insert into checkin (user) values(2);
+insert into checkin (user) values(3);
+
+</pre>
 
 </body>
 </html>
