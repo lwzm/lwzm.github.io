@@ -54,7 +54,7 @@ log_disconnections = on
 
 
 `pg_hba.conf` 登录配置
-{{{
+{{{plain
 local   all         all                               trust
 host    all         all         127.0.0.1/32          trust
 host    all         all         ::1/128               trust
@@ -66,9 +66,30 @@ host    all         all         0.0.0.0/0             md5
 
 === 密码管理 ===
 
-{{{
+{{{sql
 CREATE USER foo WITH PASSWORD 'bar';
 ALTER USER q WITH PASSWORD 'xxxx';
+}}}
+
+=== 备份和恢复 ===
+
+最直观的就是用 `COPY` 命令了
+
+https://www.postgresql.org/docs/current/sql-copy.html
+
+有时候为了避免 postgres 用户权限不够的问题，可以用 `STDIN/STDOUT`
+{{{sh
+psql >db_backup/$(date +"%Y-%m-%dT%H:%M:%S").txt <<EOF
+COPY "user" TO STDOUT;
+COPY "keyword" TO STDOUT;
+EOF
+
+# or
+
+psql >db_backup/$(date +"%Y-%m-%dT%H:%M:%S").csv <<EOF
+COPY "user" TO STDOUT WITH CSV;
+COPY "keyword" TO STDOUT WITH CSV;
+EOF
 }}}
 
 === 插件系统 ===
@@ -79,6 +100,22 @@ pgxn install safeupdate
 
 vi /var/lib/pgsql/9.6/data/postgresql.conf
 shared_preload_libraries=safeupdate
+}}}
+
+=== fdw ===
+
+`file_fdw` https://www.postgresql.org/docs/current/file-fdw.html 了解一下
+{{{sql
+CREATE EXTENSION file_fdw;
+CREATE SERVER fdw FOREIGN DATA WRAPPER file_fdw;
+CREATE FOREIGN TABLE t (
+  name text,
+  age integer
+) SERVER fdw
+OPTIONS (
+    filename '/home/q/test/t.txt'
+);
+ALTER TABLE t OWNER TO q;
 }}}
 
 === 主备 master-standby ===

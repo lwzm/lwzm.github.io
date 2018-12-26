@@ -79,7 +79,7 @@ log_disconnections = on
 <p>
 <code>pg_hba.conf</code> 登录配置
 </p>
-<pre>
+<pre plain>
 local   all         all                               trust
 host    all         all         127.0.0.1/32          trust
 host    all         all         ::1/128               trust
@@ -91,9 +91,36 @@ host    all         all         0.0.0.0/0             md5
 
 <div id="PostgreSQL-密码管理"><h3 id="密码管理">密码管理</h3></div>
 
-<pre>
+<pre sql>
 CREATE USER foo WITH PASSWORD 'bar';
 ALTER USER q WITH PASSWORD 'xxxx';
+</pre>
+
+<div id="PostgreSQL-备份和恢复"><h3 id="备份和恢复">备份和恢复</h3></div>
+
+<p>
+最直观的就是用 <code>COPY</code> 命令了
+</p>
+
+<p>
+<a href="https://www.postgresql.org/docs/current/sql-copy.html">https://www.postgresql.org/docs/current/sql-copy.html</a>
+</p>
+
+<p>
+有时候为了避免 postgres 用户权限不够的问题，可以用 <code>STDIN/STDOUT</code>
+</p>
+<pre sh>
+psql &gt;db_backup/$(date +"%Y-%m-%dT%H:%M:%S").txt &lt;&lt;EOF
+COPY "user" TO STDOUT;
+COPY "keyword" TO STDOUT;
+EOF
+
+# or
+
+psql &gt;db_backup/$(date +"%Y-%m-%dT%H:%M:%S").csv &lt;&lt;EOF
+COPY "user" TO STDOUT WITH CSV;
+COPY "keyword" TO STDOUT WITH CSV;
+EOF
 </pre>
 
 <div id="PostgreSQL-插件系统"><h3 id="插件系统">插件系统</h3></div>
@@ -104,6 +131,24 @@ pgxn install safeupdate
 
 vi /var/lib/pgsql/9.6/data/postgresql.conf
 shared_preload_libraries=safeupdate
+</pre>
+
+<div id="PostgreSQL-fdw"><h3 id="fdw">fdw</h3></div>
+
+<p>
+<code>file_fdw</code> <a href="https://www.postgresql.org/docs/current/file-fdw.html">https://www.postgresql.org/docs/current/file-fdw.html</a> 了解一下
+</p>
+<pre sql>
+CREATE EXTENSION file_fdw;
+CREATE SERVER fdw FOREIGN DATA WRAPPER file_fdw;
+CREATE FOREIGN TABLE t (
+  name text,
+  age integer
+) SERVER fdw
+OPTIONS (
+    filename '/home/q/test/t.txt'
+);
+ALTER TABLE t OWNER TO q;
 </pre>
 
 <div id="PostgreSQL-主备 master-standby"><h3 id="主备 master-standby">主备 master-standby</h3></div>

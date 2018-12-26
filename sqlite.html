@@ -57,5 +57,21 @@ insert into checkin (user) values(3);
 
 </pre>
 
+<p>
+对应 ponyorm
+</p>
+<pre python>
+class User(Entity):
+    name = Required(str, 64)
+    ts = Optional(datetime)
+    checkins = Set(lambda: Checkin)
+
+class Checkin(Entity):
+    user = Required(lambda: User)
+    date = Required(date, sql_default="(date('now', 'localtime'))")
+    ts = Optional(datetime)
+    composite_key(user, date)
+</pre>
+
 </body>
 </html>
