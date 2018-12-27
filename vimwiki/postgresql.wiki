@@ -105,6 +105,7 @@ shared_preload_libraries=safeupdate
 === fdw ===
 
 `file_fdw` https://www.postgresql.org/docs/current/file-fdw.html 了解一下
+
 {{{sql
 CREATE EXTENSION file_fdw;
 CREATE SERVER fdw FOREIGN DATA WRAPPER file_fdw;
@@ -117,6 +118,92 @@ OPTIONS (
 );
 ALTER TABLE t OWNER TO q;
 }}}
+
+{{{shell
+echo 'foo\t10' >> t.txt
+}}}
+
+与 nginx 输出日志配合的例子
+
+{{{sql
+CREATE FOREIGN TABLE day27 (
+    ts timestamp with time zone,
+    remote_addr text,
+    request text,
+    status integer,
+    request_length integer,
+    body_bytes_sent integer,
+    request_time float,
+    upstream_addr text,
+    http_referer text,
+    http_user_agent text
+)
+SERVER fdw
+OPTIONS (
+    filename '/var/log/nginx/days/27'
+);
+}}}
+
+{{{nginx
+log_format
+tsv
+escape=json
+'$time_iso8601\t'
+'$remote_addr\t'
+'$request\t'
+'$status\t'
+'$request_length\t'
+'$body_bytes_sent\t'
+'$request_time\t'
+'$upstream_addr\t'
+'$http_referer\t'
+'$http_user_agent'
+;
+
+server {
+    ...
+
+    if ($time_iso8601 ~ "^.{8}(\d{2})") {
+        set $day $1;
+    }
+    access_log /var/log/nginx/days/$day tsv;
+
+    ...
+}
+}}}
+
+批量创建表，31 天的表
+
+{{{
+function tpl() {
+    echo "
+DROP FOREIGN TABLE IF EXISTS day$1;
+CREATE FOREIGN TABLE day$1 (
+    ts timestamp with time zone,
+    remote_addr text,
+    request text,
+    status integer,
+    request_length integer,
+    body_bytes_sent integer,
+    request_time real,
+    upstream_addr text,
+    http_referer text,
+    http_user_agent text
+)
+SERVER fdw
+OPTIONS (
+    filename '/var/log/nginx/days/$1'
+);
+ALTER TABLE day$1 OWNER TO q;
+    "
+}
+
+for i in $(seq -f "%02g" 31); do
+    tpl $i
+done
+}}}
+
+
 
 === 主备 master-standby ===
 
