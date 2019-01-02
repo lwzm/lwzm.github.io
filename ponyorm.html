@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>ponyorm</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<div id="PonyORM"><h1 id="PonyORM">PonyORM</h1></div>
+
+<p>
+<a href="https://ponyorm.com/">https://ponyorm.com/</a>
+</p>
+
+<p>
+很喜欢的一套 ORM，看中的特性：
+</p>
+<ul>
+<li>
+Python 表达式用黑魔法转换成 SQL
+
+<li>
+定义表结构方便且严谨，强制定义表的关联性
+
+<li>
+友好的使用接口
+
+<li>
+线程安全以及自动 commit or rollback
+
+<li>
+对 JSON 的友好支持
+
+<li>
+官网自带 web 版的编辑器 <a href="https://editor.ponyorm.com/">https://editor.ponyorm.com/</a>
+
+</ul>
+
+
+<div id="PonyORM-基本用法"><h3 id="基本用法">基本用法</h3></div>
+
+<p>
+<a href="https://docs.ponyorm.com/">https://docs.ponyorm.com/</a>
+</p>
+
+<div id="PonyORM-裸写 sql 的方法"><h3 id="裸写 sql 的方法">裸写 sql 的方法</h3></div>
+
+<p>
+<a href="https://docs.ponyorm.com/database.html#using-database-object-for-raw-sql-queries">https://docs.ponyorm.com/database.html#using-database-object-for-raw-sql-queries</a>
+</p>
+
+<p>
+有时候，用 ORM 不能满足一些细节的需求，需要针对特定的数据库写 SQL，可以选用 <code>Database</code> 实例的 <code>get</code>, <code>select</code>, <code>execute</code> 等方法。
+</p>
+
+<p>
+对于直接裸写 SQL，pony 也提供了一些帮助如连接池，自动提交，统一异常和传入参数，优化返回结果，自动补全 <code>SELECT</code>
+</p>
+
+
+<div id="PonyORM-自定义连接特征，sqlite 有用"><h3 id="自定义连接特征，sqlite 有用">自定义连接特征，sqlite 有用</h3></div>
+
+<p>
+<a href="https://docs.ponyorm.com/database.html#customizing-connection-behavior">https://docs.ponyorm.com/database.html#customizing-connection-behavior</a>
+</p>
+
+<pre python>
+database = Database()
+
+# entities declaration
+...
+
+@database.on_connect(provider='sqlite')
+def sqlite_case_sensitivity(_, conn):
+    import pathlib
+    rc = pathlib.Path.home() / ".sqliterc"
+    rc.exists() and conn.executescript(rc.read_text())
+
+...
+database.bind(**options)
+database.generate_mapping(create_tables=True)
+</pre>
+
+</body>
+</html>

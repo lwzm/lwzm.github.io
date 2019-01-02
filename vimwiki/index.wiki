@@ -16,6 +16,7 @@
 * [[ssh]] 配置
 * [[usermod]] 用户管理
 * [[postgresql]]
+* [[ponyorm]]
 * [[setcap]] 非 root 用户程序使用小于 1024 端口
 * [[yum]] 拾零
 * [[taskset]] 限制程序的 CPU 核心使用量

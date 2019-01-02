@@ -1,0 +1,46 @@
+= PonyORM =
+
+https://ponyorm.com/
+
+很喜欢的一套 ORM，看中的特性：
+* Python 表达式用黑魔法转换成 SQL
+* 定义表结构方便且严谨，强制定义表的关联性
+* 友好的使用接口
+* 线程安全以及自动 commit or rollback
+* 对 JSON 的友好支持
+* 官网自带 web 版的编辑器 https://editor.ponyorm.com/
+
+
+=== 基本用法 ===
+
+https://docs.ponyorm.com/
+
+=== 裸写 sql 的方法 ===
+
+https://docs.ponyorm.com/database.html#using-database-object-for-raw-sql-queries
+
+有时候，用 ORM 不能满足一些细节的需求，需要针对特定的数据库写 SQL，可以选用 `Database` 实例的 `get`, `select`, `execute` 等方法。
+
+对于直接裸写 SQL，pony 也提供了一些帮助如连接池，自动提交，统一异常和传入参数，优化返回结果，自动补全 `SELECT`
+
+
+=== 自定义连接特征，sqlite 有用 ===
+
+https://docs.ponyorm.com/database.html#customizing-connection-behavior
+
+{{{python
+database = Database()
+
+# entities declaration
+...
+
+@database.on_connect(provider='sqlite')
+def sqlite_case_sensitivity(_, conn):
+    import pathlib
+    rc = pathlib.Path.home() / ".sqliterc"
+    rc.exists() and conn.executescript(rc.read_text())
+
+...
+database.bind(**options)
+database.generate_mapping(create_tables=True)
+}}}
