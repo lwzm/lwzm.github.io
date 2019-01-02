@@ -172,9 +172,15 @@ server {
 }
 }}}
 
+{{{sh
+# 日志权限开放
+usermod -a -G nginx postgres
+chmode 750 /var/log/nginx/
+}}}
+
 批量创建表，31 天的表
 
-{{{
+{{{sh
 function tpl() {
     echo "
 DROP FOREIGN TABLE IF EXISTS day$1;
