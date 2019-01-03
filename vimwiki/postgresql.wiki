@@ -92,6 +92,77 @@ COPY "keyword" TO STDOUT WITH CSV;
 EOF
 }}}
 
+
+=== 自动时间戳 ===
+
+假设我们用 `ts` 命名时间戳
+
+create time：
+
+{{{psql
+create table TTTT {
+    ...
+    ts timestamp with time zone default now()
+}
+}}}
+
+update time:
+
+{{{sql
+create or replace function update_column_ts() returns trigger
+language 'plpgsql'
+as $$
+begin
+    new.ts = now();
+    return new;
+end
+$$;
+
+create trigger update_TTTT_ts
+before update on TTTT
+for each row
+    execute procedure
+    update_column_ts();
+}}}
+
+参考 https://www.revsys.com/tidbits/automatically-updating-a-timestamp-column-in-postgresql/
+
+=== 记录修改历史 ===
+
+{{{sql
+create table history (
+    id bigserial primary key,
+    tb varchar(64),
+    op varchar(16),
+    ref integer,
+    ts timestamp with time zone default now()
+);
+
+create or replace function history() returns trigger
+language 'plpgsql'
+as $$
+declare
+row record;
+begin
+    if (TG_OP = 'DELETE') then
+        row := OLD;
+    else
+        row := NEW;
+    end if;
+    insert into history (tb, op, ref) values (TG_TABLE_NAME, TG_OP, row.id);
+    return row;
+end
+$$;
+
+create trigger history_t
+after insert or update or delete
+on t
+for each row
+    execute procedure
+    history();
+}}}
+
+
 === 插件系统 ===
 
 {{{

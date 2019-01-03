@@ -123,6 +123,85 @@ COPY "keyword" TO STDOUT WITH CSV;
 EOF
 </pre>
 
+
+<div id="PostgreSQL-自动时间戳"><h3 id="自动时间戳">自动时间戳</h3></div>
+
+<p>
+假设我们用 <code>ts</code> 命名时间戳
+</p>
+
+<p>
+create time：
+</p>
+
+<pre psql>
+create table TTTT {
+    ...
+    ts timestamp with time zone default now()
+}
+</pre>
+
+<p>
+update time:
+</p>
+
+<pre sql>
+create or replace function update_column_ts() returns trigger
+language 'plpgsql'
+as $$
+begin
+    new.ts = now();
+    return new;
+end
+$$;
+
+create trigger update_TTTT_ts
+before update on TTTT
+for each row
+    execute procedure
+    update_column_ts();
+</pre>
+
+<p>
+参考 <a href="https://www.revsys.com/tidbits/automatically-updating-a-timestamp-column-in-postgresql/">https://www.revsys.com/tidbits/automatically-updating-a-timestamp-column-in-postgresql/</a>
+</p>
+
+<div id="PostgreSQL-记录修改历史"><h3 id="记录修改历史">记录修改历史</h3></div>
+
+<pre sql>
+create table history (
+    id bigserial primary key,
+    tb varchar(64),
+    op varchar(16),
+    ref integer,
+    ts timestamp with time zone default now()
+);
+
+create or replace function history() returns trigger
+language 'plpgsql'
+as $$
+declare
+row record;
+begin
+    if (TG_OP = 'DELETE') then
+        row := OLD;
+    else
+        row := NEW;
+    end if;
+    insert into history (tb, op, ref) values (TG_TABLE_NAME, TG_OP, row.id);
+    return row;
+end
+$$;
+
+create trigger history_t
+after insert or update or delete
+on t
+for each row
+    execute procedure
+    history();
+</pre>
+
+
 <div id="PostgreSQL-插件系统"><h3 id="插件系统">插件系统</h3></div>
 
 <pre>

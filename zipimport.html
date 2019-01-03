@@ -14,9 +14,9 @@ Python 可以自定义导入模块的过程，见 <code>PEP 302</code>，以后�
 </p>
 
 <p>
-如果涉及到打包发布各种模块，建议先使用 <code>compileall</code>，预编译好二进制，然后 <code>zip</code>：
+如果涉及到打包发布各种模块，建议先使用 <code>compileall</code>，预编译好二进制，然后 <code>zip</code> 压缩，最后加入环境变量 <code>PYTHONPATH</code> 来激活：
 </p>
-<pre>
+<pre sh>
 python -OO -m compileall -b -f .
 rm -f m.zip &amp;&amp; find . -name '*.pyc' | xargs zip -r m.zip
 
@@ -26,8 +26,8 @@ PYTHONPATH="m.zip:/another/zip/archive.zip" python your_app.py
 <p>
 注：指定 <code>PYTHONPATH</code> 后，<code>sys.path</code> 将会是 
 </p>
-<pre>
-[your_app.py 工作目录, m.zip, /another/zip/archive.zip, ...]
+<pre python>
+[your_app.py-DIR, m.zip, /another/zip/archive.zip, ...]
 </pre>
 
 </body>
