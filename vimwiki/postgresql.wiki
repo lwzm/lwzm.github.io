@@ -162,6 +162,54 @@ for each row
     history();
 }}}
 
+{{{sql
+drop table if exists history_gold;
+drop table if exists q;
+create table q (
+    id serial primary key,
+    name varchar(32),
+    gold bigint default 0,
+    tip varchar(256)
+);
+create table history_gold (
+    q integer references q (id),
+    before bigint,
+    after bigint,
+    tip varchar(256),
+    ts timestamp with time zone default now()
+);
+
+-- https://www.postgresql.org/docs/current/plpgsql-errors-and-messages.html
+create or replace function fn_history_gold() returns trigger
+language 'plpgsql'
+as $$
+begin
+    if (old.gold != new.gold) then
+        if (new.tip is null) then
+            raise 'tip is required';
+        end if;
+        insert into history_gold (q, before, after, tip) values (new.id, old.gold, new.gold, new.tip);
+        new.tip = null;
+    end if;
+    return new;
+end
+$$;
+
+create trigger tg_history_gold
+before update on q
+for each row
+    execute procedure
+    fn_history_gold();
+
+insert into q (name) values('q');
+insert into q (name) values('q');
+insert into q (name) values('q');
+update q set gold = gold + 1, tip='test';
+update q set tip='test';
+update q set gold = gold + 1;
+select * from history_gold;
+select * from q;
+}}}
 
 === 插件系统 ===
 
