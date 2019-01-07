@@ -168,6 +168,10 @@ for each row
 
 <div id="PostgreSQL-记录修改历史"><h3 id="记录修改历史">记录修改历史</h3></div>
 
+<p>
+记录增删改
+</p>
+
 <pre sql>
 create table history (
     id bigserial primary key,
@@ -201,6 +205,10 @@ for each row
     history();
 </pre>
 
+<p>
+针对某表的某列专门做记录, 如记录 q.gold 的变化, 并且变化时必须带上 tip
+</p>
+
 <pre sql>
 drop table if exists history_gold;
 drop table if exists q;
@@ -219,26 +227,31 @@ create table history_gold (
 );
 
 -- https://www.postgresql.org/docs/current/plpgsql-errors-and-messages.html
+-- https://www.postgresql.org/docs/current/sql-createtrigger.html
+-- https://www.postgresql.org/docs/current/plpgsql-trigger.html
 create or replace function fn_history_gold() returns trigger
 language 'plpgsql'
 as $$
 begin
-    if (old.gold != new.gold) then
-        if (new.tip is null) then
-            raise 'tip is required';
-        end if;
-        insert into history_gold (q, before, after, tip) values (new.id, old.gold, new.gold, new.tip);
-        new.tip = null;
+    if (new.tip is null) then
+        raise 'tip is required';
     end if;
+    insert into history_gold (q, before, after, tip) values (new.id, old.gold, new.gold, new.tip);
+    new.tip = null;  -- reset
     return new;
 end
 $$;
 
 create trigger tg_history_gold
-before update on q
+before update of gold on q
 for each row
     execute procedure
     fn_history_gold();
+
+-- strict permission, only read &amp; append
+REVOKE ALL ON TABLE history_gold FROM "you";
+GRANT SELECT ON TABLE history_gold TO "you";
+GRANT INSERT ON TABLE history_gold TO "you";
 
 insert into q (name) values('q');
 insert into q (name) values('q');
@@ -248,6 +261,22 @@ update q set tip='test';
 update q set gold = gold + 1;
 select * from history_gold;
 select * from q;
+</pre>
+
+<p>
+如果需要定期清理并归档，参考以下代码(已通过高并发情况下数据完整性测试)
+</p>
+
+<pre sql>
+begin transaction;
+lock table history_gold in exclusive mode;
+copy history_gold to stdout;
+truncate history_gold;
+commit;
+</pre>
+
+<pre sh>
+psql -q &lt;xxx.sql &gt;&gt;$(date +"%Y-%m-%d").history
 </pre>
 
 <div id="PostgreSQL-插件系统"><h3 id="插件系统">插件系统</h3></div>
