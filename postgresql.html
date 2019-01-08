@@ -243,6 +243,7 @@ end
 $$;
 
 create trigger tg_history_gold
+create trigger tg_history_gold
 before update of gold on q
 for each row
     execute procedure
@@ -278,6 +279,96 @@ commit;
 <pre sh>
 psql -q &lt;xxx.sql &gt;&gt;$(date +"%Y-%m-%d").history
 </pre>
+
+<div id="PostgreSQL-编写动态触发器"><h3 id="编写动态触发器">编写动态触发器</h3></div>
+
+<p>
+参考：<a href="https://wiki.postgresql.org/wiki/PL/pgSQL_Dynamic_Triggers">https://wiki.postgresql.org/wiki/PL/pgSQL_Dynamic_Triggers</a>
+</p>
+
+<pre sql>
+CREATE OR REPLACE FUNCTION dynamic_trigger()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    r RECORD;
+    s TEXT;
+BEGIN
+    RAISE NOTICE E'\n    Operation: %\n    Schema: %\n    Table: %',
+        TG_OP,
+        TG_TABLE_SCHEMA,
+        TG_TABLE_NAME;
+    FOR r IN
+        SELECT ordinal_position, column_name, data_type
+        FROM information_schema.columns
+        WHERE
+            table_schema = TG_TABLE_SCHEMA
+        AND table_name = TG_TABLE_NAME
+        ORDER BY ordinal_position
+    LOOP
+        EXECUTE 'SELECT ($1).' || r.column_name || '::text' INTO s USING NEW;
+        RAISE NOTICE E'Column\n    number: %\n    name: %\n    type: %\n    value: %',
+            r.ordinal_position,
+            r.column_name,
+            r.data_type,
+            s;
+    END LOOP;
+    RETURN NEW;
+END;
+$$;
+</pre>
+
+<p>
+主要是用到了 <code>EXECUTE</code>，下面来看高级用法：适配绝大部分表的历史记录触发器
+</p>
+<pre sql>
+drop table if exists q;
+create table q (
+    id serial primary key,
+    name varchar(32),
+    gold bigint default 0,
+    tip varchar(256)
+);
+
+drop table if exists history_update;
+create table history_update (
+    tab varchar(64),  -- table
+    ref varchar(64),  -- foreign primary key
+    col varchar(64),  -- column target
+    old text,
+    new text,
+    ts timestamp with time zone default now()
+);
+
+create or replace function history_update() returns trigger
+language 'plpgsql'
+as $$
+declare
+ref text;
+col text;
+begin
+    ref := TG_ARGV[0];
+    col := TG_ARGV[1];
+    execute format('insert into history_update (tab, ref, col, old, new) values ($1, $4."%s", $2, $3."%s", $4."%s")', ref, col, col) using TG_TABLE_NAME, col, OLD, NEW;
+    return NEW;
+end
+$$;
+
+
+create trigger tg_
+after update of gold on q
+for each row
+    execute procedure
+    history_update(id, gold);
+insert into q (name) values('q');
+insert into q (name) values('q');
+insert into q (name) values('q');
+update q set gold = gold + 1;
+update q set gold = gold + 5;
+select * from history_update;
+</pre>
+
 
 <div id="PostgreSQL-插件系统"><h3 id="插件系统">插件系统</h3></div>
 

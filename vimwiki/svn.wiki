@@ -1,0 +1,25 @@
+= SVN =
+
+初始化仓库
+{{{sh
+mkdir svn_repos
+cd svn_repos && svnadmin create REPO_1 && svnadmin create REPO_2
+svnserve -d -r .
+}}}
+    
+配置 `REPO/conf/svnserve.conf`
+{{{ini
+[general]
+anon-access = none  # optional
+password-db = passwd
+
+
+# REPO/conf/passwd
+
+[users]
+q = q
+REPO/conf/authz
+
+[/]
+q = rw
+}}}
