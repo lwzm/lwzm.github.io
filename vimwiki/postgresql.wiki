@@ -301,7 +301,11 @@ col text;
 begin
     ref := TG_ARGV[0];
     col := TG_ARGV[1];
-    execute format('insert into history_update (tab, ref, col, old, new) values ($1, $4."%s", $2, $3."%s", $4."%s")', ref, col, col) using TG_TABLE_NAME, col, OLD, NEW;
+    
+    execute
+    format('insert into history_update (tab, ref, col, old, new) values ($1, $4."%s", $2, $3."%s", $4."%s")', ref, col, col)
+    using TG_TABLE_NAME, col, OLD, NEW;
+    
     return NEW;
 end
 $$;

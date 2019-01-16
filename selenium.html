@@ -14,7 +14,7 @@
 </p>
 
 <div id="用 selenium 调用桌面浏览器-FireFox"><h3 id="FireFox">FireFox</h3></div>
-<pre>
+<pre sh>
 yum install gtk3 libXt
 # 去官网找 Linux 版本
 wget https://download-ssl.firefox.com.cn/releases/firefox/63.0/zh-CN/Firefox-latest-x86_64.tar.bz2
@@ -23,7 +23,7 @@ wget https://github.com/mozilla/geckodriver/releases/download/v0.23.0/geckodrive
 </pre>
 
 <div id="用 selenium 调用桌面浏览器-Chrome"><h3 id="Chrome">Chrome</h3></div>
-<pre>
+<pre sh>
 # 借助 puppeteer
 npm i -g puppeteer
 ln -s ~/node-v8.12.0-linux-x64/lib/node_modules/puppeteer/.local-chromium/linux-594312/chrome-linux/chrome .
@@ -32,7 +32,7 @@ wget https://chromedriver.storage.googleapis.com/2.43/chromedriver_linux64.zip
 </pre>
 
 <div id="用 selenium 调用桌面浏览器-中文字体"><h3 id="中文字体">中文字体</h3></div>
-<pre>
+<pre sh>
 yum search fonts
 yum install -y wqy-microhei-fonts
 yum install -y bitmap-fangsongti-fonts
@@ -42,7 +42,6 @@ yum install -y fontconfig
 <div id="用 selenium 调用桌面浏览器-部分例子"><h3 id="部分例子">部分例子</h3></div>
 <pre python>
 from selenium import webdriver
-
 
 # Firefox
 options = webdriver.FirefoxOptions()
@@ -89,6 +88,30 @@ options.add_argument('--disable-extensions')
 options.add_argument('--disable-gpu')  
 options.add_argument('--no-sandbox')  
 browser = webdriver.Chrome(options=options)
+</pre>
+
+<div id="用 selenium 调用桌面浏览器-清理孤儿浏览器进程"><h3 id="清理孤儿浏览器进程">清理孤儿浏览器进程</h3></div>
+
+<pre sh>
+function clean_orphan() {
+JUNK=$(ps axo pid,ppid,comm | awk '$2==1' | grep $1 | awk '{print $1}')
+if [ -n "${JUNK}" ]; then
+    date &amp;&amp; echo kill $JUNK
+    kill $JUNK
+fi
+}
+
+while true; do
+clean_orphan geckodriver
+sleep 3
+clean_orphan firefox
+sleep 3
+done
+
+exit
+
+ps axo pid,ppid,comm | grep geckodriver | awk '$2==1'
+grep firefox | awk '{print $1}' | xargs kill
 </pre>
 
 </body>

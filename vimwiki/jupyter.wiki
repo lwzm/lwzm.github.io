@@ -4,7 +4,7 @@
 
 扔几篇文档：
 
-http://ipython.org/ipython-doc/stable/interactive/notebook.html
+https://ipython.readthedocs.io/en/stable/
 
 http://jupyter-notebook.readthedocs.io/en/latest/public_server.html
 
