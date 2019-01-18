@@ -1,0 +1,24 @@
+= mitmproxy =
+
+https://mitmproxy.org/
+
+代理服务器，可监控所有的过路流量，爬虫利器。
+
+直接用 `pip` 安装，然后运行
+{{{sh
+mitmproxy
+}}}
+
+注意，如果允许远程访问，需要参考 https://docs.mitmproxy.org/stable/concepts-options/，
+关闭 `block_global`。
+{{{sh
+$ cat ~/.mitmproxy/config.yaml
+block_global: false
+listen_port: 58000
+}}}
+
+各种快捷键类似 `vi`。
+
+=== 信任证书 ===
+
+访问：http://mitm.it/，按提示来。

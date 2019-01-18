@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>mitmproxy</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<div id="mitmproxy"><h1 id="mitmproxy">mitmproxy</h1></div>
+
+<p>
+<a href="https://mitmproxy.org/">https://mitmproxy.org/</a>
+</p>
+
+<p>
+代理服务器，可监控所有的过路流量，爬虫利器。
+</p>
+
+<p>
+直接用 <code>pip</code> 安装，然后运行
+</p>
+<pre sh>
+mitmproxy
+</pre>
+
+<p>
+注意，如果允许远程访问，需要参考 <a href="https://docs.mitmproxy.org/stable/concepts-options/，">https://docs.mitmproxy.org/stable/concepts-options/，</a>
+关闭 <code>block_global</code>。
+</p>
+<pre sh>
+$ cat ~/.mitmproxy/config.yaml
+block_global: false
+listen_port: 58000
+</pre>
+
+<p>
+各种快捷键类似 <code>vi</code>。
+</p>
+
+<div id="mitmproxy-信任证书"><h3 id="信任证书">信任证书</h3></div>
+
+<p>
+访问：<a href="http://mitm.it/，按提示来。">http://mitm.it/，按提示来。</a>
+</p>
+
+</body>
+</html>

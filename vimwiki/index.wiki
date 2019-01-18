@@ -4,6 +4,7 @@
 * [[supervisor]]
 * [[selenium]] 桌面浏览器桥梁
 * [[jupyter]]
+* [[mitmproxy]]
 * [[timezone]]
 * [[cordova]]
 * [[sqlite]] 拾零
