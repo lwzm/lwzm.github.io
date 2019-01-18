@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>package.json</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<div id="package.json"><h1 id="package.json">package.json</h1></div>
+
+<pre json>
+{
+  "name": "XXX",
+  "version": "3.14.15",
+  "private": true,
+  "proxy":"http://api.tyio.net",
+  "dependencies": {
+    "axios": "latest",
+    "lodash": "latest",
+    "react": "next",
+    "react-dom": "next",
+    "react-scripts": "latest",
+    "react-table": "latest"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "@types/axios": "latest",
+    "@types/lodash": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest"
+  },
+  ...
+
+</pre>
+
+<p>
+大部分都用 <code>latest</code>，或许太激进了，😊。
+</p>
+
+<p>
+如果设置了 <code>proxy</code> 字段，dev-server 伺服文件时，如果没有找到对应的路径，则使用配置的这个后端去处理请求，常用于动态 API 接口。
+</p>
+
+<p>
+用这个配置，可以简化并统一管理 url，避免开发阶段调用 API 时出现的跨域现象。
+</p>
+
+</body>
+</html>
