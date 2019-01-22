@@ -63,6 +63,7 @@ nameserver 127.0.0.1
 <p>
 重新载入 /etc/hosts
 </p>
+
 <pre>
 kill -SIGHUP $(cat /var/run/dnsmasq.pid)
 </pre>
@@ -161,6 +162,24 @@ search tyio.net
 <p>
 Linux 本身是没有 dns 缓存的, 想使用 dns 缓存的话需要自己安装 NSCD, 自己去网上找资料吧. 其实我觉得没缓存也好, 除非你请求 dns 非常频繁.
 </p>
+
+
+<div id="DNSmasq-过滤不良 hosts"><h3 id="过滤不良 hosts">过滤不良 hosts</h3></div>
+
+<p>
+可通过自定义 hosts，达到屏蔽某些域名的效果，屏蔽列表参考：
+<a href="https://github.com/StevenBlack/hosts">https://github.com/StevenBlack/hosts</a>
+</p>
+
+<pre config>
+local-ttl=30
+no-poll
+no-resolv
+server=114.114.114.114
+cache-size=10000
+# from https://github.com/StevenBlack/hosts
+addn-hosts=/etc/dnsmasq.d/hosts
+</pre>
 
 </body>
 </html>

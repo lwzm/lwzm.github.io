@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>cmd.exe</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<div id="Windows 控制台的美化"><h1 id="Windows 控制台的美化">Windows 控制台的美化</h1></div>
+
+<p>
+Windows 8 及以下，默认的 cmd 界面字体难看，可以通过特殊技巧替换：
+</p>
+
+<p>
+<code>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Console\TrueTypeFont</code>
+默认已经有 3 项, 依葫芦画瓢, 再加一项, 名称 000 或 0000, 数据为喜欢的字体名.
+</p>
+ 
+<p>
+然后跳到 <code>HKEY_CURRENT_USER\Console</code> 设置 <code>FaceName</code>
+</p>
+ 
+<p>
+其它配置描述如下： 
+</p>
+<ul>
+<li>
+ExtendedEditKey  可以激活类似 sh 的快捷键.
+
+<li>
+ExtendedEditKeyCustom  Windows 8 用这个激活类似 sh 的快捷键.
+
+<li>
+FontSize  这里的一个 DWORD 的数据分高低两部分, 分别表示宽和高(微软就喜欢这么搞).
+
+<li>
+QuickEdit  鼠标可以直接选定文本然后回车复制, 右键点击作用是把剪贴板内的文本输入到控制台.
+
+<li>
+HistoryNoDup  这个也很有用.
+
+</ul>
+
+<p>
+参考：
+</p>
+<pre regedit>
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Console\TrueTypeFont]
+"0000"="Monaco"
+
+[HKEY_CURRENT_USER\Console]
+"CursorSize"=dword:00000064
+"EnableColorSelection"=dword:00000001
+"ExtendedEditKey"=dword:00000001
+"ExtendedEditKeyCustom"=dword:00000001
+"FaceName"="Monaco"
+"FontFamily"=dword:00000000
+"FontSize"=dword:00180018
+"FontWeight"=dword:00000000
+"FullScreen"=dword:00000000
+"HistoryBufferSize"=dword:00000032
+"HistoryNoDup"=dword:00000001
+"InsertMode"=dword:00000001
+"LoadConIme"=dword:00000001
+"NumberOfHistoryBuffers"=dword:00000004
+"PopupColors"=dword:000000f5
+"QuickEdit"=dword:00000001
+"ScreenBufferSize"=dword:08000078
+"ScreenColors"=dword:00000007
+"TrimLeadingZeros"=dword:00000001
+"WindowSize"=dword:00280078
+"WordDelimiters"=dword:00000001
+"CurrentPage"=dword:00000001
+"CodePage"=dword:000003a8
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Command Processor]
+"AutoRun"="prompt $P$S"
+</pre>
+
+</body>
+</html>
