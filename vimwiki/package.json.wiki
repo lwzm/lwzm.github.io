@@ -35,3 +35,16 @@
 如果设置了 `proxy` 字段，dev-server 伺服文件时，如果没有找到对应的路径，则使用配置的这个后端去处理请求，常用于动态 API 接口。
 
 用这个配置，可以简化并统一管理 url，避免开发阶段调用 API 时出现的跨域现象。
+
+=== DANGEROUSLY_DISABLE_HOST_CHECK ===
+
+开发环境中，webpack-dev-server 不允许 localhost 之外的访问方式，设置这个环境变量即可解除。
+{{{sh
+# UNIX sh
+export DANGEROUSLY_DISABLE_HOST_CHECK=true
+
+# Windows cmd
+set DANGEROUSLY_DISABLE_HOST_CHECK=true
+}}}
+
+参考：`node_modules/react-scripts/config/webpackDevServer.config.js`

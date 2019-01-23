@@ -51,5 +51,22 @@
 用这个配置，可以简化并统一管理 url，避免开发阶段调用 API 时出现的跨域现象。
 </p>
 
+<div id="package.json-DANGEROUSLY_DISABLE_HOST_CHECK"><h3 id="DANGEROUSLY_DISABLE_HOST_CHECK">DANGEROUSLY_DISABLE_HOST_CHECK</h3></div>
+
+<p>
+开发环境中，webpack-dev-server 不允许 localhost 之外的访问方式，设置这个环境变量即可解除。
+</p>
+<pre sh>
+# UNIX sh
+export DANGEROUSLY_DISABLE_HOST_CHECK=true
+
+# Windows cmd
+set DANGEROUSLY_DISABLE_HOST_CHECK=true
+</pre>
+
+<p>
+参考：<code>node_modules/react-scripts/config/webpackDevServer.config.js</code>
+</p>
+
 </body>
 </html>
