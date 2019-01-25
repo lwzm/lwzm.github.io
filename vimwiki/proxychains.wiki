@@ -8,7 +8,7 @@ proxychains程序如其名，强行接管了程序的网络连接，让任何程
 一般, 配置 `~/.proxychains/proxychains.conf`，加上
 {{{
 [ProxyList]
-socks5  127.0.0.1 1080
+socks5  127.0.0.1  1080
 }}}
 
 然后测试一下 curl 在 proxychains 的环境下运行:
@@ -18,6 +18,21 @@ proxychains4 curl cip.cc
 甚至可以使用任意基于 TCP 的程序:
 
 proxychains4 ssh your-remote-host
+
+=== MacOS SIP ===
+
+需要用 `csrutil` 工具来关闭 `SIP`，不然会出现加载动态库失败的错误：
+{{{sh
+# 重启
+# 按住 option 键
+# 到系统选择页面后，按 Command + R 进入系统恢复页面
+# 左上角工具里找到 [终端]
+csrutil disable
+# 重启
+# 查看 SIP 是否真的被关闭
+csrutil status
+# System Integrity Protection status: disabled. 说明 SIP 已关闭, 即可使用
+}}}
 
 === 安装 ===
 git clone 后

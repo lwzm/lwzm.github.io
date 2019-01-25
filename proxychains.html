@@ -23,7 +23,7 @@ proxychains程序如其名，强行接管了程序的网络连接，让任何程
 </p>
 <pre>
 [ProxyList]
-socks5  127.0.0.1 1080
+socks5  127.0.0.1  1080
 </pre>
 
 <p>
@@ -41,6 +41,23 @@ proxychains4 curl cip.cc
 <p>
 proxychains4 ssh your-remote-host
 </p>
+
+<div id="proxychains 透明代理-MacOS SIP"><h3 id="MacOS SIP">MacOS SIP</h3></div>
+
+<p>
+需要用 <code>csrutil</code> 工具来关闭 <code>SIP</code>，不然会出现加载动态库失败的错误：
+</p>
+<pre sh>
+# 重启
+# 按住 option 键
+# 到系统选择页面后，按 Command + R 进入系统恢复页面
+# 左上角工具里找到 [终端]
+csrutil disable
+# 重启
+# 查看 SIP 是否真的被关闭
+csrutil status
+# System Integrity Protection status: disabled. 说明 SIP 已关闭, 即可使用
+</pre>
 
 <div id="proxychains 透明代理-安装"><h3 id="安装">安装</h3></div>
 <p>

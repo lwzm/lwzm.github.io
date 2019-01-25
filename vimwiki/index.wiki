@@ -4,6 +4,8 @@
 * [[supervisor]]
 * [[selenium]] 桌面浏览器桥梁
 * [[jupyter]]
+* [[shadowsocks]]
+* [[proxychains]]
 * [[mitmproxy]]
 * [[timezone]]
 * [[cordova]]
@@ -22,7 +24,6 @@
 * [[yum]] 拾零
 * [[taskset]] 限制程序的 CPU 核心使用量
 * [[mkswap]] Linux 内存交换文件
-* [[proxychains]]
 * [[posix-message-queue]] 系统自带的消息队列
 * [[mysql]] 拾零
 * [[gotty]]

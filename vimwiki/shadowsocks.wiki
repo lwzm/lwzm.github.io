@@ -1,0 +1,25 @@
+= shadowsocks =
+
+你懂的。
+
+https://github.com/shadowsocks/shadowsocks
+
+https://github.com/shadowsocks/shadowsocks-go
+
+{{{sh
+# ss server
+ssserver -s 127.1.1.1 -p 58388 -k YOUR-SECRET
+
+# add a tunnel, optional
+# ssh -C -N -L 0.0.0.0:58388:127.1.1.1:58388 hk
+
+# ss local
+shadowsocks-local -s localhost -p 58388 -k YOUR-SECRET -b localhost -l 1080
+}}}
+
+=== privoxy ===
+
+{{{config
+listen-address  0.0.0.0:8118
+forward-socks5 / localhost:1080 .
+}}}
