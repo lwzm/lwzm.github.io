@@ -26,26 +26,21 @@ yum install postgresql-devel
 </p>
 
 <pre>
+/usr/pgsql-11/bin/postgresql-11-setup initdb
 systemctl enable postgresql
 systemctl start postgresql
 </pre>
 
 <p>
-安装好后, 先切换到 postgres 用户, 用来创建其他用户
+安装好后, 先切换到 postgres 用户, 用来创建其他用户的库，并创建同名的数据库
 </p>
 <pre>
 su postgres
 cd
 createuser q
+createdb q
 </pre>
 
-<p>
-再切换回 q 用户, 创建同名的数据库, 方便使用
-</p>
-<pre>
-createdb  # 不指定数据库名表示创建同名数据库
-psql
-</pre>
 
 <div id="PostgreSQL-工作目录"><h3 id="工作目录">工作目录</h3></div>
 
@@ -264,6 +259,7 @@ select * from history_gold;
 select * from q;
 </pre>
 
+
 <p>
 如果需要定期清理并归档，参考以下代码(已通过高并发情况下数据完整性测试)
 </p>
@@ -373,6 +369,62 @@ update q set gold = gold + 5;
 select * from history_update;
 </pre>
 
+<div id="PostgreSQL-update 操作的 diff 记录"><h3 id="update 操作的 diff 记录">update 操作的 diff 记录</h3></div>
+<pre sql>
+
+-- useful diff function
+CREATE OR REPLACE FUNCTION json_diff(l JSON, r JSON) RETURNS JSON AS
+$$
+    SELECT json_object_agg(a.key, a.value) FROM
+    (SELECT key, value FROM jsonb_each(l::jsonb)) a LEFT OUTER JOIN
+    (SELECT key, value FROM jsonb_each(r::jsonb)) b ON a.key = b.key
+    WHERE a.value != b.value OR b.key IS NULL;
+$$ LANGUAGE sql;
+
+
+create table history_update (
+    tb varchar(32),
+    pk varchar(64),  -- just record id or ids, as string
+    before jsonb,
+    after jsonb,
+    ts timestamp with time zone default now()
+);
+
+create or replace function history_update() returns trigger
+language 'plpgsql'
+as $$
+declare
+x   json;
+y   json;
+pk  text;
+arg text;
+tmp text;
+begin
+    x  := row_to_json(old);
+    y  := row_to_json(new);
+    pk := '';
+
+    FOREACH arg IN ARRAY TG_ARGV LOOP
+        EXECUTE 'SELECT ($1).' || arg || '::text' INTO tmp USING old;
+        pk := pk || ',' || tmp;
+    END LOOP;
+    pk := trim(',' from pk);
+
+    insert into history_update (tb, pk, before, after)
+                        values (TG_TABLE_NAME, pk, json_diff(x, y), json_diff(y, x));
+    return new;
+end
+$$;
+
+drop trigger history_update on t;
+create trigger history_update
+after update
+on t
+for each row
+    execute procedure
+    history_update(id); -- or multi primary keys: history_update(id, s);
+
+</pre>
 
 <div id="PostgreSQL-插件系统"><h3 id="插件系统">插件系统</h3></div>
 

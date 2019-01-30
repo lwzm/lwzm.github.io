@@ -1,0 +1,7 @@
+= Anaconda =
+
+https://mirrors.tuna.tsinghua.edu.cn/anaconda/
+
+{{{sh
+conda update --all
+}}}

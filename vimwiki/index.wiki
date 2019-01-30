@@ -7,6 +7,7 @@
 * [[shadowsocks]]
 * [[proxychains]]
 * [[mitmproxy]]
+* [[anaconda]]
 * [[timezone]]
 * [[cordova]]
 * [[sqlite]] 拾零
