@@ -415,7 +415,7 @@ echo 'foo\t10' >> t.txt
 {{{sql
 CREATE FOREIGN TABLE day27 (
     ts timestamp with time zone,
-    remote text,
+    ip text,
     request text,
     status integer,
     length integer,
@@ -424,7 +424,7 @@ CREATE FOREIGN TABLE day27 (
     upstream text,
     referer text,
     uid text,
-    agent text
+    ua text
 )
 SERVER fdw
 OPTIONS (
@@ -475,7 +475,7 @@ function tpl() {
 DROP FOREIGN TABLE IF EXISTS day$1;
 CREATE FOREIGN TABLE day$1 (
     ts timestamp with time zone,
-    remote text,
+    ip text,
     request text,
     status integer,
     length integer,
@@ -484,13 +484,14 @@ CREATE FOREIGN TABLE day$1 (
     upstream text,
     referer text,
     uid text,
-    agent text
+    ua text
 )
 SERVER fdw
 OPTIONS (
     filename '/var/log/nginx/days/$1'
 );
 ALTER TABLE day$1 OWNER TO q;
+GRANT SELECT ON TABLE day$1 TO web_anon;
     "
 }
 
