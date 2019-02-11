@@ -22,7 +22,6 @@
 </p>
 
 <pre>
-import bjoern
 import falcon
 
 class ThingsResource:
@@ -31,7 +30,12 @@ class ThingsResource:
 
 application = falcon.API()
 application.add_route('/', ThingsResource())
-bjoern.run(application, "", 1111)
+
+if __name__ == '__main__':
+    import bjoern
+    bjoern.run(application, "", 8000)
+    # or
+    # gunicorn --reload app
 </pre>
 
 </body>
