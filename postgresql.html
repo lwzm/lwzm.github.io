@@ -466,15 +466,16 @@ echo 'foo\t10' &gt;&gt; t.txt
 <pre sql>
 CREATE FOREIGN TABLE day27 (
     ts timestamp with time zone,
-    remote_addr text,
+    remote text,
     request text,
     status integer,
-    request_length integer,
-    body_bytes_sent integer,
-    request_time float,
-    upstream_addr text,
-    http_referer text,
-    http_user_agent text
+    length integer,
+    sent integer,
+    time real,
+    upstream text,
+    referer text,
+    uid text,
+    agent text
 )
 SERVER fdw
 OPTIONS (
@@ -495,6 +496,7 @@ escape=json
 '$request_time\t'
 '$upstream_addr\t'
 '$http_referer\t'
+'$cookie_uid\t'
 '$http_user_agent'
 ;
 
@@ -526,15 +528,16 @@ function tpl() {
 DROP FOREIGN TABLE IF EXISTS day$1;
 CREATE FOREIGN TABLE day$1 (
     ts timestamp with time zone,
-    remote_addr text,
+    remote text,
     request text,
     status integer,
-    request_length integer,
-    body_bytes_sent integer,
-    request_time real,
-    upstream_addr text,
-    http_referer text,
-    http_user_agent text
+    length integer,
+    sent integer,
+    time real,
+    upstream text,
+    referer text,
+    uid text,
+    agent text
 )
 SERVER fdw
 OPTIONS (
