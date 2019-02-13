@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>HTTP2</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<div id="HTTP/2"><h1 id="HTTP/2">HTTP/2</h1></div>
+
+<p>
+开启条件：
+</p>
+<ul>
+<li>
+SSL，openssl version &gt;= 1.0.2
+
+<li>
+服务端支持，如 <code>nginx</code>：<code>listen 443 ssl http2</code>
+
+<li>
+客户端支持，大部分现代浏览器已支持，开发类工具的支持参考
+  <a href="https://hyper.readthedocs.io/en/latest/quickstart.html#requests-integration">Requests</a>，
+  <a href="https://hyper.readthedocs.io/en/latest/quickstart.html#httpie-integration">HTTPie</a>
+
+</ul>
+  
+  
+<p>
+实践中，服务端更新 openssl，nginx 使用最新，一般就满足条件。
+</p>
+
+<p>
+目前支持 HTTP/2 的浏览器有 Chrome 41+、Firefox 36+、Safari 9+、Windows 10 上的 IE 11 和 Edge。
+</p>
+
+<p>
+参考：
+</p>
+<ul>
+<li>
+<a href="https://www.nginx.com/blog/supporting-http2-google-chrome-users/">https://www.nginx.com/blog/supporting-http2-google-chrome-users/</a>
+
+<li>
+<a href="https://www.linpx.com/p/enable-http2-support.html">https://www.linpx.com/p/enable-http2-support.html</a>
+
+</ul>
+
+</body>
+</html>
