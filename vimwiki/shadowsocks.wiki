@@ -1,4 +1,4 @@
-= shadowsocks =
+= proxy, socks5, shadowsocks =
 
 你懂的。
 
@@ -23,3 +23,12 @@ shadowsocks-local -s localhost -p 58388 -k YOUR-SECRET -b localhost -l 1080
 listen-address  0.0.0.0:8118
 forward-socks5 / localhost:1080 .
 }}}
+
+=== socks5 ===
+
+{{{sh
+# 用 ssh 来做，基本用法：
+ssh -N -D localhost:1080 remote.hk.host
+}}}
+
+=== iptables ===

@@ -1,0 +1,84 @@
+= wysa =
+
+自动聊天系统
+
+google play 有下载
+
+用 mitmproxy 做代理和数据嗅探，观测 app 对外的请求，大部分使用 `https`，少量图片资源使用 `http`，探测后得出 `wysa` 使用 `websocket` 通信，
+根据 url 的规则，还能猜测他们的后端可能使用 nodejs 技术栈。
+
+关键数据列表探测结果如下：
+{{{sh
+
+>> GET https://bot.touchkin.com/v3/tasks
+       ← 200 application/json 2b 244ms
+   GET https://bot.touchkin.com/socket.io/?EIO=3&transport=polling&chat_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjVjNzRkN2NlNzdlY2E0OTAwZDg1MDBkZSIsImFwcCI6Im
+       JvdCIsI…
+       ← 200 application/octet-stream 101b 3.89s
+   GET https://bot.touchkin.com/socket.io/?EIO=3&sid=6I6odzj9RM7ji-HBA_RB&transport=polling&chat_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjVjNzRkN2NlNzdlY2E0O
+       TAwZDg1…
+       ← 200 application/octet-stream 5b 273ms
+   GET https://bot.touchkin.com/socket.io/?EIO=3&sid=6I6odzj9RM7ji-HBA_RB&transport=websocket&chat_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjVjNzRkN2NlNzdlY2E
+       0OTAwZD…
+       ← 101 [no content] 1.64s
+   GET https://bot.touchkin.com/socket.io/?EIO=3&sid=6I6odzj9RM7ji-HBA_RB&transport=polling&chat_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjVjNzRkN2NlNzdlY2E0O
+       TAwZDg1…
+       ← 200 application/octet-stream 214b 1.56s
+   POST https://bot.touchkin.com/socket.io/?EIO=3&sid=6I6odzj9RM7ji-HBA_RB&transport=polling&chat_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjVjNzRkN2NlNzdlY2E0
+        OTAwZDg1…
+        ← 200 text/html 2b 1.27s
+   GET https://bot.touchkin.com/socket.io/?EIO=3&sid=6I6odzj9RM7ji-HBA_RB&transport=polling&chat_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjVjNzRkN2NlNzdlY2E0O
+       TAwZDg1…
+       ← 200 application/octet-stream 306b 280ms
+   GET https://bot.touchkin.com/user/segments
+       ← 200 application/json 47b 239ms
+ 
+}}}
+
+websocket 触发点：
+
+{{{sh
+2019-02-26 14:08:25 GET https://bot.touchkin.com/socket.io/?EIO=3&sid=6I6odzj9RM7ji-HBA_RB&transport=websocket&chat_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Ij
+                        VjNzRkN2NlNzdlY2E0OTAwZD…
+                        ← 101 Switching Protocols [no content] 1.64s
+                         Request                                                 Response                                                  Detail
+Date:                  Tue, 26 Feb 2019 06:08:27 GMT
+Connection:            upgrade
+Set-Cookie:            AWSALB=TshS/D4F9FvODqiMj7+fJe/D1SxH1J2xKAVbbcxQ6hIfDQ0tyqPibU5N1gGXvLI7SDcRcDNOhOBoNIyU/U67d65gOeIpt4iKUdIu5FNdmeebyW1lcIkz9XZaA0wg;
+                       Expires=Tue, 05 Mar 2019 06:08:27 GMT; Path=/
+Server:                nginx/1.12.1
+Upgrade:               websocket
+Sec-WebSocket-Accept:  fsASPB4UntzoyUOP5aOszqB5aK4=
+
+}}}
+
+部分聊天回复数据使用普通的http协议传输（猜测）
+
+{{{sh
+
+2019-02-26 14:08:27 GET https://bot.touchkin.com/socket.io/?EIO=3&sid=6I6odzj9RM7ji-HBA_RB&transport=polling&chat_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjVj
+                        NzRkN2NlNzdlY2E0OTAwZDg1…
+                        ← 200 OK application/octet-stream 306b 280ms
+                         Request                                                 Response                                                  Detail
+Date:                         Tue, 26 Feb 2019 06:08:28 GMT
+Content-Type:                 application/octet-stream
+Content-Length:               306
+Connection:                   keep-alive
+Set-Cookie:                   AWSALB=yZCE1AKbqdk6XWxNQHnH1Uw89oUS4Xps37trak9X7pr5rWgXd96TAJnDPn13DGyK0uJtdldLxLvWoGti4F6T9a1wNcrkSJmdZOF9cX1tkSKp6/GsEQYpsLAxOk4Z;
+                              Expires=Tue, 05 Mar 2019 06:08:28 GMT; Path=/
+Server:                       nginx/1.12.1
+Access-Control-Allow-Origin:  *
+Set-Cookie:                   io=6I6odzj9RM7ji-HBA_RB; Path=/; HttpOnly
+Raw                                                                                                                                                              [m:auto]
+\x00\x02\x04\xff42["update_segments",{}]\x00\x02\x03\x01\xff42["chat_message",{"question_type":"combo","target_url":"/response/text","questionId":"onbph1","content":[{"t
+ype":"text","value":"Hey, there!"},{"type":"text","value":"What can I call you?
+\xf0\x9f\x98\x81"}],"combine":"greeting#onbph1aside"}]\x00\x03\x08\xff42["update_stages",{"page":"toolkit"}]
+}}}
+
+
+综上，wysa 确实使用了较为安全且快速的连接机制，`HTTPS + WebSocket`，技术选型没有问题，暂时没有发现特殊的自定义的数据加密行为，理论上可以实现聊天数据流的记录或者程序模拟。
+
+但是，目前有两个问题：
+
+1. 如何抓取 websocket 的数据，暂时没有经验；
+2. websocket 中传输的聊天数据有没有混淆或二重加密，不清楚（可能实际并没有这个问题）。

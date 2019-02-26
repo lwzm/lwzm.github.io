@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<div id="shadowsocks"><h1 id="shadowsocks">shadowsocks</h1></div>
+<div id="proxy, socks5, shadowsocks"><h1 id="proxy, socks5, shadowsocks">proxy, socks5, shadowsocks</h1></div>
 
 <p>
 你懂的。
@@ -32,12 +32,21 @@ ssserver -s 127.1.1.1 -p 58388 -k YOUR-SECRET
 shadowsocks-local -s localhost -p 58388 -k YOUR-SECRET -b localhost -l 1080
 </pre>
 
-<div id="shadowsocks-privoxy"><h3 id="privoxy">privoxy</h3></div>
+<div id="proxy, socks5, shadowsocks-privoxy"><h3 id="privoxy">privoxy</h3></div>
 
 <pre config>
 listen-address  0.0.0.0:8118
 forward-socks5 / localhost:1080 .
 </pre>
+
+<div id="proxy, socks5, shadowsocks-socks5"><h3 id="socks5">socks5</h3></div>
+
+<pre sh>
+# 用 ssh 来做，基本用法：
+ssh -N -D localhost:1080 remote.hk.host
+</pre>
+
+<div id="proxy, socks5, shadowsocks-iptables"><h3 id="iptables">iptables</h3></div>
 
 </body>
 </html>

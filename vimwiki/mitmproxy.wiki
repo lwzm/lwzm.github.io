@@ -21,4 +21,5 @@ listen_port: 58000
 
 === 信任证书 ===
 
-访问：http://mitm.it/，按提示来。
+访问：
+http://mitm.it/
