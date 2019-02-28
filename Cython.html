@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>Cython</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<div id="Cython"><h1 id="Cython">Cython</h1></div>
+
+<p>
+<a href="https://cython.org/">https://cython.org/</a>
+</p>
+
+<p>
+<a href="http://docs.cython.org/en/latest/src/tutorial/cython_tutorial.html#cython-hello-world">http://docs.cython.org/en/latest/src/tutorial/cython_tutorial.html#cython-hello-world</a>
+</p>
+
+<pre py>
+from distutils.core import setup
+from Cython.Build import cythonize
+
+setup(
+    ext_modules = cythonize("helloworld.py")
+)
+
+</pre>
+
+<pre sh>
+$ python setup.py build_ext --inplace
+</pre>
+
+</body>
+</html>
