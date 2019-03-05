@@ -1,0 +1,69 @@
+= Aliyun OSS =
+
+{{{sh
+pip install oss2
+}}}
+
+{{{py
+
+#!/usr/bin/env python3
+
+import pathlib
+import sqlite3
+import sys
+import time
+import oss2
+
+base, custom = "oss-cn-shanghai.aliyuncs.com", "kouzidai"
+auth = oss2.Auth('xxxxxxxxxxxxxxxx', 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+bucket = oss2.Bucket(auth, f"https://{base}", custom)
+
+
+class KV(object):
+    def __init__(self, name=":memory:"):
+        conn = sqlite3.connect(name)
+        c = conn.cursor()
+        c.execute("create table if not exists _(k primary key,v)")
+        self.conn, self.c = conn, c
+
+    def get(self, key, default=None):
+        try:
+            return self[key]
+        except KeyError:
+            return default
+
+    def __getitem__(self, key):
+        sql = "select v from _ where k=?"
+        o = self.c.execute(sql, (key,)).fetchone()
+        if o:
+            return o[0]
+        raise KeyError(key)
+
+    def __setitem__(self, key, value):
+        sql = "insert or replace into _(k,v) values(?,?)"
+        self.c.execute(sql, (key, value))
+        self.conn.commit()
+
+
+kv = KV(".hist")
+
+
+def upload(name, content):
+    bucket.put_object(name, content, headers={'cache-control': 'no-cache'})
+    kv[name] = time.strftime("%d%H%M%S")
+
+
+def url(key):
+    s = f"https://{custom}.{base}/{key}"
+    flag = kv.get(key)
+    if flag:
+        s += f"?v={flag}"
+    return s
+
+
+if __name__ == '__main__':
+    for fn in sys.argv[1:]:
+        with open(fn, "rb") as f:
+            print(fn)
+            upload(fn, f.read())
+}}}
