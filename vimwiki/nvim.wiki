@@ -2,5 +2,5 @@
 
 添加 Python 支持
 {{{
-pip install pynvim
+pip install pynvim rope
 }}}

@@ -50,7 +50,7 @@ kv = KV(".hist")
 
 def upload(name, content):
     bucket.put_object(name, content, headers={'cache-control': 'no-cache'})
-    kv[name] = time.strftime("%d%H%M%S")
+    kv[name] = time.strftime("%m%d%H%M%S")
 
 
 def url(key):
