@@ -1,0 +1,7 @@
+= Mac OS =
+
+禁用元音多选，启用连续输入
+
+{{{sh
+defaults write -g ApplePressAndHoldEnabled -bool false
+}}}
