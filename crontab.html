@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>crontab</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<div id="Crontab tips"><h1 id="Crontab tips">Crontab tips</h1></div>
+
+<pre sh>
+0,15,30,45 18-06 * * * cd your-dir &amp;&amp; ./do-something.sh
+* * * * * date &gt;/tmp/date.log
+</pre>
+
+<pre sh>
+mkdir -p bak/$(date +%Y%m%d)
+cp .db bak/$(date +%Y%m%d/%H%M%S)
+</pre>
+
+</body>
+</html>

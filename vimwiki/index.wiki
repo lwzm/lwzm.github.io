@@ -5,6 +5,7 @@
 * [[supervisor]]
 * [[selenium]] 桌面浏览器桥梁
 * [[jupyter]]
+* [[crontab]]
 * [[shadowsocks]]
 * [[proxychains]]
 * [[mitmproxy]]

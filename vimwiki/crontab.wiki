@@ -1,0 +1,11 @@
+= Crontab tips =
+
+{{{sh
+0,15,30,45 18-06 * * * cd your-dir && ./do-something.sh
+* * * * * date >/tmp/date.log
+}}}
+
+{{{sh
+mkdir -p bak/$(date +%Y%m%d)
+cp .db bak/$(date +%Y%m%d/%H%M%S)
+}}}
