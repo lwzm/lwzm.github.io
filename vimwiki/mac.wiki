@@ -5,3 +5,10 @@
 {{{sh
 defaults write -g ApplePressAndHoldEnabled -bool false
 }}}
+
+剪贴板工具
+
+{{{sh
+pbcopy
+pbpaste
+}}}
