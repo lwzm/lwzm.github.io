@@ -12,3 +12,23 @@ defaults write -g ApplePressAndHoldEnabled -bool false
 pbcopy
 pbpaste
 }}}
+
+Mac 系统输入法长按一个按键不能连续输入，打开终端输入：
+
+{{{sh
+defaults write NSGlobalDomain ApplePressAndHoldEnabled -boolean false
+# or
+defaults write -g ApplePressAndHoldEnabled -bool false
+}}}
+
+mdworker 占 CPU，需关闭 spotlight：
+
+{{{sh
+sudo vi /etc/hostconfig
+SPOTLIGHT=-NO-
+
+mdutil -i off /
+mdutil -E /
+}}}
+
+参考 https://imkcat.com/high-cpu-progress-in-macos-mdworker/

@@ -57,3 +57,8 @@ class Checkin(Entity):
     ts = Optional(datetime)
     composite_key(user, date)
 }}}
+
+
+### 其它参考学习
+
+http://souptonuts.sourceforge.net/readme_sqlite_tutorial.html
