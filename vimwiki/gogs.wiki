@@ -13,7 +13,10 @@ https://github.com/gogits/gogs
 为了使用 22 端口 建议用 setcap 工具设置程序属性.
 
 === 配置参考 ===
-{{{
+
+{{{ini
+# https://gogs.io/docs/advanced/configuration_cheat_sheet
+
 APP_NAME = Gogs
 RUN_USER = git
 RUN_MODE = prod
@@ -23,25 +26,46 @@ DB_TYPE  = sqlite3
 PATH     = data/gogs.db
 
 [repository]
-ROOT = ../gogs-repositories
+#ROOT = ../gogs-repositories
 
 [server]
-DOMAIN           = gogs.tyio.net
+DOMAIN           = git.tyio.net
 HTTP_PORT        = 63000
-ROOT_URL         = http://gogs.tyio.net/
+ROOT_URL         = https://git.tyio.net/
 DISABLE_SSH      = false
 SSH_PORT         = 22
 START_SSH_SERVER = true
 OFFLINE_MODE     = true
 
+[mailer]
+ENABLED = false
+
+[service]
+REGISTER_EMAIL_CONFIRM = false
+ENABLE_NOTIFY_MAIL     = false
+DISABLE_REGISTRATION   = true
+ENABLE_CAPTCHA         = false
+REQUIRE_SIGNIN_VIEW    = true
+
+[picture]
+DISABLE_GRAVATAR        = true
+ENABLE_FEDERATED_AVATAR = false
+
+[session]
+PROVIDER = file
+
 [log]
 MODE      = file
 LEVEL     = Info
-ROOT_PATH = log
+ROOT_PATH = ./log
+
+[security]
+LOGIN_REMEMBER_DAYS = 365
 }}}
 
 === nginx ===
-{{{
+
+{{{conf
 upstream gogs {
     server localhost6:63000;
     keepalive 16;
@@ -53,4 +77,11 @@ server {
         proxy_pass http://gogs;
     }
 }
+}}}
+
+=== start up ===
+{{{sh
+kill $(pgrep gogs)
+sleep 1
+./gogs web </dev/null >gogs.log 2>&1 &
 }}}
