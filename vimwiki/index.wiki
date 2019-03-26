@@ -14,7 +14,9 @@
 * [[cordova]]
 * [[sqlite]] 拾零
 * [[pytest]] 单元测试
+* [[py-spy]]
 * [[falcon]] web 框架
+* [[molten]] web 框架
 * [[bjoern]] wsgi 容器
 * [[nvim]]
 * [[tldr]] 太长不想看
@@ -42,3 +44,4 @@
 * [[HTTP2]]
 * [[Cython]]
 * [[oss]]
+* [[termtosvg]]

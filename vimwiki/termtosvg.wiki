@@ -1,0 +1,13 @@
+= termtosvg =
+
+termtosvg is a Unix terminal recorder written in Python that renders your command line sessions as standalone SVG animations.
+
+https://github.com/nbedos/termtosvg
+
+https://nbedos.github.io/termtosvg/pages/templates.html
+
+{{{sh
+termtosvg t.svg -t window_frame -c bash -g 80x30
+}}}
+
+zsh 会有上一条命令的残影，所以录制时，用经典的 bash 好一些。

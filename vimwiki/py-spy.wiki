@@ -1,0 +1,7 @@
+= Py-Spy =
+
+A sampling profiler for Python programs.
+
+https://github.com/benfred/py-spy
+
+实时，性能监控分析，精确到行，不愧是 `spy`，值得一试。
