@@ -1,11 +1,5 @@
 = Mac OS =
 
-禁用元音多选，启用连续输入
-
-{{{sh
-defaults write -g ApplePressAndHoldEnabled -bool false
-}}}
-
 剪贴板工具
 
 {{{sh
@@ -27,13 +21,14 @@ mdworker 占 CPU，需关闭 spotlight：
 sudo vi /etc/hostconfig
 SPOTLIGHT=-NO-
 
-mdutil -i off /
-mdutil -E /
+sudo mdutil -i off /
 }}}
 
-参考 https://imkcat.com/high-cpu-progress-in-macos-mdworker/
 
-CPU 使用率过高导致的关机，可能是因为传感器不准，可以重置 `SMC`，参考
-https://support.apple.com/zh-cn/HT201295
+密码长度限制修改
 
-重置后，压力测试没问题。
+{{{sh
+pwpolicy getaccountpolicies > temp.xml
+# edit temp.xml
+sudo pwpolicy setaccountpolicies temp.xml
+}}}

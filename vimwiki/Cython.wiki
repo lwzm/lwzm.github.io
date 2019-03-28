@@ -4,6 +4,8 @@ https://cython.org/
 
 http://docs.cython.org/en/latest/src/tutorial/cython_tutorial.html#cython-hello-world
 
+`vi setup.py`
+
 {{{py
 from distutils.core import setup
 from Cython.Build import cythonize

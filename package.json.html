@@ -68,5 +68,21 @@ set DANGEROUSLY_DISABLE_HOST_CHECK=true
 参考：<code>node_modules/react-scripts/config/webpackDevServer.config.js</code>
 </p>
 
+<div id="package.json-GENERATE_SOURCEMAP"><h3 id="GENERATE_SOURCEMAP">GENERATE_SOURCEMAP</h3></div>
+
+<pre sh>
+export GENERATE_SOURCEMAP=false
+</pre>
+
+<p>
+or package.json
+</p>
+<pre json>
+  "scripts": {
+    "build": "GENERATE_SOURCEMAP=false react-scripts build",
+    ...
+  }
+</pre>
+
 </body>
 </html>
