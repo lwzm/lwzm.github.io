@@ -6,6 +6,7 @@
   "version": "3.14.15",
   "private": true,
   "proxy":"http://api.tyio.net",
+  "homepage": ".",
   "dependencies": {
     "axios": "latest",
     "lodash": "latest",
@@ -58,7 +59,9 @@ export GENERATE_SOURCEMAP=false
 or package.json
 {{{json
   "scripts": {
+    "start": "DANGEROUSLY_DISABLE_HOST_CHECK=true react-scripts start",
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
     ...
+    
   }
 }}}

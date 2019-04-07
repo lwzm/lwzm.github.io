@@ -1,0 +1,11 @@
+= VSCode  Visual Studio Code =
+
+常用插件
+
+* vim
+* auto close tag
+* auto rename tag
+* trailing-spaces
+
+CPU 占用 100% 问题，可以通过修改 Follow Symlinks 选项为 false 来修复。
+

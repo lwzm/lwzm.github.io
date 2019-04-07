@@ -410,7 +410,7 @@ ALTER TABLE t OWNER TO q;
 echo 'foo\t10' >> t.txt
 }}}
 
-与 nginx 输出日志配合的例子
+与 nginx 输出日志配合的例子，记录字段（ ts ip request status length sent time upstream referer uid ua ）
 
 {{{sql
 CREATE FOREIGN TABLE day27 (
