@@ -9,3 +9,4 @@
 
 CPU 占用 100% 问题，可以通过修改 Follow Symlinks 选项为 false 来修复。
 
+*build* 目录也会造成 CPU 占用高的问题，在配置页面搜索 `exclude`，把 `build` 目录照样子加进去，如 `files.exclude -> **/build`。
