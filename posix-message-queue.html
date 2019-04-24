@@ -35,7 +35,9 @@ QSIZE:0          NOTIFY:0     SIGNO:0     NOTIFY_PID:0
 参数见：
 
 head /proc/sys/fs/mqueue/*
-暂时不需要调
+
+# optional
+echo 200 &gt;/proc/sys/fs/mqueue/msg_max
 
 </pre>
 

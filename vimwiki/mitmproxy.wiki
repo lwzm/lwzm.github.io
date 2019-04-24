@@ -9,7 +9,7 @@ https://mitmproxy.org/
 mitmproxy
 }}}
 
-注意，如果允许远程访问，需要参考 https://docs.mitmproxy.org/stable/concepts-options/，
+注意，如果允许远程访问，需要参考 https://docs.mitmproxy.org/stable/concepts-options/ ，
 关闭 `block_global`。
 {{{sh
 $ cat ~/.mitmproxy/config.yaml
@@ -23,3 +23,19 @@ listen_port: 58000
 
 访问：
 http://mitm.it/
+
+
+=== Windows 安装 ===
+
+{{{sh
+# edit %APPDATA%\pip\pip.ini
+[global]
+index-url = https://pypi.douban.com/simple
+trusted-host = pypi.douban.com
+format=columns
+
+conda create --name mitm python=3.6
+conda activate mitm
+pip install mitmproxy
+}}}
+
