@@ -45,5 +45,20 @@ listen_port: 58000
 <a href="http://mitm.it/">http://mitm.it/</a>
 </p>
 
+
+<div id="mitmproxy-Windows 安装"><h3 id="Windows 安装">Windows 安装</h3></div>
+
+<pre sh>
+# edit %APPDATA%\pip\pip.ini
+[global]
+index-url = https://pypi.douban.com/simple
+trusted-host = pypi.douban.com
+format=columns
+
+conda create --name mitm python=3.6
+conda activate mitm
+pip install mitmproxy
+</pre>
+
 </body>
 </html>
