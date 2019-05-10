@@ -47,4 +47,5 @@
 * [[oss]]
 * [[termtosvg]]
 * [[vscode]]
+* [[pip]]
 * [[mir]]

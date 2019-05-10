@@ -1,0 +1,11 @@
+常用 Python 工具，pip 安装
+
+* pingtop 
+* glances
+* shadowsocks
+* you-get
+* supervisor
+* faker
+* cython
+* twine
+* ...
