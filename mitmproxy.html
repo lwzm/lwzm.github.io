@@ -46,6 +46,27 @@ listen_port: 58000
 </p>
 
 
+<div id="mitmproxy-透传模式"><h3 id="透传模式">透传模式</h3></div>
+
+<p>
+使用这种模式，客户端就无需设置代理，所有网络请求都经过 mitmproxy。
+</p>
+
+<p>
+用 Mac 做服务器比较简单，参考 <a href="https://docs.mitmproxy.org/stable/howto-transparent/#macos">https://docs.mitmproxy.org/stable/howto-transparent/#macos</a>
+</p>
+
+<p>
+接下来，客户端配置 gateway 为 mitmproxy 所在的服务器的地址，就基本完成了网络设置，测一下效果吧。
+</p>
+
+<p>
+附：
+</p>
+<pre sh>
+mitmdump --mode transparent --showhost --ssl-insecure "!~a"
+</pre>
+
 <div id="mitmproxy-Windows 安装"><h3 id="Windows 安装">Windows 安装</h3></div>
 
 <pre sh>

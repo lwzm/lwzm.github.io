@@ -25,6 +25,19 @@ listen_port: 58000
 http://mitm.it/
 
 
+=== 透传模式 ===
+
+使用这种模式，客户端就无需设置代理，所有网络请求都经过 mitmproxy。
+
+用 Mac 做服务器比较简单，参考 https://docs.mitmproxy.org/stable/howto-transparent/#macos
+
+接下来，客户端配置 gateway 为 mitmproxy 所在的服务器的地址，就基本完成了网络设置，测一下效果吧。
+
+附：
+{{{sh
+mitmdump --mode transparent --showhost --ssl-insecure "!~a"
+}}}
+
 === Windows 安装 ===
 
 {{{sh
@@ -38,4 +51,5 @@ conda create --name mitm python=3.6
 conda activate mitm
 pip install mitmproxy
 }}}
+
 
