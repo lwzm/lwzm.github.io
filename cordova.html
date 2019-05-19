@@ -116,8 +116,9 @@ cordova 会把
 yum install java java-devel
 
 # 去 https://gradle.org/releases/ 下载 gradle
-wget https://downloads.gradle.org/distributions/gradle-4.10.2-bin.zip
-unzip gradle-4.10.2-bin.zip
+wget https://downloads.gradle.org/distributions/gradle-4.10.3-bin.zip
+unzip gradle-*-bin.zip
+ln -s xxx/gradle-xxx/bin/gradle /usr/bin
 # cordova 编译时，又会自己去下载 4.1 版的，原因未知...
 
 # 下载 android sdk
@@ -127,6 +128,7 @@ Command line tools only
 cd /opt
 wget https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
 mkdir android &amp;&amp; cd android &amp;&amp; unzip ../sdk-tools*.zip
+chown -R q android
 
 # 查看合适的 build-tools 版本
 ./tools/bin/sdkmanager --list
@@ -135,6 +137,7 @@ mkdir android &amp;&amp; cd android &amp;&amp; unzip ../sdk-tools*.zip
 
 # 需要用的时候, 激活环境
 export ANDROID_HOME="/opt/android"
+export ANDROID_SDK_ROOT="/opt/android"
 
 # 激活后, 就可以正常编译了
 cordova build android
