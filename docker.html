@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>docker</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<div id="Docker"><h1 id="Docker">Docker</h1></div>
+
+<p>
+<a href="https://hub.docker.com/">https://hub.docker.com/</a>
+</p>
+
+<p>
+入门教程 <a href="https://docker_practice.gitee.io/">https://docker_practice.gitee.io/</a>
+</p>
+
+<p>
+与 <code>CoreOS</code> 搭配更佳。如果需要升级，使用：
+</p>
+
+<pre sh>
+update_engine_client -update
+</pre>
+
+<p>
+然后重启完成升级。
+</p>
+
+<div id="Docker-常用工具"><h3 id="常用工具">常用工具</h3></div>
+
+<ul>
+<li>
+portainer <a href="https://www.portainer.io/installation/">https://www.portainer.io/installation/</a>
+
+<li>
+ctop <a href="https://github.com/bcicen/ctop">https://github.com/bcicen/ctop</a>
+
+</ul>
+
+<div id="Docker-常用容器"><h3 id="常用容器">常用容器</h3></div>
+
+<p>
+portainer:
+</p>
+
+<pre sh>
+docker volume create portainer_data
+docker run -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
+</pre>
+
+<p>
+htop:
+</p>
+
+<pre sh>
+docker run -it --pid=host jonbaldie/htop
+</pre>
+
+<p>
+ctop:
+</p>
+
+<pre sh>
+docker run -it -v/var/run/docker.sock:/var/run/docker.sock:ro quay.io/vektorlab/ctop
+</pre>
+
+<p>
+nginx:
+</p>
+<pre sh>
+docker volume create www
+docker run -p 8080:80 -v www:/usr/share/nginx/html:ro -d nginx:alpine
+</pre>
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+= Docker =
+
+https://hub.docker.com/
+
+入门教程 https://docker_practice.gitee.io/
+
+与 `CoreOS` 搭配更佳。如果需要升级，使用：
+
+{{{sh
+update_engine_client -update
+}}}
+
+然后重启完成升级。
+
+=== 常用工具 ===
+
+* portainer https://www.portainer.io/installation/
+* ctop https://github.com/bcicen/ctop
+
+=== 常用容器 ===
+
+portainer:
+
+{{{sh
+docker volume create portainer_data
+docker run -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
+}}}
+
+htop:
+
+{{{sh
+docker run -it --pid=host jonbaldie/htop
+}}}
+
+ctop:
+
+{{{sh
+docker run -it -v/var/run/docker.sock:/var/run/docker.sock:ro quay.io/vektorlab/ctop
+}}}
+
+nginx:
+{{{sh
+docker volume create www
+docker run -p 8080:80 -v www:/usr/share/nginx/html:ro -d nginx:alpine
+}}}
