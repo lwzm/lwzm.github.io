@@ -12,6 +12,14 @@ update_engine_client -update
 
 然后重启完成升级。
 
+CoreOS 需要 SELINUX，不然会有奇怪的错误。
+{{{sh
+vi /etc/selinux/config 
+
+SELINUX=enforcing
+}}}
+
+
 === 常用工具 ===
 
 * portainer https://www.portainer.io/installation/
