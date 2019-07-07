@@ -36,3 +36,14 @@ sshfs HOST:DIR MNT -o follow_symlinks
 # 卸载
 fusermount -u test/mnt
 }}}
+
+=== systemd ===
+
+有的系统使用 `systemd` 来替代 `sshd` 的监听功能，还没摸透，可以考虑不用它。
+
+{{{sh
+systemctl disable sshd.socket
+systemctl enable sshd.service
+systemctl stop sshd.socket
+systemctl start sshd.service
+}}}

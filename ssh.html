@@ -46,5 +46,18 @@ sshfs HOST:DIR MNT -o follow_symlinks
 fusermount -u test/mnt
 </pre>
 
+<div id="SSH-systemd"><h3 id="systemd">systemd</h3></div>
+
+<p>
+有的系统使用 <code>systemd</code> 来替代 <code>sshd</code> 的监听功能，还没摸透，可以考虑不用它。
+</p>
+
+<pre sh>
+systemctl disable sshd.socket
+systemctl enable sshd.service
+systemctl stop sshd.socket
+systemctl start sshd.service
+</pre>
+
 </body>
 </html>
