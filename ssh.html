@@ -53,11 +53,14 @@ fusermount -u test/mnt
 </p>
 
 <pre sh>
-systemctl disable sshd.socket
+systemctl mask --now sshd.socket
 systemctl enable sshd.service
-systemctl stop sshd.socket
-systemctl start sshd.service
+systemctl restart sshd.service
 </pre>
+
+<p>
+参考：<a href="https://coreos.com/os/docs/latest/customizing-sshd.html">https://coreos.com/os/docs/latest/customizing-sshd.html</a>
+</p>
 
 </body>
 </html>
