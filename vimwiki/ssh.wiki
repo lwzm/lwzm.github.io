@@ -21,6 +21,9 @@ ServerAliveInterval 60
 ServerAliveCountMax 2
 }}}
 
+=== ssh proxy ===
+
+参考 `ProxyJump` 选项，可以实现跳转，跳板机可以多个，配置以本地为准
 
 === sshfs ===
 {{{
