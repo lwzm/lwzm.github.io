@@ -9,3 +9,21 @@
 * cython
 * twine
 * ...
+
+pip 可以从仓库安装第三方库，格式参考：
+
+{{{sh
+pip install git+ssh://github.com/USER/REPO[@VERSION]
+pip install git+https://github.com/USER/REPO[@VERSION]
+pip install https://github.com/user/repo/archive/TAG.zip
+
+# e.g.
+pip install git+https://github.com/amoffat/sh
+pip install git+https://github.com/amoffat/sh@1.11
+pip install git+ssh://github.com/amoffat/sh
+pip install git+ssh://github.com/amoffat/sh@1.11
+pip install https://github.com/amoffat/sh/archive/master.zip
+pip install https://github.com/amoffat/sh/archive/1.11.zip
+}}}
+
+https://stackoverflow.com/questions/20101834/pip-install-from-git-repo-branch

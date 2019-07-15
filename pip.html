@@ -41,5 +41,27 @@ twine
 
 </ul>
 
+<p>
+pip 可以从仓库安装第三方库，格式参考：
+</p>
+
+<pre sh>
+pip install git+ssh://github.com/USER/REPO[@VERSION]
+pip install git+https://github.com/USER/REPO[@VERSION]
+pip install https://github.com/user/repo/archive/TAG.zip
+
+# e.g.
+pip install git+https://github.com/amoffat/sh
+pip install git+https://github.com/amoffat/sh@1.11
+pip install git+ssh://github.com/amoffat/sh
+pip install git+ssh://github.com/amoffat/sh@1.11
+pip install https://github.com/amoffat/sh/archive/master.zip
+pip install https://github.com/amoffat/sh/archive/1.11.zip
+</pre>
+
+<p>
+<a href="https://stackoverflow.com/questions/20101834/pip-install-from-git-repo-branch">https://stackoverflow.com/questions/20101834/pip-install-from-git-repo-branch</a>
+</p>
+
 </body>
 </html>
