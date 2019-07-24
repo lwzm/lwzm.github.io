@@ -93,7 +93,99 @@ gogs:
 <pre sh>
 docker pull gogs/gogs:0.11.86
 docker volume create gogs
-docker run -p 22:22 -v www:/usr/share/nginx/html:ro -d nginx:alpine
+docker run -p 22:22 gogs/gogs:0.11.86
+</pre>
+
+<div id="Docker-/opt/bin"><h3 id="/opt/bin">/opt/bin</h3></div>
+
+<p>
+可以把 docker 容器启动的工具放这里，如 <code>htop</code>, <code>ctop</code>
+</p>
+
+<pre sh>
+docker start -ia $(basename $0)
+</pre>
+
+
+<div id="Docker-docker compose"><h3 id="docker compose">docker compose</h3></div>
+
+<p>
+把 nginx 和其它几个 web 服务放一起，例子：
+</p>
+
+<pre yaml>
+version: '3'
+services:
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./nginx-log:/var/log
+      - ./nginx-conf.d:/etc/nginx/conf.d
+    ports: 
+      - "80:80"
+      - "443:443"
+
+  portainer:
+    image: portainer/portainer
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./portainer-data:/data
+
+  gogs:
+    image: gogs/gogs:0.11.86
+    volumes:
+      - ./gogs-data:/data
+    ports: 
+      - "22:22"
+</pre>
+
+
+<p>
+附 nginx 相关配置：
+</p>
+
+<pre conf>
+upstream gogs {
+    server gogs:3000;
+    keepalive 64;
+}
+
+server {
+    server_name  git.* gogs.*;
+    #listen       80;
+    listen       443 ssl http2;
+
+    location / {
+        proxy_pass http://gogs;
+    }
+}
+</pre>
+
+<pre conf>
+upstream portainer {
+    server portainer:9000;
+    keepalive 64;
+}
+
+server {
+    server_name  portainer.*;
+    #listen       80;
+    listen       443 ssl http2;
+
+    # for websocket, do not ignore any line
+    proxy_http_version 1.1;
+    proxy_connect_timeout 2;
+    proxy_read_timeout 300;
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header Connection "upgrade";
+    proxy_set_header Upgrade $http_upgrade;
+
+    location / {
+        proxy_pass http://portainer;
+    }
+}
 </pre>
 
 </body>

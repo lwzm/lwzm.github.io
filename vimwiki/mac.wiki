@@ -34,3 +34,16 @@ sudo pwpolicy setaccountpolicies temp.xml
 }}}
 
 外接键盘时，alt 与 win 键对应 option 与 command 键，在 设置 - 键盘 - 修饰键 里面自定义。
+
+常用软件，brew 安装：
+
+{{{sh
+brew list
+ctop            htop            libev           libtermkey      libyaml         msgpack         ninja           p7zip           proxychains-ng  sshfs           wget
+gdbm            icu4c           libevent        libunistring    luajit          ncurses         node            pcre            readline        tmux            xz
+gettext         jemalloc        libffi          libuv           mariadb         neovim          oniguruma       pkg-config      rename          unar
+glib            jq              libidn2         libvterm        meson           nginx           openssl         postgresql      sqlite          unibilium
+
+brew cask list
+dbeaver-community        docker                   fork                     google-chrome            java                     osxfuse                  shadowsocksx-ng          visual-studio-code
+}}}

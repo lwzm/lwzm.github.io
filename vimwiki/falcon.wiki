@@ -22,3 +22,5 @@ if __name__ == '__main__':
     # or
     # gunicorn --reload app
 }}}
+
+关于 wsgi server，其实 gunicore + meinheld 也不错，workers=2 就能轻松 3W+/s。

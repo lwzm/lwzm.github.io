@@ -1,0 +1,11 @@
+= Linux 时间同步 =
+
+之前用的是 ntpd：
+{{{sh
+systemctl enable ntpd
+}}}
+
+后面发现更好的方案，原理好像是直接交给 systemd 接管
+{{{sh
+timedatectl set-ntp yes
+}}}
