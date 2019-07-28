@@ -37,13 +37,14 @@ docker run -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v porta
 htop:
 
 {{{sh
-docker run -it --pid=host jonbaldie/htop
+docker run -it --name=htop --pid=host jonbaldie/htop
+docker run -it --rm --pid=container:XXX jonbaldie/htop
 }}}
 
 ctop:
 
 {{{sh
-docker run -it -v/var/run/docker.sock:/var/run/docker.sock:ro quay.io/vektorlab/ctop
+docker run -it -v /var/run/docker.sock:/var/run/docker.sock:ro quay.io/vektorlab/ctop
 }}}
 
 nginx:
@@ -58,7 +59,16 @@ gogs:
 {{{sh
 docker pull gogs/gogs:0.11.86
 docker volume create gogs
-docker run -p 22:22 gogs/gogs:0.11.86
+docker run -p 22:22 -p 3000:3000 gogs/gogs:0.11.86
+}}}
+
+/dev/mqueue:
+
+{{{sh
+docker run -it --ipc=host alpine sh
+
+docker run -it --name=main alpine sh
+docker run -it --ipc=container:main alpine sh
 }}}
 
 === /opt/bin ===

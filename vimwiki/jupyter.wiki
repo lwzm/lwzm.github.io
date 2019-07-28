@@ -14,8 +14,8 @@ http://jupyter-notebook.readthedocs.io/en/latest/public_server.html
 
 https://github.com/ipython-contrib/jupyter_contrib_nbextensions
 
-{{{
+{{{sh
 pip install jupyter_contrib_nbextensions
 jupyter contrib nbextension install --user
-  }}}
+}}}
 
