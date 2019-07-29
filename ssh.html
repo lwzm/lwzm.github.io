@@ -58,13 +58,26 @@ fusermount -u test/mnt
 <div id="SSH-systemd"><h3 id="systemd">systemd</h3></div>
 
 <p>
-有的系统使用 <code>systemd</code> 来替代 <code>sshd</code> 的监听功能，还没摸透，可以考虑不用它。
+有的系统使用 <code>systemd</code> 来替代 <code>sshd</code> 的监听功能，也就是 sshd.socket，若还没摸透，可以考虑不用它。
 </p>
 
 <pre sh>
 systemctl mask --now sshd.socket
 systemctl enable sshd.service
 systemctl restart sshd.service
+</pre>
+
+<p>
+尝试使用 <code>sshd.socket</code>
+</p>
+
+<pre sh>
+systemctl enable sshd.socket
+systemctl disable sshd.service
+cd /etc/systemd/system &amp;&amp; cp sockets.target.wants/sshd.socket .
+# find and edit sshd.socket -&gt; ListenStream=NN
+systemctl daemon-reload
+systemctl restart sshd.socket
 </pre>
 
 <p>
