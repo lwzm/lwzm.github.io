@@ -41,6 +41,7 @@ ServerAliveCountMax 2
 </p>
 
 <div id="SSH-sshfs"><h3 id="sshfs">sshfs</h3></div>
+
 <pre>
 yum install sshfs
 chmod +s $(which sshfs)  # 方便普通用户
@@ -53,6 +54,14 @@ sshfs HOST:DIR MNT -o follow_symlinks
 
 # 卸载
 fusermount -u test/mnt
+</pre>
+
+<p>
+macOS 也可以用，但要首先
+</p>
+
+<pre sh>
+brew cask install osxfuse
 </pre>
 
 <div id="SSH-systemd"><h3 id="systemd">systemd</h3></div>

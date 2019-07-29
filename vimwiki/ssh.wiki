@@ -28,6 +28,7 @@ ServerAliveCountMax 2
 最佳实践：搞一台跳板机，并设置好 hosts 列表，各机器只允许跳板机过来连接，公钥分别部署到各机器，就可以通过跳板机中转登录了。
 
 === sshfs ===
+
 {{{
 yum install sshfs
 chmod +s $(which sshfs)  # 方便普通用户
@@ -40,6 +41,12 @@ sshfs HOST:DIR MNT -o follow_symlinks
 
 # 卸载
 fusermount -u test/mnt
+}}}
+
+macOS 也可以用，但要首先
+
+{{{sh
+brew cask install osxfuse
 }}}
 
 === systemd ===
