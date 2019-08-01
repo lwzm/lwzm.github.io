@@ -33,12 +33,33 @@ ServerAliveCountMax 2
 <div id="SSH-ssh proxy"><h3 id="ssh proxy">ssh proxy</h3></div>
 
 <p>
-参考 <code>ProxyJump</code> 选项，可以实现跳转，跳板机可以多个，配置以本地为准，dns 以跳板机为准。
+参考 <code>ProxyJump</code> 选项，可以实现跳转，跳板机可以多个，ssh client 配置以本地为准，dns 以跳板机为准。
 </p>
 
 <p>
-最佳实践：搞一台跳板机，并设置好 hosts 列表，各机器只允许跳板机过来连接，公钥分别部署到各机器，就可以通过跳板机中转登录了。
+最佳实践：搞一台跳板机，并设置好 <code>/etc/hosts</code>，公钥分别部署到各机器，就可以通过跳板机中转登录到各机器。
 </p>
+
+<p>
+优点：
+</p>
+<ul>
+<li>
+hosts 统一在跳板机设置，所有人都能用到其中的别名
+
+<li>
+其它各机器可以只有内网，与跳板机联通即可
+
+<li>
+可以设置其它各机器只允许跳板机过来连接，保证高度隐私
+
+<li>
+方便权限管理，跳板机权限仅代表入口权限，其它机器的权限可以自由配置
+
+<li>
+跳板机的登录用户(e.g. foo)可以最小权限化，大家都用这一个用户也可，<code>yes $(which nologin) | chsh foo</code>
+
+</ul>
 
 <div id="SSH-sshfs"><h3 id="sshfs">sshfs</h3></div>
 

@@ -59,6 +59,27 @@ class Checkin(Entity):
 }}}
 
 
+=== 高速合并数据 ===
+
+两个表：`main`, `patch`，结构一样，main 数据量很大，patch 数据量一般，现在需要合并 patch 的数据至 main，
+对已存在的老数据做覆盖操作，对不存在的数据做新增操作，尽量不要做无用功，尽可能地收集到更新结果如修改数和新增数。
+
+{{{sql
+-- main 是老数据，把 patch 作为补丁更新至 main , 参考下面
+-- 执行速度只和 patch 的数据量有关，和目标 main 数据量关系不大（有索引），patch 数据量有 100W 时，2 秒搞定
+
+select 'edit';
+replace into main (k, v) 
+select patch.k, patch.v from patch inner join main on patch.k = main.k where patch.v != main.v;  -- update exists
+select changes();
+
+select 'new';
+insert into main (k, v) 
+select patch.k, patch.v from patch left join main on patch.k = main.k where main.v is null;  -- find new
+select changes();
+}}}
+
+
 === OperationalError: database is locked ===
 
 一次写入或修改数据太多，在这过程中，别的进程读数据会发生这种错误，暂时没有深入研究。
