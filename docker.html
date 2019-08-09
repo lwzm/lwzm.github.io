@@ -145,6 +145,10 @@ services:
     ports: 
       - "80:80"
       - "443:443"
+    depends_on:
+      - portainer
+      - gogs
+      - filebrowser
 
   portainer:
     image: portainer/portainer
@@ -160,6 +164,13 @@ services:
       - ./gogs-data:/data
     ports: 
       - "22:22"
+
+  filebrowser:
+    image: filebrowser/filebrowser
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./filebrowser/srv:/srv
+      - ./filebrowser/database.db:/database.db
 </pre>
 
 
