@@ -71,6 +71,12 @@ docker run -it --name=main alpine sh
 docker run -it --ipc=container:main alpine sh
 }}}
 
+=== alpine gcc ===
+
+{{{sh
+apk add --no-cache gcc musl-dev
+}}}
+
 === /opt/bin ===
 
 可以把 docker 容器启动的工具放这里，如 `htop`, `ctop`

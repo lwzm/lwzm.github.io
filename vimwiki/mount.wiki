@@ -1,0 +1,86 @@
+= 磁盘挂载 =
+
+当磁盘很多时, Linux 识别磁盘的顺序不被保证, 这时候, fstab 用
+{{{sh
+UUID=ef42f56b-8f0f-46c1-aced-93eafcfc8ca2
+}}}
+
+或
+
+{{{sh
+LABEL=xx-name
+}}}
+
+比较好
+
+读取和设置磁盘标签:
+{{{sh
+e2label /dev/sdx
+e2label /dev/sdx label-name-xxx
+}}}
+
+读取所有磁盘的 UUID 和 LABEL:
+{{{sh
+blkid
+
+/dev/sda: LABEL="a" UUID="feeee697-d48d-4454-beed-9dc81dfea439" TYPE="ext4"
+/dev/sdc: LABEL="c" UUID="86d6cfd0-4aa7-400e-9796-28c9f3f020a9" TYPE="ext4"
+/dev/sdd: LABEL="d" UUID="ed0ba712-cf94-4f90-a096-f7eb9cf723ef" TYPE="ext4"
+/dev/sdb: LABEL="b" UUID="b3a3e8f6-b01b-4702-8058-c52910b95fda" TYPE="ext4"
+/dev/sdr: UUID="ef42f56b-8f0f-46c1-aced-93eafcfc8ca2" TYPE="xfs"
+/dev/sdt1: UUID="30630453-034e-471f-965a-2cd6aa2766e2" TYPE="ext4"
+/dev/sdt2: UUID="3702f8f8-357a-4771-9cd9-e99b23b623eb" TYPE="ext4"
+/dev/sdt3: UUID="6240cbde-0a01-4f76-88de-55f939004a76" TYPE="ext4"
+/dev/sde: LABEL="e" UUID="7ad1ce11-28f3-4844-9408-eccb9174fd5f" TYPE="ext4"
+/dev/sdg: LABEL="g" UUID="9b09e9e4-566d-4de9-a37c-dcfa47672e6c" TYPE="ext4"
+/dev/sdi: LABEL="i" UUID="8674eb39-f68c-45d9-bdaf-c533ac0e9dd2" TYPE="ext4"
+/dev/sdl: LABEL="l" UUID="17909273-f08c-44c5-a949-d6785fd2bed1" TYPE="ext4"
+/dev/sdq: UUID="e519c759-031b-4754-a4c1-3d071105cd1e" TYPE="xfs"
+/dev/sds1: UUID="b562b108-1802-4647-a682-d1d87677e25b" TYPE="ext4"
+/dev/sdm: LABEL="m" UUID="89d50b32-39e0-4ce6-941e-55ce073a39f0" TYPE="ext4"
+/dev/sdh: LABEL="h" UUID="eb81690b-664c-46db-9244-41af9bd70da3" TYPE="ext4"
+/dev/sdp: LABEL="p" UUID="4692ee73-470b-4996-8fd1-81eb1187ef8f" TYPE="ext4"
+/dev/sdo: LABEL="o" UUID="e9cc6c88-efbf-41a2-ac31-ad6afbd1d56b" TYPE="ext4"
+/dev/sdf: LABEL="f" UUID="08f3d144-667d-45c6-a2f8-a60287b733b8" TYPE="ext4"
+/dev/sdk: LABEL="k" UUID="832faea8-43e6-4ed6-b6eb-d6524a478954" TYPE="ext4"
+/dev/sdj: LABEL="j" UUID="0564b130-3086-4da8-8655-8af56896b51e" TYPE="ext4"
+/dev/sdn: LABEL="n" UUID="be1d3c23-b97d-409d-865f-b93cf7e23005" TYPE="ext4"
+}}}
+
+
+
+`/etc/fstab` 例子:
+
+{{{conf
+#
+# /etc/fstab
+# Created by anaconda on Wed Aug 17 21:54:02 2016
+#
+# Accessible filesystems, by reference, are maintained under '/dev/disk'
+# See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info
+#
+UUID=b562b108-1802-4647-a682-d1d87677e25b /                       ext4    defaults        1 1
+UUID=e519c759-031b-4754-a4c1-3d071105cd1e /data1               xfs     defaults,noatime        0 0
+UUID=ef42f56b-8f0f-46c1-aced-93eafcfc8ca2 /data2               xfs     defaults,noatime        0 0
+#
+LABEL=a               /mnt/a               xfs    defaults,noatime        0 0
+LABEL=b               /mnt/b               xfs    defaults,noatime        0 0
+LABEL=c               /mnt/c               xfs    defaults,noatime        0 0
+LABEL=d               /mnt/d               xfs    defaults,noatime        0 0
+LABEL=e               /mnt/e               xfs    defaults,noatime        0 0
+LABEL=f               /mnt/f               xfs    defaults,noatime        0 0
+LABEL=g               /mnt/g               xfs    defaults,noatime        0 0
+LABEL=h               /mnt/h               xfs    defaults,noatime        0 0
+LABEL=i               /mnt/i               xfs    defaults,noatime        0 0
+LABEL=j               /mnt/j               xfs    defaults,noatime        0 0
+LABEL=k               /mnt/k               xfs    defaults,noatime        0 0
+LABEL=l               /mnt/l               xfs    defaults,noatime        0 0
+LABEL=m               /mnt/m               xfs    defaults,noatime        0 0
+LABEL=n               /mnt/n               xfs    defaults,noatime        0 0
+LABEL=o               /mnt/o               xfs    defaults,noatime        0 0
+LABEL=p               /mnt/p               xfs    defaults,noatime        0 0
+
+#LABEL=ssd-120g-1      /mnt/_               ext4    defaults,noatime        0 0
+
+#UUID=aeb3cd55-3c6f-4ee2-8dba-11fae4269394 swap swap defaults 0 0
+}}}
