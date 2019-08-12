@@ -108,19 +108,20 @@ services:
       - portainer
       - gogs
       - filebrowser
+      - rancher
 
   portainer:
     image: portainer/portainer
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./portainer-data:/data
+      - ./portainer:/data
 
   gogs:
     image: gogs/gogs:0.11.86
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./gogs-data:/data
+      - ./gogs:/data
     ports: 
       - "22:22"
 
@@ -130,6 +131,12 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ./filebrowser/srv:/srv
       - ./filebrowser/database.db:/database.db
+
+  rancher:
+    image: rancher/rancher:stable
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./rancher:/var/lib/rancher
 }}}
 
 
@@ -167,7 +174,10 @@ server {
     proxy_http_version 1.1;
     proxy_connect_timeout 2;
     proxy_read_timeout 300;
-    proxy_set_header Host $http_host;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Forwarded-Port $server_port;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header Connection "upgrade";
     proxy_set_header Upgrade $http_upgrade;
