@@ -139,6 +139,28 @@ docker start -ia $(basename $0)
 </pre>
 
 
+<div id="Docker-Dockerfile for Python"><h3 id="Dockerfile for Python">Dockerfile for Python</h3></div>
+
+<pre Dockerfile>
+FROM python:stretch as base
+
+RUN apt-get update
+RUN apt-get install -y libev-dev \
+    &amp;&amp; pip install -i https://pypi.douban.com/simple --user \
+        gunicorn falcon pycrypto pyyaml requests redis pymysql pony
+
+FROM python:slim-stretch
+COPY --from=base /root/.local /root/.local
+ENV PATH="/root/.local/bin:${PATH}"
+
+WORKDIR /root/
+EXPOSE 8000
+
+COPY .gunicorn cfg.yaml *.py ./
+
+CMD [ "gunicorn", "-c", ".gunicorn", "xxx" ]
+</pre>
+
 <div id="Docker-docker compose"><h3 id="docker compose">docker compose</h3></div>
 
 <p>

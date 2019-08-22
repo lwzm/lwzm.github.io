@@ -4,8 +4,15 @@ https://github.com/jonashaag/bjoern
 
 依赖 `libev`，可能需要
 
+CentOS
 {{{sh
 yum install -y libev-devel
+}}}
+
+Debian
+{{{sh
+apt-get update
+apt-get install -y libev-dev
 }}}
 
 === Usage ===

@@ -19,6 +19,7 @@
 * [[falcon]] web 框架
 * [[molten]] web 框架
 * [[bjoern]] wsgi 容器
+* [[gunicorn]]
 * [[nvim]]
 * [[tldr]] 太长不想看
 * [[inotify]] Linux 专用的文件改动监测

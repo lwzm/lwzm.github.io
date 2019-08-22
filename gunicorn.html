@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>gunicorn</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<div id="Gunicorn"><h1 id="Gunicorn">Gunicorn</h1></div>
+
+<p>
+<a href="http://docs.gunicorn.org/en/latest/settings.html">http://docs.gunicorn.org/en/latest/settings.html</a>
+</p>
+
+<pre py>
+#!/usr/bin/env python3
+
+bind = '0.0.0.0:8000'
+workers = 1
+keepalive = 60
+timeout = 600
+max_requests = 30000
+worker_class = 'tornado'
+worker_class = 'meinheld.gmeinheld.MeinheldWorker'
+worker_class = 'gevent'
+worker_class = 'sync'
+
+accesslog = '-'
+access_log_format = '%(t)s %(h)s "%(r)s" %(s)s %(b)s %(D)s "%(a)s"'
+
+def on_starting(server):
+    print('on_starting', server)
+
+def child_exit(server, worker):
+    print('child_exit', server, worker)
+</pre>
+
+</body>
+</html>
