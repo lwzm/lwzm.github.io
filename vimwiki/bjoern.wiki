@@ -2,6 +2,11 @@
 
 https://github.com/jonashaag/bjoern
 
+依赖 `libev`，可能需要
+
+{{{sh
+yum install -y libev-devel
+}}}
 
 === Usage ===
 

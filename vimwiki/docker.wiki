@@ -25,6 +25,12 @@ SELINUX=enforcing
 * portainer https://www.portainer.io/installation/
 * ctop https://github.com/bcicen/ctop
 
+=== 基础镜像 ===
+
+* alpine
+* debian:buster-slim
+* debian:stretch-slim
+
 === 常用容器 ===
 
 portainer:
