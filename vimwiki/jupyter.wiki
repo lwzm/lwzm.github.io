@@ -19,3 +19,10 @@ pip install jupyter_contrib_nbextensions
 jupyter contrib nbextension install --user
 }}}
 
+`.jupyter/jupyter_notebook_config.py`
+{{{py
+c.NotebookApp.ip = '0.0.0.0'
+c.NotebookApp.allow_root = True
+c.NotebookApp.open_browser = False
+c.NotebookApp.password = "sha1:16915df4e9d8:96a7519a26fc028e3506c22e7646c8e0698c1304"
+}}}

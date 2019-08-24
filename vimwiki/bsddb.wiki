@@ -1,0 +1,16 @@
+= Berkeley DB =
+
+经典的 K-V 数据库，目前看起来性能极好，待研究。
+
+Python3 需要额外安装 `bsddb3`
+
+{{{sh
+# CentOS
+yum install libdb-devel
+# Debian
+apt-get install libdb-dev
+
+pip install bsddb3
+}}}
+
+依赖 `libdb-5.3.so`，可以直接从系统库里复制出来到 anaconda 的 `lib`，别的系统可用。
