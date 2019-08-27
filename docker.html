@@ -162,6 +162,91 @@ COPY .gunicorn cfg.yaml *.py ./
 CMD [ "gunicorn", "-c", ".gunicorn", "xxx" ]
 </pre>
 
+<p>
+还有一种方法生成的镜像更小，<code>pyinstaller</code> 打包结果 + <code>debian:stretch-slim</code>，浅尝可用。
+理论上可以用 pyinstaller on alpine，但是安装时失败，算了。
+</p>
+
+<pre sh>
+pyinstaller your-script.py
+# or
+PYTHONOPTIMIZE=2 pyinstaller -y -s your-script.py
+</pre>
+
+<p>
+生成的文件有部分不是必须的，如
+</p>
+<ul>
+<li>
+<code>*lzma*</code>
+
+<li>
+<code>*readline*</code>
+
+<li>
+<code>libcrypto.so.*</code>
+
+</ul>
+<p>
+视情况和心情剔除。
+</p>
+
+<p>
+剩下的举例：
+</p>
+<pre sh>
+_bisect.cpython-37m-x86_64-linux-gnu.so
+_blake2.cpython-37m-x86_64-linux-gnu.so
+_heapq.cpython-37m-x86_64-linux-gnu.so
+_md5.cpython-37m-x86_64-linux-gnu.so
+_pickle.cpython-37m-x86_64-linux-gnu.so
+_queue.cpython-37m-x86_64-linux-gnu.so
+_random.cpython-37m-x86_64-linux-gnu.so
+_sha1.cpython-37m-x86_64-linux-gnu.so
+_sha256.cpython-37m-x86_64-linux-gnu.so
+_sha3.cpython-37m-x86_64-linux-gnu.so
+_sha512.cpython-37m-x86_64-linux-gnu.so
+_struct
+_struct.cpython-37m-x86_64-linux-gnu.so
+base_library.zip
+libpython3.7m.so
+libz.so.1
+math.cpython-37m-x86_64-linux-gnu.so
+posix_ipc.cpython-37m-x86_64-linux-gnu.so
+ts
+zlib
+zlib.cpython-37m-x86_64-linux-gnu.so
+</pre>
+
+<p>
+极限控制镜像包大小，先用 <code>pyinstaller</code> 打包，然后从 <code>debian:stretch-slim</code> 拷贝出 <code>lib</code> <code>lib64</code>，和 <code>pyinstaller</code> 打包出的文件夹一起打一个 <code>tgz</code>：
+</p>
+
+<pre sh>
+tar czf XXX.tgz lib* XXX
+</pre>
+
+<p>
+如何极限精简打包，参考 <a href="https://gist.github.com/lwzm/f3dfb447f7927b78d70c040aa1c3a5e1">https://gist.github.com/lwzm/f3dfb447f7927b78d70c040aa1c3a5e1</a>
+</p>
+
+<p>
+最后：
+</p>
+
+<pre Dockerfile>
+FROM debian:stretch-slim as base
+RUN mkdir /x &amp;&amp; cp -a /lib* /tmp /x
+FROM scratch
+COPY --from=base /x /
+COPY /t /app
+CMD /app/t
+</pre>
+
+<p>
+上述方法打出来的镜像，可比肩 Golang，但是对代码质量和系统细节的掌控的要求比较高。
+</p>
+
 <div id="Docker-docker compose"><h3 id="docker compose">docker compose</h3></div>
 
 <p>

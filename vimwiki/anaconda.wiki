@@ -8,3 +8,8 @@
 {{{sh
 conda update --all
 }}}
+
+安装其他版本的 Python:
+{{{sh
+conda create -n py36 python=3.6
+}}}
