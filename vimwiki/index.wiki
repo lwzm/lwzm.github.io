@@ -17,9 +17,8 @@
 * [[pytest]] 单元测试
 * [[py-spy]]
 * [[falcon]] web 框架
-* [[molten]] web 框架
 * [[bjoern]] wsgi 容器
-* [[gunicorn]]
+* [[gunicorn]] wsgi 容器
 * [[nvim]]
 * [[tldr]] 太长不想看
 * [[inotify]] Linux 专用的文件改动监测
@@ -31,6 +30,7 @@
 * [[yum]] 拾零
 * [[taskset]] 限制程序的 CPU 核心使用量
 * [[mkswap]] Linux 内存交换文件
+* [[dirty]] Linux 脏页
 * [[posix-message-queue]] 系统自带的消息队列
 * [[mysql]] 拾零
 * [[gotty]]

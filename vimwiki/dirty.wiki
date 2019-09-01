@@ -1,0 +1,15 @@
+Linux dirty page
+
+查看配置
+{{{sh
+sysctl -a | grep dirty
+cat /proc/vmstat | egrep "dirty|writeback"
+}}}
+
+优化内存使用，尽可能使用内存
+{{{sh
+vm.dirty_background_ratio = 60
+vm.dirty_ratio = 80
+vm.dirty_writeback_centisecs = 5000
+vm.dirty_expire_centisecs = 30000
+}}}
