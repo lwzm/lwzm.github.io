@@ -29,5 +29,12 @@ vm.dirty_writeback_centisecs = 5000
 vm.dirty_expire_centisecs = 30000
 </pre>
 
+<p>
+强制清理 <code>page cache</code>，可以 umount 磁盘，或者：
+</p>
+<pre sh>
+echo 1 &gt;/proc/sys/vm/drop_caches
+</pre>
+
 </body>
 </html>

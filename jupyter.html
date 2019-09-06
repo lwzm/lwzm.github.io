@@ -48,5 +48,14 @@ c.NotebookApp.open_browser = False
 c.NotebookApp.password = "sha1:16915df4e9d8:96a7519a26fc028e3506c22e7646c8e0698c1304"
 </pre>
 
+<p>
+解决 <code>404 GET /nbextensions/widgets/notebook/js/extension.js</code>
+</p>
+
+<pre sh>
+pip install ipywidgets
+jupyter nbextension enable --py widgetsnbextension
+</pre>
+
 </body>
 </html>

@@ -84,3 +84,5 @@ LABEL=p               /mnt/p               xfs    defaults,noatime        0 0
 
 #UUID=aeb3cd55-3c6f-4ee2-8dba-11fae4269394 swap swap defaults 0 0
 }}}
+
+还有个 `lsblk` 命令可以看磁盘信息。

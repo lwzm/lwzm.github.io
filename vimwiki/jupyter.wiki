@@ -26,3 +26,10 @@ c.NotebookApp.allow_root = True
 c.NotebookApp.open_browser = False
 c.NotebookApp.password = "sha1:16915df4e9d8:96a7519a26fc028e3506c22e7646c8e0698c1304"
 }}}
+
+解决 `404 GET /nbextensions/widgets/notebook/js/extension.js`
+
+{{{sh
+pip install ipywidgets
+jupyter nbextension enable --py widgetsnbextension
+}}}
