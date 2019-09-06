@@ -101,3 +101,5 @@ insert into tmp
 === 其它参考学习 ===
 
 http://souptonuts.sourceforge.net/readme_sqlite_tutorial.html
+https://sqlite.org/docs.html
+https://sqlite.org/lang.html

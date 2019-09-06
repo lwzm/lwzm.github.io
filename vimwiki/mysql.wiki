@@ -47,3 +47,9 @@ change master to master_host='n174',master_user='rep',master_password='x',master
 
 start slave;
 }}}
+
+
+
+=== 其它参考学习 ===
+
+http://souptonuts.sourceforge.net/readme_mysql.htm
