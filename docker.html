@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<div id="Docker"><h1 id="Docker">Docker</h1></div>
+<div id="Docker"><h1 id="Docker" class="header"><a href="#Docker">Docker</a></h1></div>
 
 <p>
 <a href="https://hub.docker.com/">https://hub.docker.com/</a>
@@ -18,7 +18,7 @@
 </p>
 
 <p>
-与 <code>CoreOS</code> 搭配更佳。如果需要升级，使用：
+与 <code>CoreOS</code> 搭配更佳。如果需要手动强制升级，使用：
 </p>
 
 <pre sh>
@@ -38,8 +38,23 @@ vi /etc/selinux/config
 SELINUX=enforcing
 </pre>
 
+<p>
+CoreOS系统经常自动重启，原因是系统自动升级，如不需要自动重启，编辑 <code>/etc/coreos/update.conf</code>
+</p>
+<pre conf>
+REBOOT_STRATEGY=off
+</pre>
 
-<div id="Docker-常用工具"><h3 id="常用工具">常用工具</h3></div>
+<p>
+然后
+</p>
+<pre sh>
+systemctl restart update-engine
+</pre>
+
+
+
+<div id="Docker-常用工具"><h3 id="常用工具" class="header"><a href="#Docker-常用工具">常用工具</a></h3></div>
 
 <ul>
 <li>
@@ -50,7 +65,7 @@ ctop <a href="https://github.com/bcicen/ctop">https://github.com/bcicen/ctop</a>
 
 </ul>
 
-<div id="Docker-基础镜像"><h3 id="基础镜像">基础镜像</h3></div>
+<div id="Docker-基础镜像"><h3 id="基础镜像" class="header"><a href="#Docker-基础镜像">基础镜像</a></h3></div>
 
 <ul>
 <li>
@@ -64,7 +79,7 @@ debian:stretch-slim
 
 </ul>
 
-<div id="Docker-常用容器"><h3 id="常用容器">常用容器</h3></div>
+<div id="Docker-常用容器"><h3 id="常用容器" class="header"><a href="#Docker-常用容器">常用容器</a></h3></div>
 
 <p>
 portainer:
@@ -122,14 +137,14 @@ docker run -it --name=main alpine sh
 docker run -it --ipc=container:main alpine sh
 </pre>
 
-<div id="Docker-alpine gcc"><h3 id="alpine gcc">alpine gcc</h3></div>
+<div id="Docker-alpine gcc"><h3 id="alpine gcc" class="header"><a href="#Docker-alpine gcc">alpine gcc</a></h3></div>
 
 <pre sh>
 sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
 apk add --no-cache gcc musl-dev
 </pre>
 
-<div id="Docker-/opt/bin"><h3 id="/opt/bin">/opt/bin</h3></div>
+<div id="Docker-/opt/bin"><h3 id="/opt/bin" class="header"><a href="#Docker-/opt/bin">/opt/bin</a></h3></div>
 
 <p>
 可以把 docker 容器启动的工具放这里，如 <code>htop</code>, <code>ctop</code>
@@ -140,7 +155,7 @@ docker start -ia $(basename $0)
 </pre>
 
 
-<div id="Docker-Dockerfile for Python"><h3 id="Dockerfile for Python">Dockerfile for Python</h3></div>
+<div id="Docker-Dockerfile for Python"><h3 id="Dockerfile for Python" class="header"><a href="#Docker-Dockerfile for Python">Dockerfile for Python</a></h3></div>
 
 <pre Dockerfile>
 FROM python:stretch as base
@@ -247,7 +262,7 @@ CMD /app/t
 上述方法打出来的镜像，可比肩 Golang，但是对代码质量和系统细节的掌控的要求比较高。
 </p>
 
-<div id="Docker-docker compose"><h3 id="docker compose">docker compose</h3></div>
+<div id="Docker-docker compose"><h3 id="docker compose" class="header"><a href="#Docker-docker compose">docker compose</a></h3></div>
 
 <p>
 把 nginx 和其它几个 web 服务放一起，例子：

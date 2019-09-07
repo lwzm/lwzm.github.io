@@ -4,7 +4,7 @@ https://hub.docker.com/
 
 入门教程 https://docker_practice.gitee.io/
 
-与 `CoreOS` 搭配更佳。如果需要升级，使用：
+与 `CoreOS` 搭配更佳。如果需要手动强制升级，使用：
 
 {{{sh
 update_engine_client -update
@@ -18,6 +18,17 @@ vi /etc/selinux/config
 
 SELINUX=enforcing
 }}}
+
+CoreOS系统经常自动重启，原因是系统自动升级，如不需要自动重启，编辑 `/etc/coreos/update.conf`
+{{{conf
+REBOOT_STRATEGY=off
+}}}
+
+然后
+{{{sh
+systemctl restart update-engine
+}}}
+
 
 
 === 常用工具 ===

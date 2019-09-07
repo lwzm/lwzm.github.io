@@ -7,9 +7,9 @@
 </head>
 <body>
 
-<div id="Sqlite 使用技巧拾零"><h1 id="Sqlite 使用技巧拾零">Sqlite 使用技巧拾零</h1></div>
+<div id="Sqlite 使用技巧拾零"><h1 id="Sqlite 使用技巧拾零" class="header"><a href="#Sqlite 使用技巧拾零">Sqlite 使用技巧拾零</a></h1></div>
 
-<div id="Sqlite 使用技巧拾零-时间格式"><h3 id="时间格式">时间格式</h3></div>
+<div id="Sqlite 使用技巧拾零-时间格式"><h3 id="时间格式" class="header"><a href="#Sqlite 使用技巧拾零-时间格式">时间格式</a></h3></div>
 
 <pre sql>
 select datetime('now', 'localtime');
@@ -74,7 +74,7 @@ class Checkin(Entity):
 </pre>
 
 
-<div id="Sqlite 使用技巧拾零-高速合并数据"><h3 id="高速合并数据">高速合并数据</h3></div>
+<div id="Sqlite 使用技巧拾零-高速合并数据"><h3 id="高速合并数据" class="header"><a href="#Sqlite 使用技巧拾零-高速合并数据">高速合并数据</a></h3></div>
 
 <p>
 两个表：<code>main</code>, <code>patch</code>，结构一样，main 数据量很大，patch 数据量一般，现在需要合并 patch 的数据至 main，
@@ -109,7 +109,7 @@ insert into tmp
 </pre>
 
 
-<div id="Sqlite 使用技巧拾零-OperationalError: database is locked"><h3 id="OperationalError: database is locked">OperationalError: database is locked</h3></div>
+<div id="Sqlite 使用技巧拾零-OperationalError: database is locked"><h3 id="OperationalError: database is locked" class="header"><a href="#Sqlite 使用技巧拾零-OperationalError: database is locked">OperationalError: database is locked</a></h3></div>
 
 <p>
 一次写入或修改数据太多，在这过程中，别的进程读数据会发生这种错误，暂时没有深入研究。
@@ -117,10 +117,12 @@ insert into tmp
 </p>
 
 
-<div id="Sqlite 使用技巧拾零-其它参考学习"><h3 id="其它参考学习">其它参考学习</h3></div>
+<div id="Sqlite 使用技巧拾零-其它参考学习"><h3 id="其它参考学习" class="header"><a href="#Sqlite 使用技巧拾零-其它参考学习">其它参考学习</a></h3></div>
 
 <p>
 <a href="http://souptonuts.sourceforge.net/readme_sqlite_tutorial.html">http://souptonuts.sourceforge.net/readme_sqlite_tutorial.html</a>
+<a href="https://sqlite.org/docs.html">https://sqlite.org/docs.html</a>
+<a href="https://sqlite.org/lang.html">https://sqlite.org/lang.html</a>
 </p>
 
 </body>
