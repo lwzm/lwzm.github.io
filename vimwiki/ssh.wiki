@@ -34,6 +34,13 @@ ServerAliveCountMax 2
 * 方便权限管理，跳板机权限仅代表入口权限，其它机器的权限可以自由配置
 * 跳板机的登录用户(e.g. foo)可以最小权限化，大家都用这一个用户也可，`yes $(which nologin) | chsh foo`
 
+=== 限制 ip 登录 ===
+
+最灵活的方式是编辑 `authorized_keys` 中公钥的选项，参考 https://en.wikibooks.org/wiki/OpenSSH/Client_Configuration_Files，如：
+{{{conf
+from="*.2.3,111.111.*,10.0.0.0/8" ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHWrD5V10X9SWTYnfIGQcglQmjiCK6KyMDKyTgwb3Vx+Dfpa5EiRFerAKzxM+IiL8lQmUVKzoRk5rl36iQMRCcN5QNQJCtuhJSos94OMWotfvspIqhIuRig8S7CI7SNgvPRkzup8a/J78EQAr40ukjKRlQzJkuWtD22RhqdpPZRrF/JNE+8m/+sHt0UyVJ3GD0dcBDO7vrfGukjSZ3XqM+CDi/5xBgOOG0PR3K0VWQjtuqQoJbkFBGAFwZqTFk32nF7RzE+JyyUE0TPnfrNaNBCFJQcr9jr5icaGgEY7J5R2B55FwwDAPK6qfJ1P4srEm9zcL1g3LtZjMwIm2hx9a1 tc@box
+}}}
+
 === sshfs ===
 
 {{{

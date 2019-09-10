@@ -2,7 +2,8 @@
 
 创建
 {{{
-dd if=/dev/zero of=file_swap bs=1M count=512
+dd if=/dev/zero of=file_swap bs=1M count=1024
+chmod 600 file_swap
 mkswap file_swap
 swapon file_swap
 }}}
