@@ -1,0 +1,7 @@
+PyInstaller
+
+https://www.pyinstaller.org/
+
+https://pyinstaller.readthedocs.io/en/stable/
+
+https://elc.github.io/posts/executable-flask-pyinstaller/

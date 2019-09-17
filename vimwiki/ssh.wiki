@@ -41,6 +41,38 @@ ServerAliveCountMax 2
 from="*.2.3,111.111.*,10.0.0.0/8" ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHWrD5V10X9SWTYnfIGQcglQmjiCK6KyMDKyTgwb3Vx+Dfpa5EiRFerAKzxM+IiL8lQmUVKzoRk5rl36iQMRCcN5QNQJCtuhJSos94OMWotfvspIqhIuRig8S7CI7SNgvPRkzup8a/J78EQAr40ukjKRlQzJkuWtD22RhqdpPZRrF/JNE+8m/+sHt0UyVJ3GD0dcBDO7vrfGukjSZ3XqM+CDi/5xBgOOG0PR3K0VWQjtuqQoJbkFBGAFwZqTFk32nF7RzE+JyyUE0TPnfrNaNBCFJQcr9jr5icaGgEY7J5R2B55FwwDAPK6qfJ1P4srEm9zcL1g3LtZjMwIm2hx9a1 tc@box
 }}}
 
+=== 批量部署 ===
+
+管理很多服务器的各个用户的登录公钥时，可以考虑生成 shell 脚本再执行覆盖 authorized_keys 的方式，注意需要用 root 权限。
+一般跳板机保留所有服务器的 root 权限，并执行这种批量部署脚本。
+参考：https://github.com/lwzm/deploy-ssh-keys
+
+{{{py
+#!/usr/bin/env python3
+
+import yaml
+
+
+tpl = (
+    "ssh {host} "
+    "'cd ~{user} && echo ~{user}/.ssh; ( mkdir -p .ssh && chmod 700 .ssh && chown {user}:{user} .ssh &&  cat >>.ssh/authorized_keys)' <<EOF"
+).format
+
+keys = yaml.safe_load(open('keys.yaml'))
+hosts = yaml.safe_load(open('hosts.yaml'))
+
+
+for host, users in hosts.items():
+    for user, lst in users.items():
+        print(tpl(host=host, user=user))
+        for i in lst:
+            s = keys[i].strip()
+            assert "EOF" not in s
+            print(s)
+        print("EOF")
+}}}
+
+
 === sshfs ===
 
 {{{

@@ -7,13 +7,14 @@
 </head>
 <body>
 
-<div id="Linux 用文件做 swap"><h1 id="Linux 用文件做 swap">Linux 用文件做 swap</h1></div>
+<div id="Linux 用文件做 swap"><h1 id="Linux 用文件做 swap" class="header"><a href="#Linux 用文件做 swap">Linux 用文件做 swap</a></h1></div>
 
 <p>
 创建
 </p>
 <pre>
-dd if=/dev/zero of=file_swap bs=1M count=512
+dd if=/dev/zero of=file_swap bs=1M count=1024
+chmod 600 file_swap
 mkswap file_swap
 swapon file_swap
 </pre>

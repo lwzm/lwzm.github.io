@@ -16,6 +16,7 @@
 * [[sqlite]] 拾零
 * [[pytest]] 单元测试
 * [[py-spy]]
+* [[pyinstaller]]
 * [[falcon]] web 框架
 * [[bjoern]] wsgi 容器
 * [[gunicorn]] wsgi 容器
@@ -55,3 +56,4 @@
 * [[mount]]
 * [[bsddb]]
 * [[cms]]
+* [[jenkins]]

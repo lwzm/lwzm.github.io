@@ -112,17 +112,14 @@ FROM python:stretch as base
 RUN apt-get update
 RUN apt-get install -y libev-dev \
     && pip install -i https://pypi.douban.com/simple --user \
-        gunicorn falcon pycrypto pyyaml requests redis pymysql pony
+        gunicorn falcon pycrypto pyyaml requests redis pymysql psycopg2-binary pony
 
 FROM python:slim-stretch
-COPY --from=base /root/.local /root/.local
-ENV PATH /root/.local/bin:${PATH}
-
 WORKDIR /root/
-EXPOSE 8000
-
+COPY --from=base /root/.local .local
 COPY .gunicorn cfg.yaml *.py ./
-
+EXPOSE 8000
+ENV PATH /root/.local/bin:${PATH}
 CMD [ "gunicorn", "-c", ".gunicorn", "xxx" ]
 }}}
 
