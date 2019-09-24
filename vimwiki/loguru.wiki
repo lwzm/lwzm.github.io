@@ -1,0 +1,9 @@
+= Loguru =
+
+更好的 logger
+
+https://github.com/Delgan/loguru
+
+https://loguru.readthedocs.io/en/stable/api/logger.html
+
+

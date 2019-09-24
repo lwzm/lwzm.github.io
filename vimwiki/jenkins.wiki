@@ -1,3 +1,14 @@
 Jenkins
 
-lts-alpine
+https://jenkins.io/zh/doc/pipeline/tour/getting-started/
+
+建议用 Blue Ocean https://jenkins.io/zh/doc/book/blueocean/
+
+{{{docker
+  blueocean:
+    image: jenkinsci/blueocean
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./blueocean:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+}}}

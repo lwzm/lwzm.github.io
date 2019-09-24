@@ -117,3 +117,7 @@ systemctl restart sshd.socket
 }}}
 
 参考：https://coreos.com/os/docs/latest/customizing-sshd.html
+
+=== socks5 ===
+
+参见 [[shadowsocks]]

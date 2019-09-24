@@ -1,6 +1,7 @@
 %title Wiki
 
 * [[sentry]] 错误收集
+* [[loguru]] logger
 * [[pysnooper]]
 * [[mac]]
 * [[supervisor]]

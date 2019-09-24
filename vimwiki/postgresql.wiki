@@ -500,6 +500,9 @@ for i in $(seq -f "%02g" 31); do
 done
 }}}
 
+=== 通信 LISTEN/NOTIFY ===
+
+https://www.postgresql.org/docs/current/sql-listen.html
 
 
 === 主备 master-standby ===

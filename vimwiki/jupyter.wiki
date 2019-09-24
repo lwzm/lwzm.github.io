@@ -33,3 +33,7 @@ c.NotebookApp.password = "sha1:16915df4e9d8:96a7519a26fc028e3506c22e7646c8e0698c
 pip install ipywidgets
 jupyter nbextension enable --py widgetsnbextension
 }}}
+
+=== 其它语言支持 ===
+
+比如 `Golang`，自行搜索 `go jupyter` 可以找到 https://github.com/gopherdata/gophernotes

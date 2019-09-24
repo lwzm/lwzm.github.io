@@ -12,8 +12,21 @@ Jenkins
 </p>
 
 <p>
-lts-alpine
+<a href="https://jenkins.io/zh/doc/pipeline/tour/getting-started/">https://jenkins.io/zh/doc/pipeline/tour/getting-started/</a>
 </p>
+
+<p>
+建议用 Blue Ocean <a href="https://jenkins.io/zh/doc/book/blueocean/">https://jenkins.io/zh/doc/book/blueocean/</a>
+</p>
+
+<pre docker>
+  blueocean:
+    image: jenkinsci/blueocean
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./blueocean:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+</pre>
 
 </body>
 </html>

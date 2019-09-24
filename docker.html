@@ -281,9 +281,7 @@ services:
       - "443:443"
     depends_on:
       - portainer
-      - gogs
       - filebrowser
-      - rancher
 
   portainer:
     image: portainer/portainer
@@ -312,6 +310,39 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./rancher:/var/lib/rancher
+  
+  blueocean:
+    image: jenkinsci/blueocean
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./blueocean:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    #ports: 
+    #  - 8080:8080
+  ldap:
+    image: osixia/openldap
+    hostname: ldap
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./ldap/slapd.d:/etc/ldap/slapd.d
+      - ./ldap/ldap:/var/lib/ldap  
+    ports: 
+      - 389:389
+      - 636:636
+
+  ldap-admin:
+    image: osixia/phpldapadmin
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      PHPLDAPADMIN_HTTPS: "false"
+      PHPLDAPADMIN_LDAP_HOSTS: ldap
+
+  nb:
+    image: lwzm/gophernotes
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./gophernotes:/home
 </pre>
 
 
