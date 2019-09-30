@@ -3,6 +3,7 @@
 * [[sentry]] 错误收集
 * [[loguru]] logger
 * [[pysnooper]]
+* [[golang]]
 * [[mac]]
 * [[supervisor]]
 * [[selenium]] 桌面浏览器桥梁

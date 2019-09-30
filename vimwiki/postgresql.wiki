@@ -8,6 +8,7 @@ http://yum.postgresql.org/repopackages.php
 yum install postgresql-server
 # Python 的包 psycopg2 要 devel
 yum install postgresql-devel
+# 不装 devel 也可以，pip install psycopg2-binary
 }}}
 
 启动服务

@@ -189,6 +189,7 @@ CMD /app/t
 把 nginx 和其它几个 web 服务放一起，例子：
 
 {{{yaml
+
 version: '3'
 services:
 
@@ -197,13 +198,14 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro
+      - ./nginx-conf.d:/etc/nginx/conf.d:ro
       - ./log:/var/log
-      - ./nginx-conf.d:/etc/nginx/conf.d
     ports: 
       - "80:80"
       - "443:443"
     depends_on:
       - portainer
+      - gogs
       - filebrowser
 
   portainer:
@@ -228,20 +230,33 @@ services:
       - ./filebrowser/srv:/srv
       - ./filebrowser/database.db:/database.db
 
-  rancher:
-    image: rancher/rancher:stable
+  postgres:
+    image: postgres:alpine
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./rancher:/var/lib/rancher
-  
+      - ./postgres:/var/lib/postgresql/data
+
+  postgrest:
+    image: postgrest
+    ports: 
+      - 3000:3000
+    depends_on:
+      - postgres
+
+  redis:
+    image: redis:alpine
+    volumes:
+      - ./redis:/data
+    ports: 
+      - "6379:6379"
+
   blueocean:
     image: jenkinsci/blueocean
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./blueocean:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
-    #ports: 
-    #  - 8080:8080
+
   ldap:
     image: osixia/openldap
     hostname: ldap
@@ -266,6 +281,13 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./gophernotes:/home
+
+  rancher:
+    image: rancher/rancher:stable
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./rancher:/var/lib/rancher
+  
 }}}
 
 

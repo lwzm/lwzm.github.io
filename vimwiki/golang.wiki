@@ -1,0 +1,11 @@
+= Golang =
+
+=== VS Code ===
+
+https://github.com/microsoft/vscode-go
+
+https://github.com/Microsoft/vscode-go/wiki/Go-with-VS-Code-FAQ-and-Troubleshooting
+
+== Proxy ==
+
+https://goproxy.io/zh/
