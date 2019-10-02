@@ -27,3 +27,10 @@ pip install https://github.com/amoffat/sh/archive/1.11.zip
 }}}
 
 https://stackoverflow.com/questions/20101834/pip-install-from-git-repo-branch
+
+=== setup.py ===
+{{{sh
+./setup.py bdist_wheel
+# or
+./setup.py sdist
+}}}
