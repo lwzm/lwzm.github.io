@@ -1,0 +1,35 @@
+= WebDAV =
+
+https://en.wikipedia.org/wiki/WebDAV
+
+https://caddyserver.com/docs/http.webdav
+
+https://blog.sleeplessbeastie.eu/2017/09/04/how-to-mount-webdav-share/
+
+协议接口简单，符合我的口味，HTTP `GET/PUT` 即可完成 **读/写** 操作。
+
+各操作系统都可以挂载为普通文件系统，如 Linux:
+
+{{{sh
+yum install davfs2
+mount -t davfs https://webdav.tyio.net/ /mnt/dav
+}}}
+
+`/etc/davfs2/secrets` 内可选编辑相关账号密码。
+
+`/etc/fstab` 可以设置自动挂载:
+{{{conf
+https://webdav.tyio.net/ /mnt/dav davfs noauto,user,uid=q 0 0
+}}}
+
+
+`caddy` WebDAV:
+{{{caddy
+* {
+    #basicauth / foo xxxx
+    webdav
+    log stderr
+}
+}}}
+
+可直接伺服，也可以选择用 nginx 代理。

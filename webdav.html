@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>webdav</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<div id="WebDAV"><h1 id="WebDAV" class="header"><a href="#WebDAV">WebDAV</a></h1></div>
+
+<p>
+<a href="https://en.wikipedia.org/wiki/WebDAV">https://en.wikipedia.org/wiki/WebDAV</a>
+</p>
+
+<p>
+<a href="https://caddyserver.com/docs/http.webdav">https://caddyserver.com/docs/http.webdav</a>
+</p>
+
+<p>
+<a href="https://blog.sleeplessbeastie.eu/2017/09/04/how-to-mount-webdav-share/">https://blog.sleeplessbeastie.eu/2017/09/04/how-to-mount-webdav-share/</a>
+</p>
+
+<p>
+协议接口简单，符合我的口味，HTTP <code>GET/PUT</code> 即可完成 *<span id="WebDAV-读/写"></span><strong id="读/写">读/写</strong>* 操作。
+</p>
+
+<p>
+各操作系统都可以挂载为普通文件系统，如 Linux:
+</p>
+
+<pre sh>
+yum install davfs2
+mount -t davfs https://webdav.tyio.net/ /mnt/dav
+</pre>
+
+<p>
+<code>/etc/davfs2/secrets</code> 内可选编辑相关账号密码。
+</p>
+
+<p>
+<code>/etc/fstab</code> 可以设置自动挂载:
+</p>
+<pre conf>
+https://webdav.tyio.net/ /mnt/dav davfs noauto,user,uid=q 0 0
+</pre>
+
+
+<p>
+<code>caddy</code> WebDAV:
+</p>
+<pre caddy>
+* {
+    #basicauth / foo xxxx
+    webdav
+    log stderr
+}
+</pre>
+
+<p>
+可直接伺服，也可以选择用 nginx 代理。
+</p>
+
+</body>
+</html>
