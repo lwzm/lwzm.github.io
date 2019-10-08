@@ -8,15 +8,17 @@
 supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
 
 [unix_http_server]
-file  = etc/.supervisor.sock
+file  = run/supervisor.sock
 chmod = 0766
 
 [supervisord]
-pidfile = etc/.supervisord.pid
-logfile = etc/.supervisord.log
+pidfile = run/supervisord.pid
+logfile = log/supervisord.log
 
 [supervisorctl]
-serverurl = unix://etc/.supervisor.sock
+serverurl    = unix://run/supervisor.sock
+history_file = log/.supervisorctl_history
+
 
 [program:foo]
 command        = cat

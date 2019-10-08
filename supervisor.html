@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<div id="进程管理工具"><h1 id="进程管理工具">进程管理工具</h1></div>
+<div id="进程管理工具"><h1 id="进程管理工具" class="header"><a href="#进程管理工具">进程管理工具</a></h1></div>
 
 <p>
 一般使用 <code>CWD</code> 下的配置 <code>etc/supervisord.conf</code>
@@ -21,15 +21,17 @@
 supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
 
 [unix_http_server]
-file  = etc/.supervisor.sock
+file  = run/supervisor.sock
 chmod = 0766
 
 [supervisord]
-pidfile = etc/.supervisord.pid
-logfile = etc/.supervisord.log
+pidfile = run/supervisord.pid
+logfile = log/supervisord.log
 
 [supervisorctl]
-serverurl = unix://etc/.supervisor.sock
+serverurl    = unix://run/supervisor.sock
+history_file = log/.supervisorctl_history
+
 
 [program:foo]
 command        = cat
