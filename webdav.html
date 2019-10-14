@@ -22,7 +22,7 @@
 </p>
 
 <p>
-协议接口简单，符合我的口味，HTTP <code>GET/PUT</code> 即可完成 *<span id="WebDAV-读/写"></span><strong id="读/写">读/写</strong>* 操作。
+协议接口简单，符合我的口味，HTTP <code>GET/PUT</code> 即可完成 <span id="WebDAV-读/写"></span><strong id="读/写">读/写</strong> 操作。
 </p>
 
 <p>
@@ -31,7 +31,7 @@
 
 <pre sh>
 yum install davfs2
-mount -t davfs https://webdav.tyio.net/ /mnt/dav
+mount -t davfs http://webdav.foo.bar/ /mnt/dav
 </pre>
 
 <p>
@@ -45,21 +45,43 @@ mount -t davfs https://webdav.tyio.net/ /mnt/dav
 https://webdav.tyio.net/ /mnt/dav davfs noauto,user,uid=q 0 0
 </pre>
 
+<p>
+Windows:
+</p>
+
+<pre cmd>
+net use * http://webdav.foo.bar/
+</pre>
 
 <p>
-<code>caddy</code> WebDAV:
+或者使用 <code>WinSCP</code>。
 </p>
+
+
+<div id="WebDAV-部署服务"><h3 id="部署服务" class="header"><a href="#WebDAV-部署服务">部署服务</a></h3></div>
+
+<p>
+使用 <code>caddy</code>:
+</p>
+
 <pre caddy>
-* {
+http://* {
+    #browse
     #basicauth / foo xxxx
     webdav
-    log stderr
+    gzip
+    log / stderr "{when_iso}	{remote}	{method}	{uri}	{proto}	{status}	{size}	{latency}	{&gt;Content-Length}	{&gt;User-Agent}"
 }
 </pre>
 
 <p>
-可直接伺服，也可以选择用 nginx 代理。
+可直接伺服，也可以选择用 nginx 代理，注意配置优化：
 </p>
+
+<pre conf>
+proxy_buffering off;
+proxy_request_buffering off;
+</pre>
 
 </body>
 </html>

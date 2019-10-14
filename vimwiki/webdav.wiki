@@ -6,13 +6,13 @@ https://caddyserver.com/docs/http.webdav
 
 https://blog.sleeplessbeastie.eu/2017/09/04/how-to-mount-webdav-share/
 
-协议接口简单，符合我的口味，HTTP `GET/PUT` 即可完成 **读/写** 操作。
+协议接口简单，符合我的口味，HTTP `GET/PUT` 即可完成 *读/写* 操作。
 
 各操作系统都可以挂载为普通文件系统，如 Linux:
 
 {{{sh
 yum install davfs2
-mount -t davfs https://webdav.tyio.net/ /mnt/dav
+mount -t davfs http://webdav.foo.bar/ /mnt/dav
 }}}
 
 `/etc/davfs2/secrets` 内可选编辑相关账号密码。
@@ -22,14 +22,32 @@ mount -t davfs https://webdav.tyio.net/ /mnt/dav
 https://webdav.tyio.net/ /mnt/dav davfs noauto,user,uid=q 0 0
 }}}
 
+Windows:
 
-`caddy` WebDAV:
+{{{cmd
+net use * http://webdav.foo.bar/
+}}}
+
+或者使用 `WinSCP`。
+
+
+=== 部署服务 ===
+
+使用 `caddy`:
+
 {{{caddy
-* {
+http://* {
+    #browse
     #basicauth / foo xxxx
     webdav
-    log stderr
+    gzip
+    log / stderr "{when_iso}	{remote}	{method}	{uri}	{proto}	{status}	{size}	{latency}	{>Content-Length}	{>User-Agent}"
 }
 }}}
 
-可直接伺服，也可以选择用 nginx 代理。
+可直接伺服，也可以选择用 nginx 代理，注意配置优化：
+
+{{{conf
+proxy_buffering off;
+proxy_request_buffering off;
+}}}

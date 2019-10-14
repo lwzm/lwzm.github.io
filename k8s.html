@@ -14,7 +14,11 @@ learning...
 </p>
 
 <div id="K8S-nginx ingress"><h3 id="nginx ingress" class="header"><a href="#K8S-nginx ingress">nginx ingress</a></h3></div>
-
+<pre yaml>
+    nginx.ingress.kubernetes.io/proxy-body-size: 1000m
+    nginx.ingress.kubernetes.io/proxy-buffering: "off"
+    nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+</pre>
 <p>
 <a href="https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md">https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md</a>
 </p>
