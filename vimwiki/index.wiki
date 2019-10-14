@@ -1,62 +1,63 @@
 %title Wiki
 
-* [[sentry]] 错误收集
-* [[loguru]] logger
-* [[pysnooper]]
-* [[golang]]
-* [[mac]]
-* [[supervisor]]
-* [[selenium]] 桌面浏览器桥梁
-* [[jupyter]]
-* [[crontab]]
-* [[shadowsocks]]
-* [[proxychains]]
-* [[mitmproxy]]
+* [[aliyun]] 使用技巧拾零
 * [[anaconda]]
-* [[timezone]]
+* [[bjoern]] wsgi 容器
+* [[bsddb]]
+* [[cmd.exe]]
+* [[cms]]
 * [[cordova]]
-* [[sqlite]] 拾零
-* [[pytest]] 单元测试
+* [[crontab]]
+* [[cython]]
+* [[dirty]] Linux 脏页
+* [[dnsmasq]]
+* [[docker]]
+* [[falcon]] web 框架
+* [[gogs]]
+* [[golang]]
+* [[gotty]]
+* [[gunicorn]] wsgi 容器
+* [[http2]]
+* [[httpie]] HTTP 命令行客户端
+* [[inotify]] Linux 专用的文件改动监测
+* [[jenkins]]
+* [[jupyter]]
+* [[k8s]]
+* [[loguru]] logger
+* [[mac]]
+* [[mir]]
+* [[mitmproxy]]
+* [[mkswap]] Linux 内存交换文件
+* [[mount]]
+* [[mysql]] 拾零
+* [[ntp]]
+* [[nvim]]
+* [[oss]]
+* [[package.json]]
+* [[pip]]
+* [[ponyorm]]
+* [[posix-message-queue]] 系统自带的消息队列
+* [[postgresql]]
+* [[proxychains]]
 * [[py-spy]]
 * [[pyinstaller]]
-* [[falcon]] web 框架
-* [[bjoern]] wsgi 容器
-* [[gunicorn]] wsgi 容器
-* [[nvim]]
-* [[tldr]] 太长不想看
-* [[inotify]] Linux 专用的文件改动监测
-* [[ssh]] 配置
-* [[usermod]] 用户管理
-* [[postgresql]]
-* [[ponyorm]]
+* [[pysnooper]]
+* [[pytest]] 单元测试
+* [[selenium]] 桌面浏览器桥梁
+* [[sentry]] 错误收集
 * [[setcap]] 非 root 用户程序使用小于 1024 端口
-* [[yum]] 拾零
-* [[taskset]] 限制程序的 CPU 核心使用量
-* [[mkswap]] Linux 内存交换文件
-* [[dirty]] Linux 脏页
-* [[posix-message-queue]] 系统自带的消息队列
-* [[mysql]] 拾零
-* [[gotty]]
-* [[gogs]]
-* [[dnsmasq]]
-* [[aliyun]] 使用技巧拾零
-* [[httpie]] HTTP 命令行客户端
-* [[swagger]]
-* [[zipimport]] Python zipimport
+* [[shadowsocks]]
+* [[sqlite]] 拾零
+* [[ssh]] 配置
+* [[supervisor]]
 * [[svn]]
-* [[package.json]]
-* [[cmd.exe]]
-* [[HTTP2]]
-* [[Cython]]
-* [[oss]]
+* [[swagger]]
+* [[taskset]] 限制程序的 CPU 核心使用量
 * [[termtosvg]]
+* [[timezone]]
+* [[tldr]] 太长不想看
+* [[usermod]] 用户管理
 * [[vscode]]
-* [[pip]]
-* [[mir]]
-* [[docker]]
-* [[ntp]]
-* [[mount]]
-* [[bsddb]]
-* [[cms]]
-* [[jenkins]]
 * [[webdav]]
+* [[yum]] 拾零
+* [[zipimport]] Python zipimport
