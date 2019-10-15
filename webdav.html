@@ -22,11 +22,41 @@
 </p>
 
 <p>
-协议接口简单，符合我的口味，HTTP <code>GET/PUT</code> 即可完成 <span id="WebDAV-读/写"></span><strong id="读/写">读/写</strong> 操作。
+协议接口简单，无需配置，无需挂载，符合我的口味，HTTP <code>GET/PUT</code> 即可完成 <span id="WebDAV-读/写"></span><strong id="读/写">读/写</strong> 操作。
 </p>
 
 <p>
-各操作系统都可以挂载为普通文件系统，如 Linux:
+实际常用就两个方法，<code>curl</code> 描述：
+</p>
+
+<p>
+下载：
+</p>
+
+<pre sh>
+curl http://webdav.server/YOUR/FILE/NAME
+</pre>
+
+<p>
+上传（本质上就是 PUT with raw-file-content)：
+</p>
+
+<pre sh>
+curl -T YOUR-LOCAL-FILE http://webdav.server/YOUR/FILE/NAME
+# or
+curl -X PUT --data-binary @YOUR-LOCAL-FILE http://webdav.server/YOUR/FILE/NAME
+</pre>
+
+<p>
+创建目录，列出目录，删除，重命名等操作，权限控制等，去翻文档。
+</p>
+
+<p>
+<code>Windows/Linux/macOS</code> 皆可直接挂载（不推荐生产环境用此方法）。
+</p>
+
+<p>
+如 Linux:
 </p>
 
 <pre sh>
@@ -61,7 +91,7 @@ net use * http://webdav.foo.bar/
 <div id="WebDAV-部署服务"><h3 id="部署服务" class="header"><a href="#WebDAV-部署服务">部署服务</a></h3></div>
 
 <p>
-使用 <code>caddy</code>:
+若使用 Caddy 作为其服务器，部署简单，单服务实例连续读写性能不输 NFS。性能扩展简单，很容易打满网络与磁盘。
 </p>
 
 <pre caddy>

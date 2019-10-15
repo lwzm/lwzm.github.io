@@ -6,9 +6,29 @@ https://caddyserver.com/docs/http.webdav
 
 https://blog.sleeplessbeastie.eu/2017/09/04/how-to-mount-webdav-share/
 
-协议接口简单，符合我的口味，HTTP `GET/PUT` 即可完成 *读/写* 操作。
+协议接口简单，无需配置，无需挂载，符合我的口味，HTTP `GET/PUT` 即可完成 *读/写* 操作。
 
-各操作系统都可以挂载为普通文件系统，如 Linux:
+实际常用就两个方法，`curl` 描述：
+
+下载：
+
+{{{sh
+curl http://webdav.server/YOUR/FILE/NAME
+}}}
+
+上传（本质上就是 PUT with raw-file-content)：
+
+{{{sh
+curl -T YOUR-LOCAL-FILE http://webdav.server/YOUR/FILE/NAME
+# or
+curl -X PUT --data-binary @YOUR-LOCAL-FILE http://webdav.server/YOUR/FILE/NAME
+}}}
+
+创建目录，列出目录，删除，重命名等操作，权限控制等，去翻文档。
+
+`Windows/Linux/macOS` 皆可直接挂载（不推荐生产环境用此方法）。
+
+如 Linux:
 
 {{{sh
 yum install davfs2
@@ -33,7 +53,7 @@ net use * http://webdav.foo.bar/
 
 === 部署服务 ===
 
-使用 `caddy`:
+若使用 Caddy 作为其服务器，部署简单，单服务实例连续读写性能不输 NFS。性能扩展简单，很容易打满网络与磁盘。
 
 {{{caddy
 http://* {
