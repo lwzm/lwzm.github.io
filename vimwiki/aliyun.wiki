@@ -69,3 +69,30 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHWrD5V10X9SWTYnfIGQcglQmjiCK6KyMDKyTgwb3V
 "\C-p": history-search-backward
 "\C-n": history-search-forward
 }}}
+
+=== NAT ===
+
+有时，我们买的机器没有公网IP，就无法直接访问互联网，这时，应该用 NAT。可以买服务，但是贵，还是自建比较好。
+参考 https://www.cnblogs.com/EasonJim/p/10206743.html 。
+
+例子：
+* `ECS-1` 10.0.0.91 有公网IP
+* `ECS-2` 10.0.0.92
+* `ECS-3` 10.0.0.93
+* ...
+
+`ECS-1`:
+
+{{{sh
+echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf
+sysctl -p
+iptables -t nat -I POSTROUTING -s 10.0.0.0/24 -j SNAT --to-source 10.0.0.91
+}}}
+
+`ECS-2` 等其他主机不用做特殊操作，然后去专有网络里面配置路由表，管理->添加路由表：
+
+{{{sh
+0.0.0.0/0
+}}}
+
+下一跳选择ECS实例，选 `ECS-1`。然后其他机器就可以上网了。

@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<div id="Aliyun"><h1 id="Aliyun">Aliyun</h1></div>
+<div id="Aliyun"><h1 id="Aliyun" class="header"><a href="#Aliyun">Aliyun</a></h1></div>
 
 <p>
 建立专有网络后, 在一台 「头脑机」如 <code>10.0.0.1</code> 上准备好模板文件(例x.tgz), 搭建 http 服务和 dns 服务, 参考 nginx 和 dnsmasq.
@@ -104,6 +104,53 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHWrD5V10X9SWTYnfIGQcglQmjiCK6KyMDKyTgwb3V
 "\C-p": history-search-backward
 "\C-n": history-search-forward
 </pre>
+
+<div id="Aliyun-NAT"><h3 id="NAT" class="header"><a href="#Aliyun-NAT">NAT</a></h3></div>
+
+<p>
+有时，我们买的机器没有公网IP，就无法直接访问互联网，这时，应该用 NAT。可以买服务，但是贵，还是自建比较好。
+参考 <a href="https://www.cnblogs.com/EasonJim/p/10206743.html">https://www.cnblogs.com/EasonJim/p/10206743.html</a> 。
+</p>
+
+<p>
+例子：
+</p>
+<ul>
+<li>
+<code>ECS-1</code> 10.0.0.91 有公网IP
+
+<li>
+<code>ECS-2</code> 10.0.0.92
+
+<li>
+<code>ECS-3</code> 10.0.0.93
+
+<li>
+...
+
+</ul>
+
+<p>
+<code>ECS-1</code>:
+</p>
+
+<pre sh>
+echo "net.ipv4.ip_forward = 1" &gt;&gt; /etc/sysctl.conf
+sysctl -p
+iptables -t nat -I POSTROUTING -s 10.0.0.0/24 -j SNAT --to-source 10.0.0.91
+</pre>
+
+<p>
+<code>ECS-2</code> 等其他主机不用做特殊操作，然后去专有网络里面配置路由表，管理-&gt;添加路由表：
+</p>
+
+<pre sh>
+0.0.0.0/0
+</pre>
+
+<p>
+下一跳选择ECS实例，选 <code>ECS-1</code>。然后其他机器就可以上网了。
+</p>
 
 </body>
 </html>
