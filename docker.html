@@ -35,7 +35,8 @@ CoreOS 需要 SELINUX，不然会有奇怪的错误。
 <pre sh>
 vi /etc/selinux/config 
 
-SELINUX=enforcing
+SELINUX=permissive
+SELINUXTYPE=mcs
 </pre>
 
 <p>
@@ -52,11 +53,30 @@ REBOOT_STRATEGY=off
 systemctl restart update-engine
 </pre>
 
+<p>
+但是后来好像还是自动重启了，干脆关了吧：
+</p>
 
+<pre sh>
+systemctl stop update-engine
+systemctl disable update-engine
+</pre>
+
+<div id="Docker-/var/lib/docker/"><h3 id="/var/lib/docker/" class="header"><a href="#Docker-/var/lib/docker/">/var/lib/docker/</a></h3></div>
+
+<p>
+这是工作目录，images 和 containers 都在这里，可以考虑迁移到速度快容量大的磁盘
+</p>
 
 <div id="Docker-常用工具"><h3 id="常用工具" class="header"><a href="#Docker-常用工具">常用工具</a></h3></div>
 
 <ul>
+<li>
+docker-compose <a href="https://docs.docker.com/compose/install/">https://docs.docker.com/compose/install/</a>
+
+<li>
+toolbox
+
 <li>
 portainer <a href="https://www.portainer.io/installation/">https://www.portainer.io/installation/</a>
 
@@ -282,8 +302,10 @@ services:
       - "443:443"
     depends_on:
       - portainer
-      - gogs
-      - filebrowser
+      - httpbin
+
+  httpbin:
+    image: kennethreitz/httpbin
 
   portainer:
     image: portainer/portainer
@@ -417,6 +439,56 @@ server {
     }
 }
 </pre>
+
+
+<div id="Docker-Swarm"><h3 id="Swarm" class="header"><a href="#Docker-Swarm">Swarm</a></h3></div>
+
+<p>
+<a href="https://docs.docker.com/engine/reference/commandline/swarm/">https://docs.docker.com/engine/reference/commandline/swarm/</a>
+</p>
+
+<p>
+涉及到的子命令：
+</p>
+<ul>
+<li>
+<code>swarm</code>
+
+<li>
+<code>node</code>
+
+<li>
+<code>service</code>
+
+<li>
+<code>stack</code>
+
+</ul>
+
+<ul>
+<li>
+<a href="https://docs.docker.com/engine/swarm/swarm-tutorial/">https://docs.docker.com/engine/swarm/swarm-tutorial/</a>
+
+<li>
+<a href="https://docs.docker.com/engine/swarm/stack-deploy/">https://docs.docker.com/engine/swarm/stack-deploy/</a>
+
+<li>
+<a href="https://docs.docker.com/compose/compose-file/">https://docs.docker.com/compose/compose-file/</a>
+
+<li>
+<a href="https://docker_practice.gitee.io/zh-cn/swarm_mode/stack.html">https://docker_practice.gitee.io/zh-cn/swarm_mode/stack.html</a>
+
+<li>
+<a href="https://blog.fundebug.com/2017/05/08/docker-swarm-suggestion/">https://blog.fundebug.com/2017/05/08/docker-swarm-suggestion/</a>
+
+<li>
+<a href="https://www.bookstack.cn/read/docker-swarm-guides/README.md">https://www.bookstack.cn/read/docker-swarm-guides/README.md</a>
+
+</ul>
+
+<p>
+portainer 和 swarm 对接比较好，大部分信息都能看到，不用 agent 模式，在主 manage 上也可以用。
+</p>
 
 </body>
 </html>

@@ -43,6 +43,7 @@
 * [[pyinstaller]]
 * [[pysnooper]]
 * [[pytest]] 单元测试
+* [[route]]
 * [[selenium]] 桌面浏览器桥梁
 * [[sentry]] 错误收集
 * [[setcap]] 非 root 用户程序使用小于 1024 端口
@@ -59,5 +60,6 @@
 * [[usermod]] 用户管理
 * [[vscode]]
 * [[webdav]]
+* [[wifi]]
 * [[yum]] 拾零
 * [[zipimport]] Python zipimport

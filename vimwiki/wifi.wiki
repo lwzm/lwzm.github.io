@@ -1,0 +1,14 @@
+= WiFi =
+
+=== Multiple Access Points ===
+
+* 尽量用同一型号的设备
+* SSID 一样
+* 加密方式和密码一样
+* 使用不同的信道
+* 考虑到信道干扰的问题，一般用 1, 6, 11 三个信道。
+
+参考：
+https://service.tp-link.com.cn/detail_article_3272.html
+
+{{wifi-channels.png}}

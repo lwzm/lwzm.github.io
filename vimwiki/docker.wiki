@@ -16,7 +16,8 @@ CoreOS 需要 SELINUX，不然会有奇怪的错误。
 {{{sh
 vi /etc/selinux/config 
 
-SELINUX=enforcing
+SELINUX=permissive
+SELINUXTYPE=mcs
 }}}
 
 CoreOS系统经常自动重启，原因是系统自动升级，如不需要自动重启，编辑 `/etc/coreos/update.conf`
@@ -29,10 +30,21 @@ REBOOT_STRATEGY=off
 systemctl restart update-engine
 }}}
 
+但是后来好像还是自动重启了，干脆关了吧：
 
+{{{sh
+systemctl stop update-engine
+systemctl disable update-engine
+}}}
+
+=== /var/lib/docker/ ===
+
+这是工作目录，images 和 containers 都在这里，可以考虑迁移到速度快容量大的磁盘
 
 === 常用工具 ===
 
+* docker-compose https://docs.docker.com/compose/install/
+* toolbox
 * portainer https://www.portainer.io/installation/
 * ctop https://github.com/bcicen/ctop
 
@@ -205,8 +217,10 @@ services:
       - "443:443"
     depends_on:
       - portainer
-      - gogs
-      - filebrowser
+      - httpbin
+
+  httpbin:
+    image: kennethreitz/httpbin
 
   portainer:
     image: portainer/portainer
@@ -338,3 +352,23 @@ server {
     }
 }
 }}}
+
+
+=== Swarm ===
+
+https://docs.docker.com/engine/reference/commandline/swarm/
+
+涉及到的子命令：
+* `swarm`
+* `node`
+* `service`
+* `stack`
+
+* https://docs.docker.com/engine/swarm/swarm-tutorial/
+* https://docs.docker.com/engine/swarm/stack-deploy/
+* https://docs.docker.com/compose/compose-file/
+* https://docker_practice.gitee.io/zh-cn/swarm_mode/stack.html
+* https://blog.fundebug.com/2017/05/08/docker-swarm-suggestion/
+* https://www.bookstack.cn/read/docker-swarm-guides/README.md
+
+portainer 和 swarm 对接比较好，大部分信息都能看到，不用 agent 模式，在主 manage 上也可以用。

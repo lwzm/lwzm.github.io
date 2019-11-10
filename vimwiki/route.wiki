@@ -1,0 +1,41 @@
+= 路由 =
+
+=== 多网卡，同网段 ===
+
+假设
+{{{sh
+192.168.12.11
+192.168.12.12
+192.168.12.13
+192.168.12.14
+
+gw
+192.168.12.1
+}}}
+
+添加路由表
+{{{sh
+$ cat /etc/iproute2/rt_tables
+21 t1
+22 t2
+23 t3
+24 t4
+}}}
+ 
+添加路由信息
+{{{sh
+ip route add 192.168.12.0/24 dev em1 src 192.168.12.11 table t1
+ip route add 192.168.12.0/24 dev em2 src 192.168.12.12 table t2
+ip route add 192.168.12.0/24 dev em3 src 192.168.12.13 table t3
+ip route add 192.168.12.0/24 dev em4 src 192.168.12.14 table t4
+
+ip route add default dev em1 via 192.168.12.1 table t1
+ip route add default dev em2 via 192.168.12.1 table t2
+ip route add default dev em3 via 192.168.12.1 table t3
+ip route add default dev em4 via 192.168.12.1 table t4
+
+ip rule add from 192.168.12.11 table t1
+ip rule add from 192.168.12.12 table t2
+ip rule add from 192.168.12.13 table t3
+ip rule add from 192.168.12.14 table t4
+}}} 
