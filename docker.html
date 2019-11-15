@@ -68,6 +68,15 @@ systemctl disable update-engine
 这是工作目录，images 和 containers 都在这里，可以考虑迁移到速度快容量大的磁盘
 </p>
 
+<div id="Docker-/var/run/docker.sock"><h3 id="/var/run/docker.sock" class="header"><a href="#Docker-/var/run/docker.sock">/var/run/docker.sock</a></h3></div>
+
+<p>
+CentOS 或 Debian 的普通用户使用时，需要 docker 组的权限：
+</p>
+<pre sh>
+usermod -a -G docker YOU
+</pre>
+
 <div id="Docker-常用工具"><h3 id="常用工具" class="header"><a href="#Docker-常用工具">常用工具</a></h3></div>
 
 <ul>
@@ -84,6 +93,15 @@ portainer <a href="https://www.portainer.io/installation/">https://www.portainer
 ctop <a href="https://github.com/bcicen/ctop">https://github.com/bcicen/ctop</a>
 
 </ul>
+
+<pre sh>
+curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+# https://github.com/bcicen/ctop/releases
+wget https://github.com/bcicen/ctop/releases/download/v0.7.2/ctop-0.7.2-linux-amd64 -O /usr/local/bin/ctop
+
+chmod +x /usr/local/bin/*
+</pre>
 
 <div id="Docker-基础镜像"><h3 id="基础镜像" class="header"><a href="#Docker-基础镜像">基础镜像</a></h3></div>
 

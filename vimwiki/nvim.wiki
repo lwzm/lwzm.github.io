@@ -1,6 +1,11 @@
 = neovim =
 
+下载
+{{{text
+https://github.com/neovim/neovim/releases
+}}}
+
 添加 Python 支持
-{{{
+{{{sh
 pip install pynvim rope
 }}}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>debian</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<div id="Debian"><h1 id="Debian" class="header"><a href="#Debian">Debian</a></h1></div>
+
+<p>
+locale 有时会有问题，编辑 <code>/etc/default/locale</code>：
+</p>
+
+<pre sh>
+LANG="en_US.UTF-8"
+LANGUAGE="en_US.UTF-8"
+LC_CTYPE="en_US.UTF-8"
+LC_ALL="en_US.UTF-8"`
+</pre>
+
+<div id="Debian-使用 stable 软件包"><h3 id="使用 stable 软件包" class="header"><a href="#Debian-使用 stable 软件包">使用 stable 软件包</a></h3></div>
+
+<pre sh>
+echo 'deb http://ftp.debian.org/debian stable main' &gt;&gt;/etc/apt/sources.list
+apt update
+apt -t stable install XXX...
+</pre>
+
+</body>
+</html>

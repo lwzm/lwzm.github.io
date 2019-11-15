@@ -9,6 +9,7 @@
 * [[cordova]]
 * [[crontab]]
 * [[cython]]
+* [[debian]]
 * [[dirty]] Linux 脏页
 * [[dnsmasq]]
 * [[docker]]
@@ -31,7 +32,7 @@
 * [[mount]]
 * [[mysql]] 拾零
 * [[ntp]]
-* [[nvim]]
+* [[nvim]] neovim
 * [[oss]]
 * [[package.json]]
 * [[pip]]

@@ -33,12 +33,13 @@ umask 027
 把用户 q 加到 wheel 组里面, 因为 CentOS 的 wheel 组默认可以 sudo 
 {{{
 usermod -a -G wheel q
+usermod -a -G sudo q  # debian
 }}}
 
 
 批量操作
 {{{
-adduser q && yes xxxxxx | passwd q && usermod -a -G wheel q
+useradd q && yes xxxxxx | passwd q && usermod -a -G wheel q
 
 usermod -a -G adm q
 

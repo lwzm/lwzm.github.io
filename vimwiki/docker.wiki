@@ -41,12 +41,28 @@ systemctl disable update-engine
 
 这是工作目录，images 和 containers 都在这里，可以考虑迁移到速度快容量大的磁盘
 
+=== /var/run/docker.sock ===
+
+CentOS 或 Debian 的普通用户使用时，需要 docker 组的权限：
+{{{sh
+usermod -a -G docker YOU
+}}}
+
 === 常用工具 ===
 
 * docker-compose https://docs.docker.com/compose/install/
 * toolbox
 * portainer https://www.portainer.io/installation/
 * ctop https://github.com/bcicen/ctop
+
+{{{sh
+curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+# https://github.com/bcicen/ctop/releases
+wget https://github.com/bcicen/ctop/releases/download/v0.7.2/ctop-0.7.2-linux-amd64 -O /usr/local/bin/ctop
+
+chmod +x /usr/local/bin/*
+}}}
 
 === 基础镜像 ===
 

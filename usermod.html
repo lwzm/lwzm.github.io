@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<div id="生产环境用户管理"><h1 id="生产环境用户管理">生产环境用户管理</h1></div>
+<div id="生产环境用户管理"><h1 id="生产环境用户管理" class="header"><a href="#生产环境用户管理">生产环境用户管理</a></h1></div>
 
 
 <p>
@@ -54,6 +54,7 @@ umask 027
 </p>
 <pre>
 usermod -a -G wheel q
+usermod -a -G sudo q  # debian
 </pre>
 
 
@@ -61,7 +62,7 @@ usermod -a -G wheel q
 批量操作
 </p>
 <pre>
-adduser q &amp;&amp; yes xxxxxx | passwd q &amp;&amp; usermod -a -G wheel q
+useradd q &amp;&amp; yes xxxxxx | passwd q &amp;&amp; usermod -a -G wheel q
 
 usermod -a -G adm q
 

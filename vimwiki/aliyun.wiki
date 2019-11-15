@@ -96,3 +96,10 @@ iptables -t nat -I POSTROUTING -s 10.0.0.0/24 -j SNAT --to-source 10.0.0.91
 }}}
 
 下一跳选择ECS实例，选 `ECS-1`。然后其他机器就可以上网了。
+
+=== 卸载云盾 ===
+
+{{{sh
+systemctl stop aliyun
+/etc/init.d/aegis uninstall
+}}}
