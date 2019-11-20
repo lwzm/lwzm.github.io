@@ -47,31 +47,6 @@ from="*.2.3,111.111.*,10.0.0.0/8" ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHWrD5V1
 一般跳板机保留所有服务器的 root 权限，并执行这种批量部署脚本。
 参考：https://github.com/lwzm/deploy-ssh-keys
 
-{{{py
-#!/usr/bin/env python3
-
-import yaml
-
-
-tpl = (
-    "ssh {host} "
-    "'cd ~{user} && echo ~{user}/.ssh; ( mkdir -p .ssh && chmod 700 .ssh && chown {user}:{user} .ssh &&  cat >>.ssh/authorized_keys)' <<EOF"
-).format
-
-keys = yaml.safe_load(open('keys.yaml'))
-hosts = yaml.safe_load(open('hosts.yaml'))
-
-
-for host, users in hosts.items():
-    for user, lst in users.items():
-        print(tpl(host=host, user=user))
-        for i in lst:
-            s = keys[i].strip()
-            assert "EOF" not in s
-            print(s)
-        print("EOF")
-}}}
-
 
 === sshfs ===
 

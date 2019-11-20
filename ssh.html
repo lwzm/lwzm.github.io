@@ -78,31 +78,6 @@ from="*.2.3,111.111.*,10.0.0.0/8" ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHWrD5V1
 参考：<a href="https://github.com/lwzm/deploy-ssh-keys">https://github.com/lwzm/deploy-ssh-keys</a>
 </p>
 
-<pre py>
-#!/usr/bin/env python3
-
-import yaml
-
-
-tpl = (
-    "ssh {host} "
-    "'cd ~{user} &amp;&amp; echo ~{user}/.ssh; ( mkdir -p .ssh &amp;&amp; chmod 700 .ssh &amp;&amp; chown {user}:{user} .ssh &amp;&amp;  cat &gt;&gt;.ssh/authorized_keys)' &lt;&lt;EOF"
-).format
-
-keys = yaml.safe_load(open('keys.yaml'))
-hosts = yaml.safe_load(open('hosts.yaml'))
-
-
-for host, users in hosts.items():
-    for user, lst in users.items():
-        print(tpl(host=host, user=user))
-        for i in lst:
-            s = keys[i].strip()
-            assert "EOF" not in s
-            print(s)
-        print("EOF")
-</pre>
-
 
 <div id="SSH-sshfs"><h3 id="sshfs" class="header"><a href="#SSH-sshfs">sshfs</a></h3></div>
 

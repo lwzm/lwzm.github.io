@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>vpn</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<p>
+记录如何快速搭建一个 VPN
+</p>
+
+<p>
+当然用 docker。
+</p>
+
+<pre sh>
+docker pull fcojean/l2tp-ipsec-vpn-server
+</pre>
+
+<p>
+参考文档安装即可：<a href="https://hub.docker.com/r/fcojean/l2tp-ipsec-vpn-server">https://hub.docker.com/r/fcojean/l2tp-ipsec-vpn-server</a> 。
+它帮你把 <code>/etc/sysctl.conf</code> 什么的都配好了，只要注意给特殊权限就能启动，很重要的一点是，宿主机需要：
+</p>
+<pre sh>
+modprobe af_key
+</pre>
+
+<p>
+docker-compose 例子：
+</p>
+
+<pre yaml>
+  vpn:
+    image: fcojean/l2tp-ipsec-vpn-server
+    privileged: true
+    environment:
+      VPN_IPSEC_PSK: x
+      VPN_USER_CREDENTIAL_LIST: |
+        [
+          {"login": "q", "password": "1"},
+          {"login": "w", "password": "2"}
+        ]
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /lib/modules:/lib/modules:ro
+    ports: 
+      - 500:500/udp
+      - 4500:4500/udp
+</pre>
+
+<p>
+macOS 可以用，连上后，可选发送所有流量，也可自定义路由：
+</p>
+<pre sh>
+route add 10.1.0.0/24 192.168.42.1
+route delete 10.1.0.0/24
+</pre>
+
+</body>
+</html>

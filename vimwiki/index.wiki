@@ -59,6 +59,7 @@
 * [[timezone]]
 * [[tldr]] 太长不想看
 * [[usermod]] 用户管理
+* [[vpn]]
 * [[vscode]]
 * [[webdav]]
 * [[wifi]]
