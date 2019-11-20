@@ -7,13 +7,13 @@
 </head>
 <body>
 
-<div id="用 selenium 调用桌面浏览器"><h1 id="用 selenium 调用桌面浏览器">用 selenium 调用桌面浏览器</h1></div>
+<div id="用 selenium 调用桌面浏览器"><h1 id="用 selenium 调用桌面浏览器" class="header"><a href="#用 selenium 调用桌面浏览器">用 selenium 调用桌面浏览器</a></h1></div>
 
 <p>
 要配合 headless browser 来使用，<code>PhantomJS</code> 比较老了就不说了，记录一下 <code>FireFox</code> <code>Chrome</code>：
 </p>
 
-<div id="用 selenium 调用桌面浏览器-FireFox"><h3 id="FireFox">FireFox</h3></div>
+<div id="用 selenium 调用桌面浏览器-FireFox"><h3 id="FireFox" class="header"><a href="#用 selenium 调用桌面浏览器-FireFox">FireFox</a></h3></div>
 <pre sh>
 yum install gtk3 libXt
 # 去官网找 Linux 版本
@@ -22,7 +22,7 @@ wget https://download-ssl.firefox.com.cn/releases/firefox/63.0/zh-CN/Firefox-lat
 wget https://github.com/mozilla/geckodriver/releases/download/v0.23.0/geckodriver-v0.23.0-linux64.tar.gz
 </pre>
 
-<div id="用 selenium 调用桌面浏览器-Chrome"><h3 id="Chrome">Chrome</h3></div>
+<div id="用 selenium 调用桌面浏览器-Chrome"><h3 id="Chrome" class="header"><a href="#用 selenium 调用桌面浏览器-Chrome">Chrome</a></h3></div>
 <pre sh>
 # 借助 puppeteer
 npm i -g puppeteer
@@ -31,7 +31,7 @@ ln -s ~/node-v8.12.0-linux-x64/lib/node_modules/puppeteer/.local-chromium/linux-
 wget https://chromedriver.storage.googleapis.com/2.43/chromedriver_linux64.zip
 </pre>
 
-<div id="用 selenium 调用桌面浏览器-中文字体"><h3 id="中文字体">中文字体</h3></div>
+<div id="用 selenium 调用桌面浏览器-中文字体"><h3 id="中文字体" class="header"><a href="#用 selenium 调用桌面浏览器-中文字体">中文字体</a></h3></div>
 <pre sh>
 yum search fonts
 yum install -y wqy-microhei-fonts
@@ -39,7 +39,7 @@ yum install -y bitmap-fangsongti-fonts
 yum install -y fontconfig
 </pre>
   
-<div id="用 selenium 调用桌面浏览器-部分例子"><h3 id="部分例子">部分例子</h3></div>
+<div id="用 selenium 调用桌面浏览器-部分例子"><h3 id="部分例子" class="header"><a href="#用 selenium 调用桌面浏览器-部分例子">部分例子</a></h3></div>
 <pre python>
 from selenium import webdriver
 
@@ -90,7 +90,7 @@ options.add_argument('--no-sandbox')
 browser = webdriver.Chrome(options=options)
 </pre>
 
-<div id="用 selenium 调用桌面浏览器-清理孤儿浏览器进程"><h3 id="清理孤儿浏览器进程">清理孤儿浏览器进程</h3></div>
+<div id="用 selenium 调用桌面浏览器-清理孤儿浏览器进程"><h3 id="清理孤儿浏览器进程" class="header"><a href="#用 selenium 调用桌面浏览器-清理孤儿浏览器进程">清理孤儿浏览器进程</a></h3></div>
 
 <pre sh>
 function clean_orphan() {
