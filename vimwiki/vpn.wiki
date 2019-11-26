@@ -38,3 +38,17 @@ macOS 可以用，连上后，可选发送所有流量，也可自定义路由�
 route add 10.1.0.0/24 192.168.42.1
 route delete 10.1.0.0/24
 }}}
+
+Linux：
+{{{sh
+ipsec up myvpn
+echo "c myvpn" > /var/run/xl2tpd/l2tp-control
+
+ip route add 10.1.0.0/24 via 192.168.42.1
+ip route del 10.1.0.0/24
+
+echo "d myvpn" > /var/run/xl2tpd/l2tp-control
+ipsec down myvpn
+}}}
+
+参考：https://github.com/hwdsl2/setup-ipsec-vpn/blob/master/docs/clients-zh.md

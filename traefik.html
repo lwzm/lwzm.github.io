@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>traefik</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<p>
+Traefik
+</p>
+
+<p>
+反向代理服务器，Docker 的好搭档，<a href="https://docs.traefik.io/">https://docs.traefik.io/</a> 。
+</p>
+
+<p>
+有它了就可以自动发现 docker 中的各服务，不用自己搞 nginx 然后哼哧哼哧手动生成配置了。
+</p>
+
+<p>
+这里使用 yaml 格式的配置文件举例，功能包括：
+</p>
+
+<ul>
+<li>
+服务自动发现和不启用服务发现
+
+<li>
+启用 HTTPS 
+
+<li>
+HTTP 自动跳转 HTTPS
+
+<li>
+gzip
+
+<li>
+文件配置与 Docker labels 配置
+
+</ul>
+
+<div id="docker-compose.yaml"><h4 id="docker-compose.yaml" class="header"><a href="#docker-compose.yaml">docker-compose.yaml</a></h4></div>
+
+<pre yaml>
+version: '3'
+services:
+
+  traefik:
+    image: traefik
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./certs:/home/certs
+      - ./traefik:/etc/traefik
+    ports: 
+      - 80:80
+      - 443:443
+    labels:
+      - traefik.http.services.t.loadbalancer.server.port=8080
+      - traefik.http.routers.t.middlewares=redirect-https@file
+      - traefik.http.routers.ts.middlewares=gz@file
+      - traefik.http.routers.ts.tls=true
+
+  whoami:
+    image: containous/whoami
+    labels:
+      - traefik.http.routers.w.rule=Host(`whoami.fufu.fun`)
+      - traefik.http.routers.w.middlewares=redirect-https@file
+      - traefik.http.routers.ws.rule=Host(`whoami.fufu.fun`)
+      - traefik.http.routers.ws.middlewares=gz@file
+      - traefik.http.routers.ws.tls=true
+
+  sss:
+    image: shadowsocks/shadowsocks-libev
+    environment:
+      PASSWORD: xxxx
+      METHOD: aes-256-cfb
+    ports: 
+      - 127.1.1.1:58388:8388
+    labels:
+      - traefik.enable=false
+</pre>
+
+<div id="traefik/traefik.yaml"><h4 id="traefik/traefik.yaml" class="header"><a href="#traefik/traefik.yaml">traefik/traefik.yaml</a></h4></div>
+
+<pre yaml>
+entryPoints:
+  http:
+    address: ":80"
+
+  https:
+    address: ":443"
+
+api:
+  insecure: true
+
+providers:
+  file:
+    filename: /etc/traefik/dynamic.yaml
+    watch: true
+  docker:
+    defaultRule: "Host(`{{ normalize .Name }}.fufu.fun`)"
+    swarmMode: false
+</pre>
+
+<div id="traefik/traefik.yaml"><h4 id="traefik/traefik.yaml" class="header"><a href="#traefik/traefik.yaml">traefik/traefik.yaml</a></h4></div>
+
+<pre yaml>
+tls:
+  certificates:
+    - certFile: /home/certs/fufu.fun.crt
+      keyFile:  /home/certs/fufu.fun.key
+
+http:
+  middlewares:
+    redirect-https:
+      redirectScheme:
+        scheme: https
+    gz:
+      compress: {}
+</pre>
+
+<div id="参考"><h3 id="参考" class="header"><a href="#参考">参考</a></h3></div>
+
+<ul>
+<li>
+<a href="https://docs.traefik.io/getting-started/configuration-overview/">https://docs.traefik.io/getting-started/configuration-overview/</a>
+
+<li>
+<a href="https://docs.traefik.io/reference/dynamic-configuration/docker/">https://docs.traefik.io/reference/dynamic-configuration/docker/</a>
+
+<li>
+<a href="https://docs.traefik.io/https/tls/">https://docs.traefik.io/https/tls/</a>
+
+</ul>
+
+</body>
+</html>

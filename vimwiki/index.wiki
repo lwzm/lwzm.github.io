@@ -58,6 +58,7 @@
 * [[termtosvg]]
 * [[timezone]]
 * [[tldr]] 太长不想看
+* [[traefik]]
 * [[usermod]] 用户管理
 * [[vpn]]
 * [[vscode]]
