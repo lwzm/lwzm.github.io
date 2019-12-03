@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>unicode</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<div id="Unicode 与 UTF-8"><h1 id="Unicode 与 UTF-8" class="header"><a href="#Unicode 与 UTF-8">Unicode 与 UTF-8</a></h1></div>
+
+<p>
+Unicode 是抽象的数字编码，UTF-8 是具体的字节编码。
+</p>
+
+<ul>
+<li>
+<a href="https://zh.wikipedia.org/wiki/Unicode">https://zh.wikipedia.org/wiki/Unicode</a>
+
+<li>
+<a href="https://zh.wikipedia.org/wiki/UTF-8">https://zh.wikipedia.org/wiki/UTF-8</a>
+
+<li>
+<a href="https://unicode-table.com/">https://unicode-table.com/</a>
+
+</ul>
+
+<div id="Unicode 与 UTF-8-emoji 例子 😋"><h3 id="emoji 例子 😋" class="header"><a href="#Unicode 与 UTF-8-emoji 例子 😋">emoji 例子 😋</a></h3></div>
+
+<p>
+Python:
+</p>
+
+<pre py>
+&gt;&gt;&gt; s = '😋'
+&gt;&gt;&gt; s.encode()
+b'\xf0\x9f\x98\x8b'
+&gt;&gt;&gt; import json
+&gt;&gt;&gt; json.dumps(s)
+'"\\ud83d\\ude0b"'
+&gt;&gt;&gt; ord(s)
+128523
+&gt;&gt;&gt; len(s)
+1
+</pre>
+
+<p>
+一个字符，在内存中，普通 ascii 字符占用 1 字节，普通汉字占用 2 字节，emoji 字符占用 4 字节，虽然他们都是长度 1。
+</p>
+
+<p>
+一个字符串包含多种字符时，占用内存为 最占内存的字符 x 长度，<code>"s" * 1024</code> 占 1K 内存，<code>"s" * 1023 + "😋"</code> 占 4k 内存。
+</p>
+
+
+<p>
+JavaScript:
+</p>
+
+<pre js>
+&gt; const s = '😋'
+&gt; s.length
+2
+&gt; (s + 'x').length
+3
+&gt; (s + '中').length
+3
+&gt; new TextEncoder().encode(s)
+Uint8Array [ 240, 159, 152, 139 ]
+&gt; new TextEncoder().encode('中')
+Uint8Array [ 228, 184, 173 ]
+
+&gt; const n = 1024*1024*100
+&gt; const ss = '😋'.repeat(n)
+&gt; ss.indexOf('x')  // active this string
+-1
+// memory usage 400M
+
+&gt; const ss = '中'.repeat(n); ss.indexOf('x')
+// memory usage 200M
+
+&gt; const ss = 's'.repeat(n); ss.indexOf('x')
+// memory usage 100M
+
+&gt; const ss = 's'.repeat(n) + '中'.repeat(n); ss.indexOf('x')
+// memory usage 400M, is 200M + 200M, not 100M + 200M
+
+&gt; const ss = 's'.repeat(n) + '😋'.repeat(n);; ss.indexOf('x')
+// memory usage 600M, is 200M + 2 * 200M
+</pre>
+
+<p>
+JavaScript 的内存使用情况与 Python 类似，有对普通纯 ascii 字符串做优化。
+<code>emoji.length == 2</code>，因为字符在内存中使用 UTF-16 编码存放，<code>.length</code> 返回的是 UTF-16 的单元数量。emoji 被认为是 2 单元占 4 字节内存。
+</p>
+
+</body>
+</html>
