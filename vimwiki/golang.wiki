@@ -6,6 +6,18 @@ https://github.com/microsoft/vscode-go
 
 https://github.com/Microsoft/vscode-go/wiki/Go-with-VS-Code-FAQ-and-Troubleshooting
 
-== Proxy ==
+=== Proxy ===
 
 https://goproxy.io/zh/
+
+
+=== Extentions ===
+
+* Settings Sync 同步我的配置到 gist
+* vim
+* trailing-spaces
+* ms-python
+* EditorConfig
+* auto-close-tag
+* auto-rename-tag
+* ...
