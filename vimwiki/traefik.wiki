@@ -12,10 +12,20 @@ Traefik
 * gzip
 * 文件配置与 Docker labels 配置
 
+配置举例，注意这里用了两个 compose，通过 networks 联通起来，traefik 应当有所有服务的网络联通能力，不然它发现了服务也会 Gateway timeout 错误。
+
 ==== docker-compose.yaml ====
 
 {{{yaml
 version: '3'
+
+networks:
+  n1:
+    external:
+      name: t_n1
+  t_n2:
+    external: true
+
 services:
 
   traefik:
@@ -33,6 +43,10 @@ services:
       - traefik.http.routers.t.middlewares=redirect-https@file
       - traefik.http.routers.ts.middlewares=gz@file
       - traefik.http.routers.ts.tls=true
+    networks:
+      - default
+      - n1
+      - t_n2
 
   whoami:
     image: containous/whoami
@@ -52,6 +66,33 @@ services:
       - 127.1.1.1:58388:8388
     labels:
       - traefik.enable=false
+}}}
+
+（配置的开头展示了定义外部网络的两种方法）
+
+==== t/docker-compose.yaml ====
+
+{{{yaml
+version: '3'
+
+networks:
+  n1: {}
+  n2: {}
+
+services:
+  s1:
+    image: nginx:alpine
+    networks:
+      - n1
+  s2:
+    image: nginx:alpine
+    networks:
+      - n2
+  s3:
+    image: nginx:alpine
+    networks:
+      - n1
+      - n2
 }}}
 
 ==== traefik/traefik.yaml ====
