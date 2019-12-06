@@ -107,6 +107,9 @@ chmod +x /usr/local/bin/*
 
 <ul>
 <li>
+busybox
+
+<li>
 alpine
 
 <li>
@@ -119,53 +122,23 @@ debian:stretch-slim
 
 <div id="Docker-常用容器"><h3 id="常用容器" class="header"><a href="#Docker-常用容器">常用容器</a></h3></div>
 
-<p>
-portainer:
-</p>
+<ul>
+<li>
+htop <code>docker run -it --name=htop --pid=host lwzm/htop</code>
 
-<pre sh>
-docker volume create portainer_data
-docker run -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
-</pre>
+<li>
+portainer
 
-<p>
-htop:
-</p>
+<li>
+nginx
 
-<pre sh>
-docker run -it --name=htop --pid=host jonbaldie/htop
-docker run -it --rm --pid=container:XXX jonbaldie/htop
-</pre>
+</ul>
+
+
+<div id="Docker-/dev/mqueue:"><h3 id="/dev/mqueue:" class="header"><a href="#Docker-/dev/mqueue:">/dev/mqueue:</a></h3></div>
 
 <p>
-ctop:
-</p>
-
-<pre sh>
-docker run -it -v /var/run/docker.sock:/var/run/docker.sock:ro quay.io/vektorlab/ctop
-</pre>
-
-<p>
-nginx:
-</p>
-
-<pre sh>
-docker volume create www
-docker run -p 8080:80 -v www:/usr/share/nginx/html:ro -d nginx:alpine
-</pre>
-
-<p>
-gogs:
-</p>
-
-<pre sh>
-docker pull gogs/gogs:0.11.86
-docker volume create gogs
-docker run -p 22:22 -p 3000:3000 gogs/gogs:0.11.86
-</pre>
-
-<p>
-/dev/mqueue:
+option: <code>--ipc</code>
 </p>
 
 <pre sh>
@@ -181,6 +154,7 @@ docker run -it --ipc=container:main alpine sh
 sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
 apk add --no-cache gcc musl-dev
 </pre>
+
 
 <div id="Docker-/opt/bin"><h3 id="/opt/bin" class="header"><a href="#Docker-/opt/bin">/opt/bin</a></h3></div>
 
@@ -297,169 +271,13 @@ CMD /app/t
 上述方法打出来的镜像，可比肩 Golang，但是对代码质量和系统细节的掌控的要求比较高。
 </p>
 
-<div id="Docker-docker compose"><h3 id="docker compose" class="header"><a href="#Docker-docker compose">docker compose</a></h3></div>
+<div id="Docker-compose"><h3 id="compose" class="header"><a href="#Docker-compose">compose</a></h3></div>
 
 <p>
-把 nginx 和其它几个 web 服务放一起，例子：
+<a href="docker-compose.html">docker-compose</a>
 </p>
 
-<pre yaml>
-
-version: '3'
-services:
-
-  nginx:
-    image: nginx:alpine
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro
-      - ./nginx-conf.d:/etc/nginx/conf.d:ro
-      - ./log:/var/log
-    ports: 
-      - "80:80"
-      - "443:443"
-    depends_on:
-      - portainer
-      - httpbin
-
-  httpbin:
-    image: kennethreitz/httpbin
-
-  portainer:
-    image: portainer/portainer
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./portainer:/data
-
-  gogs:
-    image: gogs/gogs:0.11.86
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ./gogs:/data
-    ports: 
-      - "22:22"
-
-  filebrowser:
-    image: filebrowser/filebrowser
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ./filebrowser/srv:/srv
-      - ./filebrowser/database.db:/database.db
-
-  postgres:
-    image: postgres:alpine
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ./postgres:/var/lib/postgresql/data
-
-  postgrest:
-    image: postgrest
-    ports: 
-      - 3000:3000
-    depends_on:
-      - postgres
-
-  redis:
-    image: redis:alpine
-    volumes:
-      - ./redis:/data
-    ports: 
-      - "6379:6379"
-
-  blueocean:
-    image: jenkinsci/blueocean
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ./blueocean:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock
-
-  ldap:
-    image: osixia/openldap
-    hostname: ldap
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ./ldap/slapd.d:/etc/ldap/slapd.d
-      - ./ldap/ldap:/var/lib/ldap  
-    ports: 
-      - 389:389
-      - 636:636
-
-  ldap-admin:
-    image: osixia/phpldapadmin
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-    environment:
-      PHPLDAPADMIN_HTTPS: "false"
-      PHPLDAPADMIN_LDAP_HOSTS: ldap
-
-  nb:
-    image: lwzm/gophernotes
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ./gophernotes:/home
-
-  rancher:
-    image: rancher/rancher:stable
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ./rancher:/var/lib/rancher
-  
-</pre>
-
-
-<p>
-附 nginx 相关配置：
-</p>
-
-<pre conf>
-upstream gogs {
-    server gogs:3000;
-    keepalive 64;
-}
-
-server {
-    server_name  git.* gogs.*;
-    #listen       80;
-    listen       443 ssl http2;
-
-    location / {
-        proxy_pass http://gogs;
-    }
-}
-</pre>
-
-<pre conf>
-upstream portainer {
-    server portainer:9000;
-    keepalive 64;
-}
-
-server {
-    server_name  portainer.*;
-    #listen       80;
-    listen       443 ssl http2;
-
-    # for websocket, do not ignore any line
-    proxy_http_version 1.1;
-    proxy_connect_timeout 2;
-    proxy_read_timeout 300;
-    proxy_set_header Host $host;
-    proxy_set_header X-Forwarded-Proto $scheme;
-    proxy_set_header X-Forwarded-Port $server_port;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header Connection "upgrade";
-    proxy_set_header Upgrade $http_upgrade;
-
-    location / {
-        proxy_pass http://portainer;
-    }
-}
-</pre>
-
-
-<div id="Docker-Swarm"><h3 id="Swarm" class="header"><a href="#Docker-Swarm">Swarm</a></h3></div>
+<div id="Docker-swarm"><h3 id="swarm" class="header"><a href="#Docker-swarm">swarm</a></h3></div>
 
 <p>
 <a href="https://docs.docker.com/engine/reference/commandline/swarm/">https://docs.docker.com/engine/reference/commandline/swarm/</a>

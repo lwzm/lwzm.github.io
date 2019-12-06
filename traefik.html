@@ -89,7 +89,7 @@ services:
       - traefik.http.routers.w.rule=Host(`whoami.fufu.fun`)
       - traefik.http.routers.w.middlewares=gz@file
       - traefik.http.routers.w.tls=true
-  
+
   nb:
     image: lwzm/gophernotes
     volumes:
