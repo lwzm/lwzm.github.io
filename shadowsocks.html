@@ -32,6 +32,17 @@ ssserver -s 127.1.1.1 -p 58388 -k YOUR-SECRET
 shadowsocks-local -s localhost -p 58388 -k YOUR-SECRET -b localhost -l 1080
 </pre>
 
+<div id="proxy, socks5, shadowsocks-docker"><h3 id="docker" class="header"><a href="#proxy, socks5, shadowsocks-docker">docker</a></h3></div>
+
+<pre sh>
+
+# sss
+docker run -e PASSWORD=xxx -e METHOD=aes-256-cfb -p 8388:8388 shadowsocks/shadowsocks-libev
+
+# ssl
+docker run -p 1080:1080 shadowsocks/shadowsocks-libev ss-local -s X.server -p 8388 -b 0.0.0.0 -l 1080 -m aes-256-cfb -k xxx
+</pre>
+
 <div id="proxy, socks5, shadowsocks-privoxy"><h3 id="privoxy" class="header"><a href="#proxy, socks5, shadowsocks-privoxy">privoxy</a></h3></div>
 
 <pre config>
