@@ -6,6 +6,15 @@ Unicode 是抽象的数字编码，UTF-8 是具体的字节编码。
 * https://zh.wikipedia.org/wiki/UTF-8
 * https://unicode-table.com/
 
+| 第一个字节 | 第二个字节 | 第三个字节 | 第四个字节 | 用于实际编码的 bit 数量 | 能表示的最大值 |
+| -          | -          | -          | -          | -                       | -              |
+| 0xxxxxxx   |            |            |            | 7                       | 127            |
+| 110xxxxx   | 10xxxxxx   |            |            | 11                      | 2047           |
+| 1110xxxx   | 10xxxxxx   | 10xxxxxx   |            | 16                      | 65535          |
+| 11110xxx   | 10xxxxxx   | 10xxxxxx   | 10xxxxxx   | 21                      | 1114111        |
+
+Python 中，可以用 `\u` 或 `\U` 前缀表示 Unicode 字符, 如 `'\U0010ffff', '\uffff', '\U00000042', '\u0042'`。
+
 === emoji 例子 😋 ===
 
 Python:
