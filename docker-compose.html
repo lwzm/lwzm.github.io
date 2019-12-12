@@ -10,6 +10,10 @@
 <div id="docker compose"><h1 id="docker compose" class="header"><a href="#docker compose">docker compose</a></h1></div>
 
 <p>
+compose 管理下的应用，可以通过域名访问，同一 network  可以直接用 name，不同 networks 可以用 name.network 的方式。
+</p>
+
+<p>
 把 nginx 和其它几个 web 服务放一起，例子：
 </p>
 
@@ -291,7 +295,7 @@ services          # 定义所有的 service 信息, services 下面的第一级�
 
     healthcheck           # v2.1 以上版本, 定义容器健康状态检查, 类似于 Dockerfile 的 HEALTHCHECK 指令
         test                  # 检查容器检查状态的命令, 该选项必须是一个字符串或者列表, 第一项必须是 NONE, CMD 或 CMD-SHELL, 如果其是一个字符串则相当于 CMD-SHELL 加该字符串
-            NONE                  # 禁用容器的健康ç¶态检测
+            NONE                  # 禁用容器的健康检测
             CMD                   # test: ["CMD", "curl", "-f", "http://localhost"]
             CMD-SHELL             # test: ["CMD-SHELL", "curl -f http://localhost || exit 1"] 或者　test: curl -f https://localhost || exit 1
         interval: 1m30s       # 每次检查之间的间隔时间
@@ -433,7 +437,7 @@ networks          # 定义 networks 信息
         host                  # 共享主机网络名称空间(等同于 docker run --net=host)
         none                  # 等同于 docker run --net=none
     driver_opts           # v3.2以上版本, 传递给驱动程序的参数, 这些参数取决于驱动程序
-    attachable            # driver 为 overlay 时使用, 如果设置为 true 则除了服务之å¤，独立容器也可以附加到该网络; 如果独立容器连接到该网络，则它可以与其他 Docker 守护进程连接到的该网络的服务和独立容器进行通信
+    attachable            # driver 为 overlay 时使用, 如果设置为 true 则除了服务之间，独立容器也可以附加到该网络; 如果独立容器连接到该网络，则它可以与其他 Docker 守护进程连接到的该网络的服务和独立容器进行通信
     ipam                  # 自定义 IPAM 配置. 这是一个具有多个属性的对象, 每个属性都是可选的
         driver                # IPAM 驱动程序, bridge 或者 default
         config                # 配置项

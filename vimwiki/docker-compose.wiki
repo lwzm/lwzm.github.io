@@ -1,5 +1,7 @@
 = docker compose =
 
+compose 管理下的应用，可以通过域名访问，同一 network  可以直接用 name，不同 networks 可以用 name.network 的方式。
+
 把 nginx 和其它几个 web 服务放一起，例子：
 
 {{{yaml
