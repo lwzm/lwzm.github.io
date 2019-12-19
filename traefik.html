@@ -39,10 +39,17 @@ gzip
 <li>
 文件配置与 Docker labels 配置
 
+<li>
+自动申请 https 证书
+
 </ul>
 
 <p>
 配置举例，注意这里用了两个 compose，通过 networks 联通起来，traefik 应当有所有服务的网络联通能力，不然它发现了服务也会 Gateway timeout 错误。
+</p>
+
+<p>
+使用 dnspod 做 challenge, 需要为 traefik 配置环境变量 DNSPOD_API_KEY。
 </p>
 
 <div id="docker-compose.yaml"><h4 id="docker-compose.yaml" class="header"><a href="#docker-compose.yaml">docker-compose.yaml</a></h4></div>
@@ -64,11 +71,13 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./certs:/home/certs
+      - ./certs/acme.json:/acme.json
       - ./traefik:/etc/traefik
     ports: 
       - 80:80
       - 443:443
+    environment:
+      DNSPOD_API_KEY: 49794,a259c8cdfc221e320xxxxxxxxxxxxxxx
     labels:
       - traefik.enable=false
     networks:
@@ -76,12 +85,17 @@ services:
       - n1
       - t_n2
 
-  notice:
-    image: lwzm/notice
+
+  portainer:
+    image: portainer/portainer
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./portainer:/data
     labels:
-      - traefik.http.routers.n.rule=Host(`n.fufu.fun`)
-      - traefik.http.routers.n.middlewares=gz@file
-      - traefik.http.routers.n.tls=true
+      - traefik.http.routers.p.rule=Host(`portainer.fufu.fun`)
+      - traefik.http.routers.p.middlewares=gz@file
+      - traefik.http.routers.p.tls=true
 
   whoami:
     image: containous/whoami
@@ -148,27 +162,37 @@ providers:
   docker:
     defaultRule: "Host(`{{ normalize .Name }}.fufu.fun`)"
     swarmMode: false
+
+certificatesResolvers:
+  mydnschallenge:
+    acme:
+      email: lwzm@qq.com
+      dnsChallenge:
+        provider: dnspod
 </pre>
 
 <div id="traefik/traefik.yaml"><h4 id="traefik/traefik.yaml" class="header"><a href="#traefik/traefik.yaml">traefik/traefik.yaml</a></h4></div>
 
 <pre yaml>
-tls:
-  certificates:
-    - certFile: /home/certs/fufu.fun.crt
-      keyFile:  /home/certs/fufu.fun.key
-
 http:
   routers:
     api:
       rule: Host(`traefik.fufu.fun`)
       service: api@internal
-      tls: {}
+      tls:
+        certResolver: mydnschallenge
+        domains:
+          - main: "fufu.fun"
+            sans:
+              - "*.fufu.fun"
+              - "*.0.fufu.fun"
+              - "git.tyio.net"
       middlewares:
         - gz
     https-force:
       rule: HostRegexp(`{_:.+}`)
-      #rule: HostRegexp(`traefik.{_:.+}`)
+      entryPoints:
+        - http
       service: api@internal
       middlewares:
         - redirect-https
@@ -179,7 +203,6 @@ http:
         scheme: https
     gz:
       compress: {}
-
 </pre>
 
 <div id="参考"><h3 id="参考" class="header"><a href="#参考">参考</a></h3></div>

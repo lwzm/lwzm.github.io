@@ -11,8 +11,11 @@ Traefik
 * HTTP 自动跳转 HTTPS
 * gzip
 * 文件配置与 Docker labels 配置
+* 自动申请 https 证书
 
 配置举例，注意这里用了两个 compose，通过 networks 联通起来，traefik 应当有所有服务的网络联通能力，不然它发现了服务也会 Gateway timeout 错误。
+
+使用 dnspod 做 challenge, 需要为 traefik 配置环境变量 DNSPOD_API_KEY。
 
 ==== docker-compose.yaml ====
 
@@ -33,11 +36,13 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./certs:/home/certs
+      - ./certs/acme.json:/acme.json
       - ./traefik:/etc/traefik
     ports: 
       - 80:80
       - 443:443
+    environment:
+      DNSPOD_API_KEY: 49794,a259c8cdfc221e320xxxxxxxxxxxxxxx
     labels:
       - traefik.enable=false
     networks:
@@ -45,12 +50,17 @@ services:
       - n1
       - t_n2
 
-  notice:
-    image: lwzm/notice
+
+  portainer:
+    image: portainer/portainer
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./portainer:/data
     labels:
-      - traefik.http.routers.n.rule=Host(`n.fufu.fun`)
-      - traefik.http.routers.n.middlewares=gz@file
-      - traefik.http.routers.n.tls=true
+      - traefik.http.routers.p.rule=Host(`portainer.fufu.fun`)
+      - traefik.http.routers.p.middlewares=gz@file
+      - traefik.http.routers.p.tls=true
 
   whoami:
     image: containous/whoami
@@ -115,27 +125,37 @@ providers:
   docker:
     defaultRule: "Host(`{{ normalize .Name }}.fufu.fun`)"
     swarmMode: false
+
+certificatesResolvers:
+  mydnschallenge:
+    acme:
+      email: lwzm@qq.com
+      dnsChallenge:
+        provider: dnspod
 }}}
 
 ==== traefik/traefik.yaml ====
 
 {{{yaml
-tls:
-  certificates:
-    - certFile: /home/certs/fufu.fun.crt
-      keyFile:  /home/certs/fufu.fun.key
-
 http:
   routers:
     api:
       rule: Host(`traefik.fufu.fun`)
       service: api@internal
-      tls: {}
+      tls:
+        certResolver: mydnschallenge
+        domains:
+          - main: "fufu.fun"
+            sans:
+              - "*.fufu.fun"
+              - "*.0.fufu.fun"
+              - "git.tyio.net"
       middlewares:
         - gz
     https-force:
       rule: HostRegexp(`{_:.+}`)
-      #rule: HostRegexp(`traefik.{_:.+}`)
+      entryPoints:
+        - http
       service: api@internal
       middlewares:
         - redirect-https
@@ -146,7 +166,6 @@ http:
         scheme: https
     gz:
       compress: {}
-
 }}}
 
 === 参考 ===
