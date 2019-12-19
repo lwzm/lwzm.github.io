@@ -169,13 +169,26 @@ certificatesResolvers:
       email: lwzm@qq.com
       dnsChallenge:
         provider: dnspod
+
+ping:
+  manualRouting: true
 </pre>
 
-<div id="traefik/traefik.yaml"><h4 id="traefik/traefik.yaml" class="header"><a href="#traefik/traefik.yaml">traefik/traefik.yaml</a></h4></div>
+<div id="traefik/dynamic.yaml"><h4 id="traefik/dynamic.yaml" class="header"><a href="#traefik/dynamic.yaml">traefik/dynamic.yaml</a></h4></div>
 
 <pre yaml>
 http:
+
+  middlewares:
+    redirect-https:
+      redirectScheme:
+        scheme: https
+    gz:
+      compress: {}
+
+
   routers:
+
     api:
       rule: Host(`traefik.fufu.fun`)
       service: api@internal
@@ -189,20 +202,15 @@ http:
               - "git.tyio.net"
       middlewares:
         - gz
+
     https-force:
-      rule: HostRegexp(`{_:.+}`)
+      #rule: HostRegexp(`{_:.+}`)
+      rule: PathPrefix(`/`)
       entryPoints:
         - http
-      service: api@internal
+      service: ping@internal
       middlewares:
         - redirect-https
-
-  middlewares:
-    redirect-https:
-      redirectScheme:
-        scheme: https
-    gz:
-      compress: {}
 </pre>
 
 <div id="参考"><h3 id="参考" class="header"><a href="#参考">参考</a></h3></div>

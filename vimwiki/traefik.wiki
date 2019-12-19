@@ -132,13 +132,26 @@ certificatesResolvers:
       email: lwzm@qq.com
       dnsChallenge:
         provider: dnspod
+
+ping:
+  manualRouting: true
 }}}
 
-==== traefik/traefik.yaml ====
+==== traefik/dynamic.yaml ====
 
 {{{yaml
 http:
+
+  middlewares:
+    redirect-https:
+      redirectScheme:
+        scheme: https
+    gz:
+      compress: {}
+
+
   routers:
+
     api:
       rule: Host(`traefik.fufu.fun`)
       service: api@internal
@@ -152,20 +165,15 @@ http:
               - "git.tyio.net"
       middlewares:
         - gz
+
     https-force:
-      rule: HostRegexp(`{_:.+}`)
+      #rule: HostRegexp(`{_:.+}`)
+      rule: PathPrefix(`/`)
       entryPoints:
         - http
-      service: api@internal
+      service: ping@internal
       middlewares:
         - redirect-https
-
-  middlewares:
-    redirect-https:
-      redirectScheme:
-        scheme: https
-    gz:
-      compress: {}
 }}}
 
 === 参考 ===
