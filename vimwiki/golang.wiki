@@ -21,3 +21,15 @@ https://goproxy.io/zh/
 * auto-close-tag
 * auto-rename-tag
 * ...
+
+=== go mod ===
+
+`go mod init XXX` 之后，用 `go get` 才能用到 goproxy 的设置。
+
+go 的模块目前看起来有点奇怪，目录名 *不一定* 需要和 `package` 关键字指定的一致，`import` 时强制指定别名就能用。
+但同一目录下所有 `.go` 文件的 `package XXX` 需要一致
+
+
+=== go build ===
+
+`go build -ldflags "-s -w"` 编译出的文件会更小。

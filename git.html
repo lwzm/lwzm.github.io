@@ -2,12 +2,18 @@
 <html>
 <head>
 <link rel="Stylesheet" type="text/css" href="style.css">
-<title>gogs</title>
+<title>git</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 <body>
 
-<div id="GOGS 一款极易搭建的自助 Git 服务"><h1 id="GOGS 一款极易搭建的自助 Git 服务" class="header"><a href="#GOGS 一款极易搭建的自助 Git 服务">GOGS 一款极易搭建的自助 Git 服务</a></h1></div>
+<div id="Git"><h1 id="Git" class="header"><a href="#Git">Git</a></h1></div>
+
+<p>
+这里仅说说 git 仓库服务的搭建。
+</p>
+
+<div id="Git-GOGS 一款极易搭建的自助 Git 服务"><h3 id="GOGS 一款极易搭建的自助 Git 服务" class="header"><a href="#Git-GOGS 一款极易搭建的自助 Git 服务">GOGS 一款极易搭建的自助 Git 服务</a></h3></div>
 
 <p>
 <a href="https://gogs.io/">https://gogs.io/</a>
@@ -33,7 +39,7 @@
 为了使用 22 端口 建议用 setcap 工具设置程序属性.
 </p>
 
-<div id="GOGS 一款极易搭建的自助 Git 服务-配置参考"><h3 id="配置参考" class="header"><a href="#GOGS 一款极易搭建的自助 Git 服务-配置参考">配置参考</a></h3></div>
+<div id="Git-GOGS 一款极易搭建的自助 Git 服务-配置参考"><h5 id="配置参考" class="header"><a href="#Git-GOGS 一款极易搭建的自助 Git 服务-配置参考">配置参考</a></h5></div>
 
 <pre ini>
 # https://gogs.io/docs/advanced/configuration_cheat_sheet
@@ -84,7 +90,7 @@ ROOT_PATH = ./log
 LOGIN_REMEMBER_DAYS = 365
 </pre>
 
-<div id="GOGS 一款极易搭建的自助 Git 服务-nginx"><h3 id="nginx" class="header"><a href="#GOGS 一款极易搭建的自助 Git 服务-nginx">nginx</a></h3></div>
+<div id="Git-GOGS 一款极易搭建的自助 Git 服务-nginx"><h5 id="nginx" class="header"><a href="#Git-GOGS 一款极易搭建的自助 Git 服务-nginx">nginx</a></h5></div>
 
 <pre conf>
 upstream gogs {
@@ -100,12 +106,23 @@ server {
 }
 </pre>
 
-<div id="GOGS 一款极易搭建的自助 Git 服务-start up"><h3 id="start up" class="header"><a href="#GOGS 一款极易搭建的自助 Git 服务-start up">start up</a></h3></div>
+<div id="Git-GOGS 一款极易搭建的自助 Git 服务-start up"><h5 id="start up" class="header"><a href="#Git-GOGS 一款极易搭建的自助 Git 服务-start up">start up</a></h5></div>
 <pre sh>
 kill $(pgrep gogs)
 sleep 1
 ./gogs web &lt;/dev/null &gt;gogs.log 2&gt;&amp;1 &amp;
 </pre>
+
+
+<div id="Git-Gitea, fork from Gogs"><h3 id="Gitea, fork from Gogs" class="header"><a href="#Git-Gitea, fork from Gogs">Gitea, fork from Gogs</a></h3></div>
+
+<p>
+<a href="https://github.com/go-gitea/gitea">https://github.com/go-gitea/gitea</a>
+</p>
+
+<p>
+增加了一些功能，可以更好地和 <a href="https://github.com/drone/drone">drone</a> 集成。
+</p>
 
 </body>
 </html>

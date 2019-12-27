@@ -15,7 +15,7 @@
 * [[docker]]
 * [[docker-compose]]
 * [[falcon]] web 框架
-* [[gogs]]
+* [[git]]
 * [[golang]]
 * [[gotty]]
 * [[gunicorn]] wsgi 容器

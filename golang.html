@@ -55,5 +55,23 @@ auto-rename-tag
 
 </ul>
 
+<div id="Golang-go mod"><h3 id="go mod" class="header"><a href="#Golang-go mod">go mod</a></h3></div>
+
+<p>
+<code>go mod init XXX</code> 之后，用 <code>go get</code> 才能用到 goproxy 的设置。
+</p>
+
+<p>
+go 的模块目前看起来有点奇怪，目录名 <span id="Golang-go mod-不一定"></span><strong id="不一定">不一定</strong> 需要和 <code>package</code> 关键字指定的一致，<code>import</code> 时强制指定别名就能用。
+但同一目录下所有 <code>.go</code> 文件的 <code>package XXX</code> 需要一致
+</p>
+
+
+<div id="Golang-go build"><h3 id="go build" class="header"><a href="#Golang-go build">go build</a></h3></div>
+
+<p>
+<code>go build -ldflags "-s -w"</code> 编译出的文件会更小。
+</p>
+
 </body>
 </html>

@@ -1,4 +1,8 @@
-= GOGS 一款极易搭建的自助 Git 服务=
+= Git =
+
+这里仅说说 git 仓库服务的搭建。
+
+=== GOGS 一款极易搭建的自助 Git 服务===
 
 https://gogs.io/
 
@@ -12,7 +16,7 @@ https://github.com/gogits/gogs
 
 为了使用 22 端口 建议用 setcap 工具设置程序属性.
 
-=== 配置参考 ===
+===== 配置参考 =====
 
 {{{ini
 # https://gogs.io/docs/advanced/configuration_cheat_sheet
@@ -63,7 +67,7 @@ ROOT_PATH = ./log
 LOGIN_REMEMBER_DAYS = 365
 }}}
 
-=== nginx ===
+===== nginx =====
 
 {{{conf
 upstream gogs {
@@ -79,9 +83,16 @@ server {
 }
 }}}
 
-=== start up ===
+===== start up =====
 {{{sh
 kill $(pgrep gogs)
 sleep 1
 ./gogs web </dev/null >gogs.log 2>&1 &
 }}}
+
+
+=== Gitea, fork from Gogs ===
+
+https://github.com/go-gitea/gitea
+
+增加了一些功能，可以更好地和 [[https://github.com/drone/drone|drone]] 集成。
