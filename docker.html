@@ -65,7 +65,7 @@ systemctl disable update-engine
 <div id="Docker-/var/lib/docker/"><h3 id="/var/lib/docker/" class="header"><a href="#Docker-/var/lib/docker/">/var/lib/docker/</a></h3></div>
 
 <p>
-这是工作目录，images 和 containers 都在这里，可以考虑迁移到速度快容量大的磁盘
+这是工作目录，images 和 containers 都在这里，可以考虑迁移到速度快容量大的磁盘。
 </p>
 
 <div id="Docker-/var/run/docker.sock"><h3 id="/var/run/docker.sock" class="header"><a href="#Docker-/var/run/docker.sock">/var/run/docker.sock</a></h3></div>
@@ -81,16 +81,19 @@ usermod -a -G docker YOU
 
 <ul>
 <li>
-docker-compose <a href="https://docs.docker.com/compose/install/">https://docs.docker.com/compose/install/</a>
+<a href="https://docs.docker.com/compose/install/">docker-compose</a>
 
 <li>
 toolbox
 
 <li>
-portainer <a href="https://www.portainer.io/installation/">https://www.portainer.io/installation/</a>
+<a href="https://www.portainer.io/installation/">portainer</a>
 
 <li>
-ctop <a href="https://github.com/bcicen/ctop">https://github.com/bcicen/ctop</a>
+<a href="https://github.com/bcicen/ctop">ctop</a>
+
+<li>
+<a href="https://traefik.io/">traefik</a>
 
 </ul>
 
@@ -168,6 +171,10 @@ docker start -ia $(basename $0)
 
 
 <div id="Docker-Dockerfile for Python"><h3 id="Dockerfile for Python" class="header"><a href="#Docker-Dockerfile for Python">Dockerfile for Python</a></h3></div>
+
+<p>
+如果需要处理出现的僵尸进程，参考 <a href="https://github.com/krallin/tini">Tini</a>。
+</p>
 
 <pre Dockerfile>
 FROM python:stretch as base

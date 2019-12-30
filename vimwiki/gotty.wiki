@@ -26,3 +26,35 @@ server {
     }
 }
 }}}
+
+
+=== ~/.gotty ===
+
+{{{conf
+preferences {
+    font_family = "monospace"
+    font_size = 12
+}
+}}}
+
+=== 相关项目 ===
+
+* [[https://github.com/moul/gotty-client|gotty-client]] 配套命令行客户端
+* [[https://github.com/tsl0922/ttyd|ttyd]] 貌似更好用一点，但是 OSX 下运行有严重卡顿，原因未知
+
+=== docker compose 参考 ===
+
+{{{yaml
+  gotty:
+    image: lwzm/gotty
+    tty: true  # required
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /:/mnt/
+  
+  ttyd:
+    image: tsl0922/ttyd:alpine
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /:/mnt/
+}}}

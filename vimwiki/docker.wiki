@@ -39,7 +39,7 @@ systemctl disable update-engine
 
 === /var/lib/docker/ ===
 
-这是工作目录，images 和 containers 都在这里，可以考虑迁移到速度快容量大的磁盘
+这是工作目录，images 和 containers 都在这里，可以考虑迁移到速度快容量大的磁盘。
 
 === /var/run/docker.sock ===
 
@@ -50,10 +50,11 @@ usermod -a -G docker YOU
 
 === 常用工具 ===
 
-* docker-compose https://docs.docker.com/compose/install/
+* [[https://docs.docker.com/compose/install/|docker-compose]]
 * toolbox
-* portainer https://www.portainer.io/installation/
-* ctop https://github.com/bcicen/ctop
+* [[https://www.portainer.io/installation/|portainer]]
+* [[https://github.com/bcicen/ctop|ctop]]
+* [[https://traefik.io/|traefik]]
 
 {{{sh
 curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -107,6 +108,8 @@ docker start -ia $(basename $0)
 
 
 === Dockerfile for Python ===
+
+如果需要处理出现的僵尸进程，参考 [[https://github.com/krallin/tini|Tini]]。
 
 {{{Dockerfile
 FROM python:stretch as base
