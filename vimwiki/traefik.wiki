@@ -50,6 +50,33 @@ services:
       - n1
       - t_n2
 
+  gotty:
+    image: lwzm/gotty
+    tty: true  # required
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /:/mnt/
+    labels:
+      - traefik.http.routers.tty.rule=HostRegexp(`tty.{_:.+}`)
+      - traefik.http.routers.tty.middlewares=gz@file
+      - traefik.http.routers.tty.tls=true
+
+  ttyd:
+    image: lwzm/htop
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /:/mnt/
+    labels:
+      - traefik.http.routers.ttyd.rule=HostRegexp(`ttyd.{_:.+}`)
+      - traefik.http.routers.ttyd.middlewares=gz@file
+      - traefik.http.routers.ttyd.tls=true
+
+  stream:
+    image: lwzm/stream
+    labels:
+      - traefik.http.routers.st.rule=HostRegexp(`st.{_:.+}`)
+      - traefik.http.routers.st.middlewares=gz@file
+      - traefik.http.routers.st.tls=true
 
   portainer:
     image: portainer/portainer
@@ -58,7 +85,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./portainer:/data
     labels:
-      - traefik.http.routers.p.rule=Host(`portainer.fufu.fun`)
+      - traefik.http.routers.p.rule=HostRegexp(`portainer.{_:.+}`)
       - traefik.http.routers.p.middlewares=gz@file
       - traefik.http.routers.p.tls=true
 
@@ -123,7 +150,8 @@ providers:
     filename: /etc/traefik/dynamic.yaml
     watch: true
   docker:
-    defaultRule: "Host(`{{ normalize .Name }}.fufu.fun`)"
+    #defaultRule: Host(`{{ normalize .Name }}.fufu.fun`)
+    defaultRule: HostRegexp(`{{ normalize .Name }}.{_:.+}`)
     swarmMode: false
 
 certificatesResolvers:
@@ -153,7 +181,8 @@ http:
   routers:
 
     api:
-      rule: Host(`traefik.fufu.fun`)
+      #rule: Host(`traefik.fufu.fun`)
+      rule: HostRegexp(`traefik.{_:.+}`)
       service: api@internal
       tls:
         certResolver: mydnschallenge
