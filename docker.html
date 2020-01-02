@@ -278,6 +278,38 @@ CMD /app/t
 上述方法打出来的镜像，可比肩 Golang，但是对代码质量和系统细节的掌控的要求比较高。
 </p>
 
+<div id="Docker-CAfile"><h3 id="CAfile" class="header"><a href="#Docker-CAfile">CAfile</a></h3></div>
+
+<p>
+容器访问 HTTPS 时，需要各种根证书，一般是基于原始系统的基本镜像，安装类似 <code>ca-certificates</code> 的包，
+也可以自己挂载本机的 CAfile，如宿主机 Debian：
+</p>
+
+<pre yaml>
+...
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro
+...
+</pre>
+
+<p>
+参考：
+</p>
+
+<ul>
+<li>
+<a href="https://golang.org/src/crypto/x509/root_linux.go">https://golang.org/src/crypto/x509/root_linux.go</a>
+
+<li>
+<a href="https://hub.docker.com/r/portainer/base/dockerfile">https://hub.docker.com/r/portainer/base/dockerfile</a>
+
+<li>
+<code>curl -v https://example.com/ 2&gt;&amp;1 &gt;/dev/null | grep CAfile</code> 
+
+</ul>
+
+
 <div id="Docker-compose"><h3 id="compose" class="header"><a href="#Docker-compose">compose</a></h3></div>
 
 <p>
