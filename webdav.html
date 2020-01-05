@@ -95,10 +95,10 @@ net use * http://webdav.foo.bar/
 </p>
 
 <pre caddy>
-http://* {
-    #browse
-    #basicauth / foo xxxx
-    webdav
+http:// {
+    webdav {
+        scope /data
+    }
     gzip
     log / stderr "{when_iso}	{remote}	{method}	{uri}	{proto}	{status}	{size}	{latency}	{&gt;Content-Length}	{&gt;User-Agent}"
 }
