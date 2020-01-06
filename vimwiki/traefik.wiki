@@ -74,9 +74,9 @@ services:
   stream:
     image: lwzm/stream
     labels:
-      - traefik.http.routers.st.rule=HostRegexp(`st.{_:.+}`)
-      - traefik.http.routers.st.middlewares=gz@file
-      - traefik.http.routers.st.tls=true
+      - traefik.http.routers.s.rule=Host(`s.${DN}`)
+      - traefik.http.routers.s.middlewares=gz@file
+      - traefik.http.routers.s.tls=true
 
   portainer:
     image: portainer/portainer
@@ -105,7 +105,22 @@ services:
       - "traefik.http.routers.nb.middlewares=gz@file"
 }}}
 
-（配置的开头展示了定义外部网络的两种方法）
+
+配置的开头展示了定义外部网络的两种方法。
+
+`routers.FOOBAR.rule` 展示了域名的几种配置方法：
+
+* Host(全名)
+* HostRegexp(正则)
+* Host(名.env)
+
+compose environment 参考：https://docs.docker.com/compose/environment-variables/
+
+`.env` 文件位于当前目录，参考：
+
+{{{text
+DN=fufu.fun
+}}}
 
 ==== ../t/docker-compose.yaml ====
 
