@@ -33,3 +33,29 @@ go 的模块目前看起来有点奇怪，目录名 *不一定* 需要和 `packa
 === go build ===
 
 `go build -ldflags "-s -w"` 编译出的文件会更小。
+
+=== go get ===
+
+一般，包名和仓库地址一致，而且大家都喜欢把包放在 github 上面，所以常见包名 `github.com/foo/bar`。
+
+`go get` 的先下载 `PACKAGE?go-get=1`，发现其中的 `<meta name="go-import" ...>` 再去取仓库数据。github 或 gitlab，都会在其仓库的 html 页面上生成这么一行数据。
+
+根据 get 的逻辑，包名与仓库地址可以是不一样的，参考 uber 的 `go.uber.org/zap`：
+
+{{{sh
+$ curl go.uber.org/zap
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="go-import" content="go.uber.org/zap git https://github.com/uber-go/zap">
+        <meta name="go-source" content="go.uber.org/zap https://github.com/uber-go/zap https://github.com/uber-go/zap/tree/master{/dir} https://github.com/uber-go/zap/tree/mast
+er{/dir}/{file}#L{line}">
+        <meta http-equiv="refresh" content="0; url=https://godoc.org/go.uber.org/zap">
+    </head>
+    <body>
+        Nothing to see here. Please <a href="https://godoc.org/go.uber.org/zap">move along</a>.
+    </body>
+</html>
+}}}
+
+可以看到，实际仓库地址是 `https://github.com/uber-go/zap`，但是包名使用了自定义的 `go.uber.org/zap`，其中的 go.mod 也有体现。

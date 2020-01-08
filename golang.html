@@ -73,5 +73,39 @@ go 的模块目前看起来有点奇怪，目录名 <span id="Golang-go mod-不�
 <code>go build -ldflags "-s -w"</code> 编译出的文件会更小。
 </p>
 
+<div id="Golang-go get"><h3 id="go get" class="header"><a href="#Golang-go get">go get</a></h3></div>
+
+<p>
+一般，包名和仓库地址一致，而且大家都喜欢把包放在 github 上面，所以常见包名 <code>github.com/foo/bar</code>。
+</p>
+
+<p>
+<code>go get</code> 的先下载 <code>PACKAGE?go-get=1</code>，发现其中的 <code>&lt;meta name="go-import" ...&gt;</code> 再去取仓库数据。github 或 gitlab，都会在其仓库的 html 页面上生成这么一行数据。
+</p>
+
+<p>
+根据 get 的逻辑，包名与仓库地址可以是不一样的，参考 uber 的 <code>go.uber.org/zap</code>：
+</p>
+
+<pre sh>
+$ curl go.uber.org/zap
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;meta name="go-import" content="go.uber.org/zap git https://github.com/uber-go/zap"&gt;
+        &lt;meta name="go-source" content="go.uber.org/zap https://github.com/uber-go/zap https://github.com/uber-go/zap/tree/master{/dir} https://github.com/uber-go/zap/tree/mast
+er{/dir}/{file}#L{line}"&gt;
+        &lt;meta http-equiv="refresh" content="0; url=https://godoc.org/go.uber.org/zap"&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        Nothing to see here. Please &lt;a href="https://godoc.org/go.uber.org/zap"&gt;move along&lt;/a&gt;.
+    &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<p>
+可以看到，实际仓库地址是 <code>https://github.com/uber-go/zap</code>，但是包名使用了自定义的 <code>go.uber.org/zap</code>，其中的 go.mod 也有体现。
+</p>
+
 </body>
 </html>
