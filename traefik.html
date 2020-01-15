@@ -78,8 +78,6 @@ services:
       - 443:443
     environment:
       DNSPOD_API_KEY: 49794,a259c8cdfc221e320xxxxxxxxxxxxxxx
-    labels:
-      - traefik.enable=false
     networks:
       - default
       - n1
@@ -92,26 +90,18 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /:/mnt/
     labels:
-      - traefik.http.routers.tty.rule=HostRegexp(`tty.{_:.+}`)
-      - traefik.http.routers.tty.middlewares=gz@file
-      - traefik.http.routers.tty.tls=true
-
-  ttyd:
-    image: lwzm/htop
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /:/mnt/
-    labels:
-      - traefik.http.routers.ttyd.rule=HostRegexp(`ttyd.{_:.+}`)
-      - traefik.http.routers.ttyd.middlewares=gz@file
-      - traefik.http.routers.ttyd.tls=true
+      traefik.enable: true
+      traefik.http.routers.gotty.rule: Host(`gotty.${DN}`)
+      traefik.http.routers.gotty.middlewares: gz@file
+      traefik.http.routers.gotty.tls: true
 
   stream:
     image: lwzm/stream
     labels:
-      - traefik.http.routers.s.rule=Host(`s.${DN}`)
-      - traefik.http.routers.s.middlewares=gz@file
-      - traefik.http.routers.s.tls=true
+      traefik.enable: true
+      traefik.http.routers.s.rule: Host(`s.${DN}`)
+      traefik.http.routers.s.middlewares: gz@file
+      traefik.http.routers.s.tls: true
 
   portainer:
     image: portainer/portainer
@@ -120,26 +110,11 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./portainer:/data
     labels:
-      - traefik.http.routers.p.rule=HostRegexp(`portainer.{_:.+}`)
-      - traefik.http.routers.p.middlewares=gz@file
-      - traefik.http.routers.p.tls=true
-
-  whoami:
-    image: containous/whoami
-    labels:
-      - traefik.http.routers.w.rule=Host(`whoami.fufu.fun`)
-      - traefik.http.routers.w.middlewares=gz@file
-      - traefik.http.routers.w.tls=true
-
-  nb:
-    image: lwzm/gophernotes
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ./gophernotes:/home
-    labels:
-      - "traefik.http.routers.nb.middlewares=gz@file"
+      traefik.enable: true
+      traefik.http.routers.p.rule: HostRegexp(`portainer.{_:.+}`)
+      traefik.http.routers.p.middlewares: gz@file
+      traefik.http.routers.p.tls: true
 </pre>
-
 
 <p>
 配置的开头展示了定义外部网络的两种方法。
@@ -216,8 +191,8 @@ providers:
     filename: /etc/traefik/dynamic.yaml
     watch: true
   docker:
-    #defaultRule: Host(`{{ normalize .Name }}.fufu.fun`)
     defaultRule: HostRegexp(`{{ normalize .Name }}.{_:.+}`)
+    exposedByDefault: false
     swarmMode: false
 
 certificatesResolvers:
