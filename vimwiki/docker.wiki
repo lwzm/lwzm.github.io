@@ -12,6 +12,29 @@ update_engine_client -update
 
 然后重启完成升级。
 
+Debian 安装参考：https://docs.docker.com/install/linux/docker-ce/debian/
+
+{{{sh
+apt update
+apt upgrade
+apt install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg2 \
+    software-properties-common
+
+curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+
+add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/debian \
+   $(lsb_release -cs) \
+   stable"
+
+apt update
+apt install docker-ce docker-ce-cli containerd.io
+}}}
+
 CoreOS 需要 SELINUX，不然会有奇怪的错误。
 {{{sh
 vi /etc/selinux/config 
