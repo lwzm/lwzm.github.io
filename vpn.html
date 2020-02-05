@@ -76,5 +76,17 @@ ipsec down myvpn
 参考：<a href="https://github.com/hwdsl2/setup-ipsec-vpn/blob/master/docs/clients-zh.md">https://github.com/hwdsl2/setup-ipsec-vpn/blob/master/docs/clients-zh.md</a>
 </p>
 
+<div id="sshuttle"><h3 id="sshuttle" class="header"><a href="#sshuttle">sshuttle</a></h3></div>
+
+<p>
+<a href="https://github.com/sshuttle/sshuttle,">https://github.com/sshuttle/sshuttle,</a> poor man's VPN, VPN over ssh.
+</p>
+
+<pre sh>
+sshuttle --dns -r hk.remote 0/0
+# or
+sshuttle --dns -r work.remote 192.168.0.0/16 172.16.0.0/12 10.0.0.0/8
+</pre>
+
 </body>
 </html>
