@@ -1,0 +1,30 @@
+= NFS =
+
+=== CentOS 安装 ===
+
+{{{sh
+yum install nfs-utils
+
+systemctl enable rpcbind
+systemctl enable nfs
+
+systemctl start rpcbind
+systemctl start nfs
+}}}
+
+=== 设置 ===
+
+在 `/etc/exports`，具体自己搜，举例：
+
+{{{conf
+/media *(rw,async,insecure,no_root_squash,no_all_squash)
+/tmp *(ro)
+}}}
+
+`exportfs -a` 命令来使改动立刻生效，`exportfs -v` 查看详情。
+
+=== 挂载 ===
+
+{{{sh
+mount nfs-address:/media DIR
+}}}

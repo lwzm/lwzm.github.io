@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>nfs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<div id="NFS"><h1 id="NFS" class="header"><a href="#NFS">NFS</a></h1></div>
+
+<div id="NFS-CentOS 安装"><h3 id="CentOS 安装" class="header"><a href="#NFS-CentOS 安装">CentOS 安装</a></h3></div>
+
+<pre sh>
+yum install nfs-utils
+
+systemctl enable rpcbind
+systemctl enable nfs
+
+systemctl start rpcbind
+systemctl start nfs
+</pre>
+
+<div id="NFS-设置"><h3 id="设置" class="header"><a href="#NFS-设置">设置</a></h3></div>
+
+<p>
+在 <code>/etc/exports</code>，具体自己搜，举例：
+</p>
+
+<pre conf>
+/media *(rw,async,insecure,no_root_squash,no_all_squash)
+/tmp *(ro)
+</pre>
+
+<p>
+<code>exportfs -a</code> 命令来使改动立刻生效，<code>exportfs -v</code> 查看详情。
+</p>
+
+<div id="NFS-挂载"><h3 id="挂载" class="header"><a href="#NFS-挂载">挂载</a></h3></div>
+
+<pre sh>
+mount nfs-address:/media DIR
+</pre>
+
+</body>
+</html>

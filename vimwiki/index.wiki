@@ -32,6 +32,7 @@
 * [[mkswap]] Linux 内存交换文件
 * [[mount]]
 * [[mysql]] 拾零
+* [[nfs]]
 * [[ntp]]
 * [[nvim]] neovim
 * [[oss]]
