@@ -10,11 +10,16 @@ cat /proc/vmstat | egrep "dirty|writeback"
 {{{sh
 vm.dirty_background_ratio = 60
 vm.dirty_ratio = 80
-vm.dirty_writeback_centisecs = 5000
-vm.dirty_expire_centisecs = 30000
+vm.dirty_writeback_centisecs = 0
+vm.dirty_expire_centisecs = 60000
 }}}
 
 强制清理 `page cache`，可以 umount 磁盘，或者：
 {{{sh
 echo 1 >/proc/sys/vm/drop_caches
 }}}
+
+参考：
+* https://lrita.github.io/2018/06/09/linux-kernel-sysctl-vm/
+* https://blog.csdn.net/wqs270902112/article/details/80005787
+* https://feichashao.com/dirty_ratio_and_dirty_background_ratio/

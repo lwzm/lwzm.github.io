@@ -25,8 +25,8 @@ cat /proc/vmstat | egrep "dirty|writeback"
 <pre sh>
 vm.dirty_background_ratio = 60
 vm.dirty_ratio = 80
-vm.dirty_writeback_centisecs = 5000
-vm.dirty_expire_centisecs = 30000
+vm.dirty_writeback_centisecs = 0
+vm.dirty_expire_centisecs = 60000
 </pre>
 
 <p>
@@ -35,6 +35,21 @@ vm.dirty_expire_centisecs = 30000
 <pre sh>
 echo 1 &gt;/proc/sys/vm/drop_caches
 </pre>
+
+<p>
+参考：
+</p>
+<ul>
+<li>
+<a href="https://lrita.github.io/2018/06/09/linux-kernel-sysctl-vm/">https://lrita.github.io/2018/06/09/linux-kernel-sysctl-vm/</a>
+
+<li>
+<a href="https://blog.csdn.net/wqs270902112/article/details/80005787">https://blog.csdn.net/wqs270902112/article/details/80005787</a>
+
+<li>
+<a href="https://feichashao.com/dirty_ratio_and_dirty_background_ratio/">https://feichashao.com/dirty_ratio_and_dirty_background_ratio/</a>
+
+</ul>
 
 </body>
 </html>
