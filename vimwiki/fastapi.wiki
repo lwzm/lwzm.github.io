@@ -1,0 +1,5 @@
+= FastAPI =
+
+https://github.com/tiangolo/fastapi
+
+写 web 就它了，学习中……
