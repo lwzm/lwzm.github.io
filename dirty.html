@@ -20,6 +20,10 @@ cat /proc/vmstat | egrep "dirty|writeback"
 </pre>
 
 <p>
+注意单位是 page, 1 page 一般是 4096 字节，参考 <a href="https://unix.stackexchange.com/questions/128213/how-is-page-size-determined-in-virtual-address-space">https://unix.stackexchange.com/questions/128213/how-is-page-size-determined-in-virtual-address-space</a>
+</p>
+
+<p>
 优化内存使用，尽可能使用内存
 </p>
 <pre sh>

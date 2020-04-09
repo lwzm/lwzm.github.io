@@ -65,6 +65,15 @@ class Checkin(Entity):
 对已存在的老数据做覆盖操作，对不存在的数据做新增操作，尽量不要做无用功，尽可能地收集到更新结果如修改数和新增数。
 
 {{{sql
+CREATE TABLE IF NOT EXISTS "main" (
+    k primary key,
+    v
+) without rowid;
+CREATE TABLE IF NOT EXISTS "patch" (
+    k primary key,
+    v
+) without rowid;
+
 -- main 是老数据，把 patch 作为补丁更新至 main , 参考下面
 -- 执行速度只和 patch 的数据量有关 O(n)，和目标 main (with index) 的数据量呈对数增长关系 O(log n)，patch 数据量有 100W 时，2 秒搞定
 
@@ -97,9 +106,177 @@ insert into tmp
 一次写入或修改数据太多，在这过程中，别的进程读数据会发生这种错误，暂时没有深入研究。
 目前的解决方案是，一次性修改数据超过 10000，就做一次 commit，这样，无论是在什么阶段，都不会阻塞其它进程的读操作。
 
+=== NFS ===
+
+Sqlite 可以在 NFS 上运行，建议只读，而且主动设置：
+
+{{{sql
+PRAGMA query_only = yes;
+PRAGMA locking_mode = exclusive;
+}}}
+
+如果不设置，那么用不到本机的内存缓存，会一直读网络。但是又有另一个问题了，读的时候，会禁止写入。
 
 === 其它参考学习 ===
 
 http://souptonuts.sourceforge.net/readme_sqlite_tutorial.html
 https://sqlite.org/docs.html
 https://sqlite.org/lang.html
+
+
+=== K-V ===
+
+Sqlite 单进程可以达到 50k/s 的查询速度。
+
+在内存占用上，此方案不强求大内存。内存小，能缓存的数据少，磁盘 IO 多，速度较慢。
+但是充分缓存了文件的情况下，能做到少于 Redis 的内存占用(cache)，和与 Redis *同级别* 的查询速度。
+
+先来一个小目标测试一下，这里我们模拟常见的场景，md5 值作为 key：
+
+`ins.py`:
+
+{{{py
+#!/usr/bin/env python3
+
+import sqlite3
+import os
+import sys
+import time
+
+from faker import Faker
+
+
+fake = Faker()
+
+db = sqlite3.connect("kv")
+db.execute("pragma synchronous = off")
+db.execute("pragma temp_store = memory")
+db.execute("pragma journal_mode = memory")
+db.execute("pragma busy_timeout = 60000")
+
+db.execute("""
+CREATE TABLE IF NOT EXISTS "test" (
+    k primary key,
+    v
+) without rowid;
+""")
+
+
+def insert(n):
+    t0 = time.time()
+    c = db.cursor()
+    l = [(os.urandom(16), fake.name()) for _ in range(n)]
+    c.executemany("insert into test values(?,?)", l)
+    db.commit()
+    print(time.time() - t0)
+
+
+if __name__ == '__main__':
+    for i in range(int(sys.argv[1])):
+        insert(10000)
+}}}
+
+表定义有两处特殊：k, v 没有指定类型，加了 `without rowid`，具体作用去翻文档吧。
+
+一次插入 10k，循环 500 次，20 并行，总计一个亿：
+
+{{{sh
+$ seq 20 | time xargs -P 20 -I _ ./ins.py 500
+real    45m 56.80s
+user    10h 29m 48s
+sys     22m 46.14s
+}}}
+
+差不多一个小时内搞定，每秒能插 30k，是不是挺快。
+还有不用担心随机生成数据的冲突的问题，就上面生成一个小目标的例子，可以算一下，遇到主键冲突异常的概率。
+
+来看看文件大小：
+{{{sh
+$ ls -lh kv
+-rw-r--r--    1 root     root        3.7G Apr  4 15:16 kv
+}}}
+
+`VACUUM` 后，文件更小，只有 `3.3G`。
+
+{{{sh
+time sqlite3 kv 'pragma synchronous = off; VACUUM'
+}}}
+
+可以直接推断出，你的机器有 4G 内存，就能缓存全部的数据，也就是可以搞个海量数据加极限高速的 k-v 服务。有多快呢，来个 python 版的：
+
+{{{py
+#!/usr/bin/env python3
+
+import sqlite3
+import os
+import time
+
+
+db = sqlite3.connect("kv")
+t = time.monotonic()
+n = 0
+c = db.cursor()
+
+while True:
+    if time.monotonic() - t > 1:
+        print(n, end='\r')
+        t = time.monotonic()
+        n = 0
+    n += 1
+
+    o = c.execute("select * from test where k = ?", (os.urandom(16),)).fetchone()
+    if o:
+        print(*o)
+        break
+}}}
+
+一般，也就 `45k/s` 左右吧。这是 python 版 + 单进程，多进程情况下，不说性能 `*N` 吧，基本上接近线性增长，5 进程 `200k/s` 没问题。
+
+再来个 Golang 版的，`55k/s` 左右:
+
+{{{go
+package main
+
+import (
+	"database/sql"
+	"fmt"
+	"log"
+	"math/rand"
+	"time"
+
+	_ "github.com/mattn/go-sqlite3"
+)
+
+func main() {
+	n := 0
+	t := time.Now()
+	k := make([]byte, 16)
+	v := ""
+
+	db, err := sql.Open("sqlite3", "kv?cache=shared&mode=r")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	stmt, _ := db.Prepare("select v from test where k=?")
+
+	for {
+		rand.Read(k)
+		row := stmt.QueryRow(k)
+		row.Scan(&v)
+		if v != "" {
+			break
+		}
+		t2 := time.Now()
+		if t2.Sub(t) > time.Second {
+			fmt.Printf("%v\r", n)
+			t = t2
+			n = 0
+		}
+		n++
+	}
+}
+}}}
+
+是不是挺恐怖的速度，就算把 Redis 的多线程版本拿来对比，也是不虚的，还有内存方面优势：贫瘠的内存也能跑，保证极限速度也无需太大内存。

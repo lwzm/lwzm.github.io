@@ -6,6 +6,8 @@ sysctl -a | grep dirty
 cat /proc/vmstat | egrep "dirty|writeback"
 }}}
 
+注意单位是 page, 1 page 一般是 4096 字节，参考 https://unix.stackexchange.com/questions/128213/how-is-page-size-determined-in-virtual-address-space
+
 优化内存使用，尽可能使用内存
 {{{sh
 vm.dirty_background_ratio = 60

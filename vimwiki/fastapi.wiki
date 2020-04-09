@@ -3,3 +3,10 @@
 https://github.com/tiangolo/fastapi
 
 写 web 就它了，学习中……
+
+参考作者的文章：https://fastapi.tiangolo.com/alternatives/ ，了解这个框架的来由。
+
+=== Types ===
+
+https://fastapi.tiangolo.com/python-types/
+
