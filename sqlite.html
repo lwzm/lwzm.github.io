@@ -302,13 +302,13 @@ func main() {
 	k := make([]byte, 16)
 	v := ""
 
-	db, err := sql.Open("sqlite3", "kv?cache=shared&amp;mode=r")
+	db, err := sql.Open("sqlite3", "kv")
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	stmt, _ := db.Prepare("select v from test where k=?")
+	stmt, _ := db.Prepare("select v from test where k = ?")
 
 	for {
 		rand.Read(k)

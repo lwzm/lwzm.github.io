@@ -21,6 +21,8 @@ vm.dirty_expire_centisecs = 60000
 echo 1 >/proc/sys/vm/drop_caches
 }}}
 
+还有 [[https://hoytech.com/vmtouch/|vmtouch]] 工具可以用，灵活地查看缓存，丢弃缓存。
+
 参考：
 * https://lrita.github.io/2018/06/09/linux-kernel-sysctl-vm/
 * https://blog.csdn.net/wqs270902112/article/details/80005787
