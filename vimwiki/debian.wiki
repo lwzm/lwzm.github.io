@@ -6,7 +6,7 @@ locale 有时会有问题，编辑 `/etc/default/locale`：
 LANG="en_US.UTF-8"
 LANGUAGE="en_US.UTF-8"
 LC_CTYPE="en_US.UTF-8"
-LC_ALL="en_US.UTF-8"`
+LC_ALL="en_US.UTF-8"
 }}}
 
 === 使用 stable 软件包 ===

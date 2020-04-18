@@ -54,7 +54,7 @@ async def get(token: str):
 
 
 @app.post("/{token:path}")
-async def post(token: str, payload: dict):
+async def post(token: str, payload: dict = {}):
     try:
         future = todos[token].pop()
     except IndexError:
@@ -65,6 +65,11 @@ async def post(token: str, payload: dict):
 
 <p>
 限于框架和篇幅，用起来时，仅支持 JSON 消息。另外，python annotation 还是很好用的。
+</p>
+
+<p>
+但是有个问题，GET 中途断开的情况，不好处理。参考这个版本：
+<a href="https://gist.github.com/lwzm/c691285214b4be0e7c382ebfd384818a">https://gist.github.com/lwzm/c691285214b4be0e7c382ebfd384818a</a>
 </p>
 
 </body>

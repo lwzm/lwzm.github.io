@@ -329,7 +329,56 @@ func main() {
 </pre>
 
 <p>
-是不是挺恐怖的速度，就算把 Redis 的多线程版本拿来对比，也是不虚的，还有内存方面优势：贫瘠的内存也能跑，保证极限速度也无需太大内存。
+是不是挺恐怖的速度，就算把 Redis 的多线程版本拿来对比，也是不虚的，还有内存方面优势：贫瘠的内存也能跑，相当于利用操作系统做了个 LRU 缓存，保证极限速度也无需太大内存。
+</p>
+
+<p>
+todo, kv 一亿+vmtouch + ali 普通硬盘 + swapon + 限制内存使用 + 生成图表
+</p>
+
+<p>
+至于 Redis，内存占用太多，这么大数据的维护也是麻烦。来试试：
+</p>
+
+<pre py>
+import sqlite3
+import time
+import redis
+
+db = sqlite3.connect("kv")
+rd = redis.Redis()
+
+t = time.monotonic()
+n = 0
+d = {}
+
+for k, v in db.execute("select * from test "):
+    d[k] = v
+    if len(d) &gt;= 1000:
+        rd.mset(d)
+        d.clear()
+    if time.monotonic() - t &gt; 1:
+        print(n, end='\r')
+        t = time.monotonic()
+        n = 0
+    n += 1
+
+if d:
+    rd.mset(d)
+</pre>
+
+<p>
+导入这一亿数据后，看内存：
+</p>
+<pre text>
+used_memory:11002201279
+used_memory_human:10.25G
+used_memory_rss:20296654848
+used_memory_rss_human:18.90G
+</pre>
+
+<p>
+不用多说。
 </p>
 
 </body>
