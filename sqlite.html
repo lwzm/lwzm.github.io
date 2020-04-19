@@ -152,11 +152,11 @@ PRAGMA locking_mode = exclusive;
 <div id="Sqlite 使用技巧拾零-K-V"><h3 id="K-V" class="header"><a href="#Sqlite 使用技巧拾零-K-V">K-V</a></h3></div>
 
 <p>
-Sqlite 单进程可以达到 50k/s 的查询速度。
+Sqlite 方案单进程可以达到万级别的查询速度。
 </p>
 
 <p>
-在内存占用上，此方案不强求大内存。内存小，能缓存的数据少，磁盘 IO 多，速度较慢。
+在内存占用上，此方案不强求内存配置。内存小，能缓存的数据少，磁盘 IO 多，速度较慢。
 但是充分缓存了文件的情况下，能做到少于 Redis 的内存占用(cache)，和与 Redis <span id="Sqlite 使用技巧拾零-K-V-同级别"></span><strong id="同级别">同级别</strong> 的查询速度。
 </p>
 
@@ -210,7 +210,20 @@ if __name__ == '__main__':
 </pre>
 
 <p>
-表定义有两处特殊：k, v 没有指定类型，加了 <code>without rowid</code>，具体作用去翻文档吧。
+表定义有两处特殊：
+</p>
+
+<ul>
+<li>
+k, v 没有指定类型
+
+<li>
+加了 <code>without rowid</code>
+
+</ul>
+
+<p>
+具体作用去翻文档吧。
 </p>
 
 <p>
@@ -226,7 +239,7 @@ sys     22m 46.14s
 
 <p>
 差不多一个小时内搞定，每秒能插 30k，是不是挺快。
-还有不用担心随机生成数据的冲突的问题，就上面生成一个小目标的例子，可以算一下，遇到主键冲突异常的概率。
+还有不用担心随机生成数据的冲突的问题，就上面生成一个小目标的例子，有兴趣可以算一下，遇到主键冲突异常的概率。
 </p>
 
 <p>
@@ -234,19 +247,24 @@ sys     22m 46.14s
 </p>
 <pre sh>
 $ ls -lh kv
--rw-r--r--    1 root     root        3.7G Apr  4 15:16 kv
+-rw-r--r--    1 foo     foo        3.7G Apr  4 15:16 kv
 </pre>
 
 <p>
-<code>VACUUM</code> 后，文件更小，只有 <code>3.3G</code>。
+<code>VACUUM</code> 后，文件更小，只有 <code>3.3G</code>。原始数据也才 <code>2.9G</code>。
 </p>
 
 <pre sh>
-time sqlite3 kv 'pragma synchronous = off; VACUUM'
+$ sqlite3 kv 'pragma synchronous = off; VACUUM'
+$ ls -lh kv
+-rw-r--r--    1 foo     foo        3.3G Apr  4 15:16 kv
+$ sqlite3 kv 'select * from test' &gt;kv.raw
+$ ls -lh kv.raw
+-rw-r--r--    1 foo     foo        2.9G Apr  4 15:16 kv.raw
 </pre>
 
 <p>
-可以直接推断出，你的机器有 4G 内存，就能缓存全部的数据，也就是可以搞个海量数据加极限高速的 k-v 服务。有多快呢，来个 python 版的：
+可以直接推断出，你的机器有 4G 内存，就能缓存全部的数据，包括索引，也就是可以搞个海量数据加极限高速的 k-v 服务。有多快呢，来个 python 版的：
 </p>
 
 <pre py>
@@ -329,15 +347,28 @@ func main() {
 </pre>
 
 <p>
-是不是挺恐怖的速度，就算把 Redis 的多线程版本拿来对比，也是不虚的，还有内存方面优势：贫瘠的内存也能跑，相当于利用操作系统做了个 LRU 缓存，保证极限速度也无需太大内存。
+是不是挺恐怖的速度，就算把 Redis 的多线程版本拿来对比，也是不虚的。
+还有内存方面优势：
 </p>
+
+<ul>
+<li>
+贫瘠的内存也能跑，最差情况也就回退到依赖磁盘 4k random read 的性能，这年头谁没个 SSD 是吧。就算是穷到只买得起阿里云 *普通云盘 5GiB (200 ~ 500 IOPS)*，也能做到 250qps
+
+<li>
+相当于利用操作系统做了个 LRU 缓存，内存越大缓存命中率越高，磁盘 IO 压力越小
+
+<li>
+极限速度也无需太大内存，内存比数据库文件大一丢丢，全部数据到缓存页之后，就没磁盘 IO 什么事了，全内存 IO，怕不怕～
+
+</ul>
 
 <p>
 todo, kv 一亿+vmtouch + ali 普通硬盘 + swapon + 限制内存使用 + 生成图表
 </p>
 
 <p>
-至于 Redis，内存占用太多，这么大数据的维护也是麻烦。来试试：
+说到内存，不得不说说 Redis，内存占用太多（hash 表的特性如此），况且这么一坨数据的维护也是麻烦。来试试：
 </p>
 
 <pre py>
@@ -378,7 +409,7 @@ used_memory_rss_human:18.90G
 </pre>
 
 <p>
-不用多说。
+hash 表的内存消耗不容小觑。哪位英雄站出来维护下 <span id="Sqlite 使用技巧拾零-K-V-新增/更新/备份/恢复"></span><strong id="新增/更新/备份/恢复">新增/更新/备份/恢复</strong> ？
 </p>
 
 </body>
