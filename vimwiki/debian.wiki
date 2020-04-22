@@ -8,7 +8,7 @@ LANGUAGE="en_US.UTF-8"
 LC_ALL="en_US.UTF-8"
 }}}
 
-[[local:/debian.sh|debian.sh]]
+Script: `/debian.sh`
 
 === 使用 stable 软件包 ===
 

@@ -18,3 +18,5 @@ swapoff file_swap
 vi /etc/fstab
 /path/of/file_swap swap swap defaults 0 0
 }}}
+
+Script: `/mkswap.sh`

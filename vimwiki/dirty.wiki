@@ -16,6 +16,8 @@ vm.dirty_writeback_centisecs = 0
 vm.dirty_expire_centisecs = 60000
 }}}
 
+Script: `/dirty.sh`
+
 强制清理 `page cache`，可以 umount 磁盘，或者：
 {{{sh
 echo 1 >/proc/sys/vm/drop_caches
