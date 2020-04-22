@@ -1,14 +1,16 @@
-cat >~/.inputrc <<EOF
+cat >~/.inputrc <<'EOF'
 "\C-p": history-search-backward
 "\C-n": history-search-forward
 EOF
 
-cat >~/.bashrc <<EOF
+cat >~/.bashrc <<'EOF'
 if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
+alias ls='ls --color'
 alias ll='ls -l'
+alias l='ll -h'
 alias df='df -h'
 alias du='du -h'
 alias cp='cp -i'
