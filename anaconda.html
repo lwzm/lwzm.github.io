@@ -17,12 +17,25 @@
 <a href="https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/">https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/</a>
 
 <li>
-<a href="https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh">https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh</a>
-
-<li>
-<a href="https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh">https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh</a>
+<a href="https://repo.anaconda.com/archive/">https://repo.anaconda.com/archive/</a>
 
 </ul>
+
+<p>
+默认装在 <code>$HOME</code>，但是放系统未尝不可：
+</p>
+
+<pre sh>
+sh Anaconda3-*.sh -b -f -p /usr/local/
+</pre>
+
+<p>
+Script: <code>conda.sh</code>
+</p>
+
+<p>
+可以升级一下：
+</p>
 
 <pre sh>
 conda update --all
