@@ -336,3 +336,26 @@ used_memory_rss_human:18.90G
 }}}
 
 hash 表的内存消耗不容小觑。哪位英雄站出来维护下 *新增/更新/备份/恢复* ？
+
+拆分 256 份：
+
+conv.sh
+{{{sh
+#!/bin/sh
+db=$1
+sqlite3 tmp/$db <<EOF
+attach database kv as kv;
+.databases
+CREATE TABLE IF NOT EXISTS test (
+    k primary key,
+    v
+) without rowid;
+delete from test;
+insert into test select * from kv.test where k > x'${db}' and k < x'${db}ffffffffffffffffffffffffffffff';
+VACUUM;
+EOF
+}}}
+
+{{{sh
+python3 -c 'for n in range(256): print(f"{n:02x}")' | xargs -n1 -P20 ./conv.sh
+}}}

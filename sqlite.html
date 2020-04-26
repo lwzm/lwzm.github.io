@@ -412,5 +412,32 @@ used_memory_rss_human:18.90G
 hash 表的内存消耗不容小觑。哪位英雄站出来维护下 <span id="Sqlite 使用技巧拾零-K-V-新增/更新/备份/恢复"></span><strong id="新增/更新/备份/恢复">新增/更新/备份/恢复</strong> ？
 </p>
 
+<p>
+拆分 256 份：
+</p>
+
+<p>
+conv.sh
+</p>
+<pre sh>
+#!/bin/sh
+db=$1
+sqlite3 tmp/$db &lt;&lt;EOF
+attach database kv as kv;
+.databases
+CREATE TABLE IF NOT EXISTS test (
+    k primary key,
+    v
+) without rowid;
+delete from test;
+insert into test select * from kv.test where k &gt; x'${db}' and k &lt; x'${db}ffffffffffffffffffffffffffffff';
+VACUUM;
+EOF
+</pre>
+
+<pre sh>
+python3 -c 'for n in range(256): print(f"{n:02x}")' | xargs -n1 -P20 ./conv.sh
+</pre>
+
 </body>
 </html>
