@@ -133,7 +133,7 @@ create time：
 <pre psql>
 create table TTTT {
     ...
-    ts timestamp with time zone default now()
+    ts timestamptz default now()
 }
 </pre>
 
@@ -174,7 +174,7 @@ create table history (
     tb varchar(64),
     op varchar(16),
     ref integer,
-    ts timestamp with time zone default now()
+    ts timestamptz default now()
 );
 
 create or replace function history() returns trigger
@@ -219,7 +219,7 @@ create table history_gold (
     before bigint,
     after bigint,
     tip varchar(256),
-    ts timestamp with time zone default now()
+    ts timestamptz default now()
 );
 
 -- https://www.postgresql.org/docs/current/plpgsql-errors-and-messages.html
@@ -335,7 +335,7 @@ create table history_update (
     col varchar(64),  -- column target
     old text,
     new text,
-    ts timestamp with time zone default now()
+    ts timestamptz default now()
 );
 
 create or replace function history_update() returns trigger
@@ -388,7 +388,7 @@ create table history_update (
     pk varchar(64),  -- just record id or ids, as string
     before jsonb,
     after jsonb,
-    ts timestamp with time zone default now()
+    ts timestamptz default now()
 );
 
 create or replace function history_update() returns trigger
@@ -466,7 +466,7 @@ echo 'foo\t10' &gt;&gt; t.txt
 
 <pre sql>
 CREATE FOREIGN TABLE day27 (
-    ts timestamp with time zone,
+    ts timestamptz,
     ip text,
     request text,
     status integer,
@@ -528,7 +528,7 @@ function tpl() {
     echo "
 DROP FOREIGN TABLE IF EXISTS day$1;
 CREATE FOREIGN TABLE day$1 (
-    ts timestamp with time zone,
+    ts timestamptz,
     ip text,
     request text,
     status integer,
