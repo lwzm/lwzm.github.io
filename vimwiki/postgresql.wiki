@@ -380,6 +380,38 @@ for each row
 
 }}}
 
+=== python trigger ===
+
+这就可以非常灵活了
+
+https://www.postgresql.org/docs/current/plpython.html
+
+https://www.postgresql.org/docs/current/plpython-trigger.html
+
+数据类型，共享数据，触发器，表数据增删改等等都有文档。
+
+启用了 plpython3u 的 postgresql 服务，可以参考 docker: `lwzm/postgres`
+
+触发器例子：
+
+{{{sql
+create or replace function t() returns trigger language plpython3u as $$
+import time
+import requests
+import os
+1/1
+time.sleep(1)
+with open("/tmp/debug", "a") as f:
+    print(dir(), file=f)
+    print(globals(), file=f)
+    print(TD, file=f)
+    print(requests, file=f)
+    print(os.getcwd(), file=f)
+    TD['new']['state'] = "xx"
+    return 'MODIFY'
+$$;
+}}}
+
 === 插件系统 ===
 
 {{{
