@@ -48,5 +48,20 @@ conda update --all
 conda create -n py36 python=3.6
 </pre>
 
+<p>
+快速安装可以选择 <code>miniconda</code>，安装好后再 <code>conda install anaconda</code>。
+</p>
+
+<p>
+可以选择使用镜像加速，参考 <a href="https://mirror.tuna.tsinghua.edu.cn/help/anaconda/">https://mirror.tuna.tsinghua.edu.cn/help/anaconda/</a>
+</p>
+
+<pre yaml>
+channels:
+  - defaults
+show_channel_urls: true
+channel_alias: https://mirrors.tuna.tsinghua.edu.cn/anaconda
+</pre>
+
 </body>
 </html>
