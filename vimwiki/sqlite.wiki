@@ -359,3 +359,25 @@ EOF
 {{{sh
 python3 -c 'for n in range(256): print(f"{n:02x}")' | xargs -n1 -P20 ./conv.sh
 }}}
+
+=== 磁盘的随机读取 ===
+
+对于顺序读取，磁盘很欢迎，操作系统对此也有预读优化（多往后面读一些 pages），而随机读，对于非 SSD 来说，就很痛苦了。
+
+{{{py
+#!/usr/bin/env python3
+
+import mmap
+import random
+
+n = 4096
+
+with open("big-file", "rb") as f:
+    mm = mmap.mmap(f.fileno(), 0, prot=mmap.PROT_READ)
+    l = list(range(len(mm) // n))
+    random.shuffle(l)
+    for i in l:
+        mm[i * n]
+}}}
+
+上面的例子会很慢很慢，操作系统甚至会放弃治疗（不预读），如果注释掉 shuffle，则为顺序读，速度杠杠的。
