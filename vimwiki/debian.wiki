@@ -17,3 +17,15 @@ echo 'deb http://ftp.debian.org/debian stable main' >>/etc/apt/sources.list
 apt update
 apt -t stable install XXX...
 }}}
+
+=== net install ===
+
+https://mirrors.tuna.tsinghua.edu.cn/debian/dists/buster/main/installer-amd64/current/images/netboot/
+下载 mini.iso 再烧录 U盘，就可以启动了。
+
+=== 电源管理 ===
+
+笔记本的行为参考以下配置：`/etc/systemd/logind.conf`。
+
+
+
