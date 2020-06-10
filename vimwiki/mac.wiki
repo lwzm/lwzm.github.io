@@ -47,3 +47,5 @@ glib            jq              libidn2         libvterm        meson           
 brew cask list
 dbeaver-community        docker                   fork                     google-chrome            java                     osxfuse                  shadowsocksx-ng          visual-studio-code
 }}}
+
+lsof 可以查看端口：`lsof -i -nP`
