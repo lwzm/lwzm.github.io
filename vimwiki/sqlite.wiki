@@ -260,8 +260,6 @@ import (
 func main() {
 	n := 0
 	t := time.Now()
-	k := make([]byte, 16)
-	v := ""
 
 	db, err := sql.Open("sqlite3", "kv")
 
@@ -272,6 +270,8 @@ func main() {
 	stmt, _ := db.Prepare("select v from test where k = ?")
 
 	for {
+		k := make([]byte, 16)
+		v := ""
 		rand.Read(k)
 		row := stmt.QueryRow(k)
 		row.Scan(&v)
@@ -288,6 +288,7 @@ func main() {
 	}
 }
 }}}
+
 
 是不是挺恐怖的速度，就算把 Redis 的多线程版本拿来对比，也是不虚的。
 还有内存方面优势：
