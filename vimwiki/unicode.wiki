@@ -73,3 +73,11 @@ Uint8Array [ 228, 184, 173 ]
 
 JavaScript 的内存使用情况与 Python 类似，有对普通纯 ascii 字符串做优化。
 `emoji.length == 2`，因为字符在内存中使用 UTF-16 编码存放，`.length` 返回的是 UTF-16 的单元数量。emoji 被认为是 2 单元占 4 字节内存。
+
+Python 无法存储非法的 unicode：
+{{{py
+>>> bytes([254,255]).decode()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xfe in position 0: invalid start byte
+}}}

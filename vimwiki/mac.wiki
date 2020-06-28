@@ -1,5 +1,12 @@
 = Mac OS =
 
+调整打开文件数的限制
+
+{{{sh
+sudo launchctl limit maxfiles 4096 20000
+ulimit -S -n 1024
+}}}
+
 剪贴板工具
 
 {{{sh

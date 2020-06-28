@@ -198,6 +198,7 @@ tar czf XXX.tgz lib* XXX
 }}}
 
 如何极限精简打包，参考 https://gist.github.com/lwzm/f3dfb447f7927b78d70c040aa1c3a5e1
+todo python 通用极限打包，参考 fsm-hub
 
 最后：
 
