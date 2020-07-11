@@ -16,12 +16,11 @@ Debian 安装参考：https://docs.docker.com/install/linux/docker-ce/debian/
 
 {{{sh
 apt update
-apt upgrade
-apt install \
+apt install -y \
     apt-transport-https \
     ca-certificates \
     curl \
-    gnupg2 \
+    gnupg-agent \
     software-properties-common
 
 curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
@@ -32,7 +31,7 @@ add-apt-repository \
    stable"
 
 apt update
-apt install docker-ce docker-ce-cli containerd.io
+apt install -y docker-ce docker-ce-cli containerd.io
 }}}
 
 CoreOS 需要 SELINUX，不然会有奇怪的错误。
@@ -100,6 +99,22 @@ chmod +x /usr/local/bin/*
 * htop `docker run -it --name=htop --pid=host lwzm/htop`
 * portainer
 * nginx
+
+
+=== nsenter ===
+
+Run a program with namespaces of other processes.
+
+在宿主机上找到容器的命名空间后，在其中执行指令，例子：
+
+{{{sh
+nsenter -t 30069 -u hostname
+
+# 查看 traefik 的网络链接
+nsenter -t 30069 -n netstat -ntp
+}}}
+
+参考：https://stackoverflow.com/questions/40350456/docker-any-way-to-list-open-sockets-inside-a-running-docker-container
 
 
 === /dev/mqueue: ===
