@@ -346,6 +346,70 @@ func main() {
 }
 </pre>
 
+<p>
+<code>:memory:</code> 纯内存版本, <code>80k/s</code> 左右：
+</p>
+
+<pre go>
+package main
+
+import (
+	"context"
+	"database/sql"
+	"fmt"
+	"log"
+	"math/rand"
+	"time"
+
+	_ "github.com/mattn/go-sqlite3"
+)
+
+func main() {
+	n := 0
+	t := time.Now()
+
+	db, err := sql.Open("sqlite3", ":memory:")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	conn, err := db.Conn(context.TODO())
+	if err != nil {
+		log.Fatal(err)
+	}
+	conn.ExecContext(context.TODO(), `
+		attach database 'kv' as t;
+		create table test(k primary key, v) without rowid;
+		insert into test select k, v from t.test;
+	`)
+	fmt.Println("loaded")
+
+	stmt, _ := conn.PrepareContext(context.TODO(), "select v from test where k = ?")
+
+	for {
+		k := make([]byte, 16)
+		v := ""
+		rand.Read(k)
+		row := stmt.QueryRow(k)
+		row.Scan(&amp;v)
+		if v != "" {
+			break
+		}
+		t2 := time.Now()
+		if t2.Sub(t) &gt; time.Second {
+			fmt.Printf("%v\r", n)
+			t = t2
+			n = 0
+		}
+		n++
+	}
+}
+</pre>
+
+<p>
+（奇怪的是，<code>:memory:</code>，Python 的性能更好）
+</p>
 
 <p>
 是不是挺恐怖的速度，就算把 Redis 的多线程版本拿来对比，也是不虚的。
