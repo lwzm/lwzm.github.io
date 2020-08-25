@@ -4,10 +4,11 @@
 
 {{{sql
 select datetime('now', 'localtime');
+select strftime('%Y-%m-%d %H:%M:%f', 'now', 'localtime');
 
 CREATE TABLE whatever (
      ...
-     ts DATETIME DEFAULT (datetime('now', 'localtime')),
+     ts DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'localtime')),
      ...
 );
 }}}
