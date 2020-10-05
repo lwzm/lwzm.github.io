@@ -1,0 +1,9 @@
+= Graphviz =
+
+https://graphviz.org/documentation/
+
+Linux 可以直接用包管理安装。
+
+自己安装字体到 `~/.fonts/`, 一般有 `Monaco.ttf`, `msyh.ttc`, 然后 `fc-cache -fv` 刷新就可以用了，`fc-list` 可以查看字体。
+
+
