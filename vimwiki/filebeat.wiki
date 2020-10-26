@@ -1,0 +1,29 @@
+= filebeat =
+
+{{{yml
+setup.ilm.enabled: false
+setup.template.name: "hwai"
+setup.template.pattern: "hwai-*"
+
+filebeat.inputs:
+- type: stdin
+  json.keys_under_root: true
+  json.ignore_decoding_error: true
+  json.add_error_key: true
+
+#filebeat.inputs:
+#- type: log
+#  paths:
+#    - test.log
+
+output.elasticsearch:
+  hosts:
+  - 10.27.235.108
+  username: hwai
+  password: 7WtmFY9kj4qk
+  index: "hwai-%{+yyyy.MM.dd}"
+
+#output.file:
+#  path: log
+
+}}}

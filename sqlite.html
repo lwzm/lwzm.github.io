@@ -94,6 +94,7 @@ CREATE TABLE IF NOT EXISTS "patch" (
 
 -- main 是老数据，把 patch 作为补丁更新至 main , 参考下面
 -- 执行速度只和 patch 的数据量有关 O(n)，和目标 main (with index) 的数据量呈对数增长关系 O(log n)，patch 数据量有 100W 时，2 秒搞定
+-- patch 可以不要索引，数据录入速度更快，如果保证数据是排序好的，速度和索引版相差不大
 
 select 'edit';
 replace into main (k, v) 

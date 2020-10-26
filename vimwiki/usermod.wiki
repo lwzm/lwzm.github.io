@@ -40,11 +40,8 @@ usermod -a -G sudo q  # debian
 批量操作
 {{{
 useradd q && yes xxxxxx | passwd q && usermod -a -G wheel q
-
 usermod -a -G adm q
-
 usermod -a -G nginx q
-
+usermod -a -G docker q
 usermod -a -G q postgres
-
 }}}

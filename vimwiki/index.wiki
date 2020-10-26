@@ -16,10 +16,12 @@
 * [[docker-compose]]
 * [[fastapi]]
 * [[falcon]] web 框架
+* [[filebeat]]
 * [[git]]
 * [[golang]]
 * [[gotty]]
 * [[gunicorn]] wsgi 容器
+* [[graphviz]]
 * [[http2]]
 * [[httpie]] HTTP 命令行客户端
 * [[inotify]] Linux 专用的文件改动监测

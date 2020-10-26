@@ -34,6 +34,12 @@ apt update
 apt install -y docker-ce docker-ce-cli containerd.io
 }}}
 
+普通用户 foo 加权限：
+
+{{{sh
+usermod -a -G docker foo
+}}}
+
 CoreOS 需要 SELINUX，不然会有奇怪的错误。
 {{{sh
 vi /etc/selinux/config 

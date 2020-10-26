@@ -1,7 +1,10 @@
 mkdir -p ~/.pip
 cat >~/.pip/pip.conf <<'EOF'
 [global]
-index-url = https://pypi.douban.com/simple
-trusted-host = pypi.douban.com
-format=columns
+format = columns
+user = true
+index-url = https://mirrors.aliyun.com/pypi/simple/
+
+[install]
+trusted-host=mirrors.aliyun.com
 EOF

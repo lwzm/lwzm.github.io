@@ -1,6 +1,6 @@
 常用 Python 工具，pip 安装
 
-* pingtop 
+* pymode
 * glances
 * shadowsocks
 * you-get
