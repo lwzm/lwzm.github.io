@@ -50,6 +50,7 @@ net use * http://webdav.foo.bar/
 
 或者使用 `WinSCP`。
 
+最后， *推荐* [[https://github.com/rclone/rclone|rclone]]，它的子命令 `mount` 调用 `fusermount` 帮你挂载好。
 
 === 部署服务 ===
 
@@ -72,4 +73,4 @@ proxy_buffering off;
 proxy_request_buffering off;
 }}}
 
-还有 https://github.com/hacdias/webdav 可选，目前我的 `docker lwzm/webdav` 就改用这个程序。
+还有 https://github.com/hacdias/webdav 可选，目前我的 [[https://hub.docker.com/repository/docker/lwzm/webdav|lwzm/webdav]] 就改用这个程序。
