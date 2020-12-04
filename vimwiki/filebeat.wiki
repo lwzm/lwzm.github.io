@@ -57,7 +57,7 @@ output.console:
 }}}
 
 
-开启 UDP 收日志，清理自带的一些字段，以 JSON 格式解码原始日志到顶层，清理原始日志，输出到 elasticsearch：
+开启 TPC/UDP 收日志，清理自带的一些字段，以 JSON 格式解码原始日志到顶层，清理原始日志，输出到 elasticsearch：
 
 {{{yml
 processors:
@@ -81,8 +81,10 @@ processors:
 
 
 filebeat.inputs:
+- type: tcp
+  host: :2222
 - type: udp
-  host: :8000
+  host: :2222
 
 
 output.elasticsearch:
