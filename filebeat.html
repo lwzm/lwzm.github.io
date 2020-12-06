@@ -109,6 +109,9 @@ processors:
 
 filebeat.inputs:
 - type: tcp
+  host: localhost:1111
+  timeout: 864000
+- type: tcp
   host: :2222
 - type: udp
   host: :2222
@@ -119,18 +122,32 @@ output.elasticsearch:
   - elasticsearch
   - elasticsearch-2:9200
   - http://elasticsearch-3:9200
-  index: "xxx-%{+yyyy.MM.dd}"
+  index: "q-%{+yyyy.MM.dd}"
 
 
 setup:
   ilm.enabled: false
   template:
     name: q
-    pattern: q-*  
+    pattern: q-*
+    overwrite: true
+    fields: /dev/null
+    settings:
+      index.translog:
+        durability: async
+        sync_interval: 10s	
 </pre>
 
 <p>
-注意需要自定义 <code>setup.template</code>，关闭 <code>setup.ilm.enabled</code>。然而 <code>output.elasticsearch.index</code> 又可以任意发挥。
+注意需要自定义 <code>setup.template</code>，关闭 <code>setup.ilm.enabled</code>。
+</p>
+
+<p>
+<code>elasticsearch.host/INDEX-NAME/_settings - default_field</code> 字段不想要太多数据，可以定义 fields 文件为空。
+</p>
+
+<p>
+<code>index.translog</code> 是为了写入速度容忍数据不安全
 </p>
 
 </body>
