@@ -91,11 +91,7 @@ filebeat.inputs:
 
 
 output.elasticsearch:
-  hosts:
-  - elasticsearch
-  - elasticsearch-2:9200
-  - http://elasticsearch-3:9200
-  index: "q-%{+yyyy.MM.dd}"
+  hosts: ${ES_HOSTS:elasticsearch}
 
 
 setup:
@@ -108,14 +104,83 @@ setup:
     append_fields:
     - name: "@timestamp"
       type: date
-    settings:
-      index.translog:
+    settings.index:
+      number_of_replicas: 0
+      translog:
+        durability: async
+        sync_interval: 3s   
+}}}
+
+`elasticsearch.host/INDEX-NAME/_settings - default_field` 字段不想要太多数据，可以定义 fields 文件为空。
+
+`index.translog` 是为了写入速度容忍数据不安全；情景是单节点且数据不贵重时，`index.number_of_replicas: 0` 节省存储空间。
+
+环境变量可以在配置文件中出现，https://www.elastic.co/guide/en/beats/packetbeat/current/using-environ-vars.html#_specify_complex_objects_in_environment_variables
+
+=== 来总结一下配置： ===
+
+{{{yaml
+processors:
+
+- drop_fields:
+    fields:
+    - input
+    - agent
+    - host
+    - ecs
+    - log
+
+- decode_json_fields:
+    target: ""
+    fields:
+    - message
+
+- drop_fields:
+    fields:
+    - message
+
+
+filebeat.inputs:
+- type: tcp
+  host: :2222
+  timeout: 864000
+- type: udp
+  host: :2222
+
+
+output.elasticsearch:
+  hosts: ${ES_HOSTS:elasticsearch}
+
+
+setup:
+  ilm:
+    rollover_alias: ${NAME:x}
+  template:
+    name: whatever
+    pattern: "*"
+    fields: /dev/null
+    append_fields:
+    - name: "@timestamp"
+      type: date
+    settings.index:
+      number_of_replicas: ${REPLICAS:0}
+      translog:
         durability: async
         sync_interval: 3s
 }}}
 
-注意需要自定义 `setup.template`，关闭 `setup.ilm.enabled`。
+* 接收 JSON 格式的日志，并发送到 elasticsearch，可通过环境变量 `ES_HOSTS` 配置日志目的地；
+* 不使用 filebeat 自带的一大坨字段定义；
+* 清除 filebeat 额外添加的字段；
+* 优化写入速度
+* 启用 ILM
+* 模板定制的索引名前缀，通过 `NAME` 定义
+* 可通过 `REPLICAS` 定义副本数
 
-`elasticsearch.host/INDEX-NAME/_settings - default_field` 字段不想要太多数据，可以定义 fields 文件为空。
-
-`index.translog` 是为了写入速度容忍数据不安全
+接着，可以 docker 打包一个定制版：
+{{{Dockerfile
+FROM elastic/filebeat:7.9.3
+EXPOSE 2222 2222/udp
+ENV ES_HOSTS="" NAME="" REPLICAS=""
+COPY filebeat.yml /usr/share/filebeat/
+}}}
