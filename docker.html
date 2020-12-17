@@ -205,13 +205,22 @@ docker run -it --name=main alpine sh
 docker run -it --ipc=container:main alpine sh
 </pre>
 
+<div id="Docker-edge/testing packages"><h3 id="edge/testing packages" class="header"><a href="#Docker-edge/testing packages">edge/testing packages</a></h3></div>
+
+<p>
+有的包较冷门，安装的话需要自己定义：
+</p>
+<pre sh>
+echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' &gt;&gt;/etc/apk/repositories
+apk add moosefs-client
+</pre>
+
 <div id="Docker-alpine gcc"><h3 id="alpine gcc" class="header"><a href="#Docker-alpine gcc">alpine gcc</a></h3></div>
 
 <pre sh>
 sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
 apk add --no-cache gcc musl-dev
 </pre>
-
 
 <div id="Docker-/opt/bin"><h3 id="/opt/bin" class="header"><a href="#Docker-/opt/bin">/opt/bin</a></h3></div>
 

@@ -134,13 +134,20 @@ docker run -it --name=main alpine sh
 docker run -it --ipc=container:main alpine sh
 }}}
 
+=== edge/testing packages ===
+
+有的包较冷门，安装的话需要自己定义：
+{{{sh
+echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >>/etc/apk/repositories
+apk add moosefs-client
+}}}
+
 === alpine gcc ===
 
 {{{sh
 sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
 apk add --no-cache gcc musl-dev
 }}}
-
 
 === /opt/bin ===
 
