@@ -1,0 +1,41 @@
+= MooseFS =
+
+试试 docker-compose 部署：
+
+{{{yaml
+version: '3'
+
+services:
+
+  mfsmaster:
+    image: moosefs/master
+    volumes:
+    - ./master:/var/lib/mfs
+    environment:
+    - MFS_ENV=TEST
+
+  cgi:
+    image: moosefs/cgi
+    ports:
+    - "9425:9425"
+    depends_on:
+    - mfsmaster
+
+  chunk:
+    image: moosefs/chunkserver
+    depends_on:
+    - mfsmaster
+
+  client:
+    image: moosefs/client
+    cap_add:
+    - SYS_ADMIN
+    devices:
+    - /dev/fuse:/dev/fuse
+    depends_on:
+    - mfsmaster
+}}}
+
+参考自 https://github.com/moosefs/moosefs-docker-cluster
+
+默认 goal 2，chunk 推荐挂存储。
