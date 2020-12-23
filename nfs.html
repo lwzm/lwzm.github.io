@@ -42,5 +42,38 @@ systemctl start nfs
 mount nfs-address:/media DIR
 </pre>
 
+<div id="NFS-docker"><h3 id="docker" class="header"><a href="#NFS-docker">docker</a></h3></div>
+
+<p>
+尝试了多个镜像，<code>gists/nfs-server</code> 挺合适，使用 v4 版本，可以仅暴露 tcp 2049。
+</p>
+
+<pre yaml>
+  nfs:
+    image: gists/nfs-server
+    cap_add:
+    - SYS_ADMIN
+    volumes:
+    - ./nfs:/nfs-share
+    environment:
+      NFS_OPTION: 'rw,async,insecure,no_root_squash,no_all_squash,no_subtree_check,fsid=0'
+    ports:
+    - 2049:2049
+</pre>
+
+<p>
+挂载：
+</p>
+
+<pre sh>
+mount.nfs4 &lt;NFS&gt;: DIR
+# or
+mount -t nfs4 &lt;NFS&gt;: DIR
+# or
+mount -o vers=4 &lt;NFS&gt;: DIR
+# or
+mount -o vers=4 -o port=22049 &lt;NFS&gt;: m  # custom port
+</pre>
+
 </body>
 </html>
