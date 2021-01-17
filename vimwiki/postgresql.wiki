@@ -395,6 +395,8 @@ https://www.postgresql.org/docs/current/plpython-trigger.html
 触发器例子：
 
 {{{sql
+-- init:
+-- CREATE EXTENSION plpython3u;
 create or replace function t() returns trigger language plpython3u as $$
 import time
 import requests

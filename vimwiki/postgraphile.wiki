@@ -1,0 +1,32 @@
+= PostGraphile =
+
+* https://www.graphile.org/postgraphile/security/
+* https://www.graphile.org/postgraphile/smart-tags/#primarykey
+* https://www.graphile.org/postgraphile/views/#authorization
+* https://www.graphile.org/postgraphile/jwt-guide/#example
+
+{{{sql
+drop function if exists jwt(integer);
+
+create function jwt(i int) returns text language plpython3u stable as $$
+import time
+import jwt
+
+now = int(time.time())
+encoded = jwt.encode({"i": i, "iat": now, "exp": now + 86400 * 30}, "x")
+return "Bearer " + encoded
+$$;
+}}}
+
+
+{{{sql
+drop function if exists current_user_id() cascade;
+
+create function current_user_id() returns int language sql stable as $$
+  select current_setting('jwt.claims.i', true)::int;
+$$;
+
+create view u as
+ select * from "user" where id < current_user_id();
+comment on view u is E'@primaryKey id';
+}}}

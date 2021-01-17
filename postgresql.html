@@ -454,6 +454,8 @@ for each row
 </p>
 
 <pre sql>
+-- init:
+-- CREATE EXTENSION plpython3u;
 create or replace function t() returns trigger language plpython3u as $$
 import time
 import requests
