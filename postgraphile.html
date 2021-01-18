@@ -47,7 +47,30 @@ $$;
 
 create view u as
  select * from "user" where id &lt; current_user_id();
-comment on view u is E'@primaryKey id';
+comment on view u is '@primaryKey id';
+
+comment on view v is '
+@primaryKey id
+@foreignKey (user) references u (id)|@foreignFieldName vs|@fieldName u
+';
+
+comment on constraint fk_group_user__group on group_user is '
+@manyToManyFieldName groups
+';
+
+drop view user_all_groups;
+create view user_all_groups as
+select distinct u.id as user, g2.id as group 
+from "user" as u
+join group_user as x on u.id = x.user
+join "group" as g on x.group = g.id
+join "group" as g2 on g.name = g2.name or g2."name" like g."name" || '/%'
+;
+comment on view user_all_groups is '
+@foreignKey (user) references user(id)
+@foreignKey (group) references group(id)|@manyToManyFieldName allGroups
+';
+
 </pre>
 
 </body>
