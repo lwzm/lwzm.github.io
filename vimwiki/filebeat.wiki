@@ -184,3 +184,118 @@ EXPOSE 2222 2222/udp
 ENV ES_HOSTS="" NAME="" REPLICAS=""
 COPY filebeat.yml /usr/share/filebeat/
 }}}
+
+`k8s` 部署参考：
+{{{yaml
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: es
+  labels:
+    foo: es
+spec:
+  initContainers:
+  - name: chmod
+    image: busybox
+    args:
+    - chown
+    - 1000:1000
+    - /data
+    volumeMounts:
+    - name: data-dir
+      mountPath: /data
+  containers:
+  - name: kibana
+    image: elastic/kibana:7.9.3
+    env:
+    - name: ELASTICSEARCH_HOSTS
+      value: http://localhost:9200
+  - name: elasticsearch
+    image: elastic/elasticsearch:7.9.3
+    env:
+    - name: discovery.type
+      value: single-node
+    - name: bootstrap.memory_lock
+      value: "true"
+    - name: ES_JAVA_OPTS
+      value: "-Xms256m -Xmx256m"
+    volumeMounts:
+    - name: data-dir
+      mountPath: /usr/share/elasticsearch/data
+  - name: filebeat
+    image: YOUR/OWN/filebeat
+    env:
+    - name: NAME
+      value: q
+    - name: ES_HOSTS
+      value: localhost
+    - name: REPLICAS
+      value: "0"
+  volumes:
+  - name: data-dir
+    hostPath:
+      path: /data/es
+      type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: es
+spec:
+  clusterIP: None
+  selector:
+    foo: es
+  ports:
+  - name: kibana
+    port: 5601
+  - name: elasticsearch
+    port: 9200
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: es
+spec:
+  rules:
+  - host: kibana.foo.bar
+    http:
+      paths:
+      - backend:
+          serviceName: es
+          servicePort: 5601
+  - host: elasticsearch.foo.bar
+    http:
+      paths:
+      - backend:
+          serviceName: es
+          servicePort: 9200
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: filebeat-tcp-test
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      foo: test-filebeat
+  template:
+    metadata:
+      labels:
+        foo: test-filebeat
+    spec:
+      containers:
+      - name: t
+        image: busybox
+        args:
+        - sh
+        - -c
+        - sleep 3 && yes '{"a":0}' | nc localhost 2222
+      - name: filebeat
+        image: harbor.avlyun.org/j-inf/filebeat
+        env:
+        - name: ES_HOSTS
+          value: es
+}}}

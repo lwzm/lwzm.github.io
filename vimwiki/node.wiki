@@ -1,0 +1,9 @@
+= node nodejs =
+
+{{{sh
+npm i create-react-app
+npx create-react-app app-js
+npx create-react-app app-ts --template cra-template-typescript
+}}}
+
+`create-react-app` 会安装 `canvas`，需要编译二进制，有些依赖需要安装，参考 https://www.npmjs.com/package/canvas

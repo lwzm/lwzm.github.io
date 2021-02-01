@@ -392,6 +392,18 @@ https://www.postgresql.org/docs/current/plpython-trigger.html
 
 启用了 plpython3u 的 postgresql 服务，可以参考 docker: `lwzm/postgres`
 
+函数例子：
+{{{sql
+do language plpython3u $$
+import sys
+import os
+print(os.getpid(), os.getcwd(), sys.path)
+print(SD, GD)
+print(dir(__builtins__))
+print(globals(), flush=True)
+$$
+}}}
+
 触发器例子：
 
 {{{sql

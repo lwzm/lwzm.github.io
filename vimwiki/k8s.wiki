@@ -9,3 +9,59 @@ learning...
     nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
 }}}
 https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md
+
+=== kubectl ===
+
+配置见 `~/.kube/config`，建议用 yaml 格式，例子：
+
+{{{yaml
+apiVersion: v1
+clusters:
+- cluster:
+    insecure-skip-tls-verify: true
+    server: https://121.37.9.27:5443
+  name: hw
+- cluster:
+    server: https://rancher-inf.avlyun.org/k8s/clusters/c-rp6bh
+  name: wuhan-huashan-vm
+- cluster:
+    server: https://rancher-inf.avlyun.org/k8s/clusters/c-xd5vw
+  name: wuhan-mye-pm
+contexts:
+- context:
+    cluster: wuhan-huashan-vm
+    namespace: cloud-search-dev
+    user: hs
+  name: cs
+- context:
+    cluster: hw
+    namespace: b-kvone-prod
+    user: hw
+  name: hw-kv
+- context:
+    cluster: wuhan-huashan-vm
+    namespace: j
+    user: hs
+  name: j
+- context:
+    cluster: wuhan-huashan-vm
+    namespace: q
+    user: hs
+  name: q
+current-context: q
+kind: Config
+preferences: {}
+users:
+- name: hs
+  user:
+    token: kubeconfig-u-vpuxdbpzwm.c-rp6bh:z6mc8prr7flw89dzj85d57w6z5zf8xnnk85d6k96hqcw9qd78dg6j9
+- name: hw
+  user:
+    client-certificate-data: xxx
+    client-key-data: xxx
+- name: my
+  user:
+    token: kubeconfig-u-vpuxdbpzwm.c-xd5vw:2xmp6st5tvxcpq4nw2qjdvdldrc9prwk4brjlv9cdsl9kjlvxck968
+}}}
+
+还可用 [[https://github.com/ahmetb/kubectx|kubectx]] 作为辅助。

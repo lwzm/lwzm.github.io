@@ -27,7 +27,7 @@
 <pre sql>
 drop function if exists jwt(integer);
 
-create function jwt(i int) returns text language plpython3u stable as $$
+create or replace function jwt(i int) returns text language plpython3u stable as $$
 import time
 import jwt
 
@@ -58,6 +58,23 @@ comment on constraint fk_group_user__group on group_user is '
 @manyToManyFieldName groups
 ';
 
+create function me() returns "user" language sql stable
+as $$
+  select *
+  from "user"
+  where id = current_user_id();
+$$;
+
+
+-- m2m rename
+comment on constraint fk_group_user__group on group_user is '
+@manyToManyFieldName groups
+';
+
+comment on table volumn is '
+@foreignKey (user) references u (id)
+';
+
 drop view user_all_groups;
 create view user_all_groups as
 select distinct u.id as user, g2.id as group 
@@ -71,6 +88,31 @@ comment on view user_all_groups is '
 @foreignKey (group) references group(id)|@manyToManyFieldName allGroups
 ';
 
+drop view user_sub_groups;
+create view user_sub_groups as
+select distinct u.id as user, g2.id as group 
+from "user" as u
+join group_user as x on u.id = x.user
+join "group" as g on x.group = g.id
+join "group" as g2 on g2."name" like g."name" || '/%'
+;
+comment on view user_sub_groups is '
+@foreignKey (user) references user(id)
+@foreignKey (group) references group(id)|@manyToManyFieldName subGroups
+';
+
+drop view user_group_volumns;
+create view user_group_volumns as
+select distinct i.user, x.volumn
+from user_sub_groups as i
+join group_volumn as x on i.group = x.group
+left join volumn as v on i.user = v.user and x.volumn = v.id
+where v.id is null
+;
+comment on view user_group_volumns is '
+@foreignKey (user) references user(id)
+@foreignKey (volumn) references volumn(id)|@manyToManyFieldName groupVolumns
+';
 </pre>
 
 </body>

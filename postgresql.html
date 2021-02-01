@@ -450,6 +450,20 @@ for each row
 </p>
 
 <p>
+函数例子：
+</p>
+<pre sql>
+do language plpython3u $$
+import sys
+import os
+print(os.getpid(), os.getcwd(), sys.path)
+print(SD, GD)
+print(dir(__builtins__))
+print(globals(), flush=True)
+$$
+</pre>
+
+<p>
 触发器例子：
 </p>
 

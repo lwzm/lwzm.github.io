@@ -36,6 +36,7 @@
 * [[mount]]
 * [[mysql]] 拾零
 * [[mfs]]
+* [[node]]
 * [[nfs]]
 * [[ntp]]
 * [[nvim]] neovim
