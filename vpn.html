@@ -36,6 +36,7 @@ docker-compose 例子：
     image: fcojean/l2tp-ipsec-vpn-server
     privileged: true
     environment:
+      VPN_DNS1: dns  # optional
       VPN_IPSEC_PSK: x
       VPN_USER_CREDENTIAL_LIST: |
         [
@@ -48,11 +49,16 @@ docker-compose 例子：
     ports: 
       - 500:500/udp
       - 4500:4500/udp
+
+  # optional
+  dns:
+    image: andyshinn/dnsmasq
 </pre>
 
 <p>
 macOS 可以用，连上后，可选发送所有流量，也可自定义路由：
 </p>
+
 <pre sh>
 route add 10.1.0.0/24 192.168.42.1
 route delete 10.1.0.0/24
@@ -61,6 +67,7 @@ route delete 10.1.0.0/24
 <p>
 Linux：
 </p>
+
 <pre sh>
 ipsec up myvpn
 echo "c myvpn" &gt; /var/run/xl2tpd/l2tp-control
@@ -76,6 +83,10 @@ ipsec down myvpn
 参考：<a href="https://github.com/hwdsl2/setup-ipsec-vpn/blob/master/docs/clients-zh.md">https://github.com/hwdsl2/setup-ipsec-vpn/blob/master/docs/clients-zh.md</a>
 </p>
 
+<p>
+另外，可以 <code>dnsmasq</code> 负责解析 compose/k8s 的内部域名，vpn 服务设置环境变量 <code>VPN_DNS1: dns</code>，用户拨号上去后，即可完全融入其中的环境，非常方便开发。
+</p>
+
 <div id="sshuttle"><h3 id="sshuttle" class="header"><a href="#sshuttle">sshuttle</a></h3></div>
 
 <p>
@@ -87,6 +98,10 @@ sshuttle --dns -r hk.remote 0/0
 # or
 sshuttle --dns -r work.remote 192.168.0.0/16 172.16.0.0/12 10.0.0.0/8
 </pre>
+
+<p>
+compose/k8s 上面可以搭建一个 sshd，sshuttle 连上去后可以融入环境，效果和作用和上面一样，额外还能打隧道，参考 <code>lwzm/sshd</code> <a href="https://hub.docker.com/repository/docker/lwzm/sshd">https://hub.docker.com/repository/docker/lwzm/sshd</a>
+</p>
 
 </body>
 </html>
