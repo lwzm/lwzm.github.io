@@ -82,5 +82,24 @@ dbeaver-community        docker                   fork                     googl
 lsof 可以查看端口：<code>lsof -i -nP</code>
 </p>
 
+<p>
+DNS 刷新
+</p>
+
+<pre sh>
+sudo killall -HUP mDNSResponder
+</pre>
+
+<p>
+resolve.conf search 总是有效
+</p>
+
+<pre sh>
+dns=/Library/Preferences/com.apple.mDNSResponder.plist
+sudo defaults write $dns AlwaysAppendSearchDomains -bool true
+sudo launchctl unload -w $dns
+sudo launchctl load -w $dns
+</pre>
+
 </body>
 </html>

@@ -13,10 +13,10 @@
 locale 有时会有问题，编辑 <code>/etc/default/locale</code>：
 </p>
 
-<pre sh>
-LANG="en_US.UTF-8"
-LANGUAGE="en_US.UTF-8"
-LC_ALL="en_US.UTF-8"
+<pre text>
+LANG=C.UTF-8
+LANGUAGE=C.UTF-8
+LC_ALL=C.UTF-8
 </pre>
 
 <p>
@@ -28,6 +28,13 @@ Script: <code>/debian.sh</code>
 <p>
 <a href="https://mirrors.163.com/.help/debian.html">https://mirrors.163.com/.help/debian.html</a>
 </p>
+
+<p>
+可以粗暴点：
+</p>
+<pre sh>
+echo 'deb http://mirrors.163.com/debian/ buster main non-free contrib' &gt;/etc/apt/sources.list
+</pre>
 
 <div id="Debian-net install"><h3 id="net install" class="header"><a href="#Debian-net install">net install</a></h3></div>
 

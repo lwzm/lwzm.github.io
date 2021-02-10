@@ -73,3 +73,5 @@ sshuttle --dns -r work.remote 192.168.0.0/16 172.16.0.0/12 10.0.0.0/8
 }}}
 
 compose/k8s 上面可以搭建一个 sshd，sshuttle 连上去后可以融入环境，效果和作用和上面一样，额外还能打隧道，参考 `lwzm/sshd` https://hub.docker.com/repository/docker/lwzm/sshd
+
+打算以 app.namespace 的方式访问 k8s 的服务，需要注意配置 /etc/resolv.conf: `search svc.cluster.xxx` 。

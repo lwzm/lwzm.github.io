@@ -2,10 +2,10 @@
 
 locale 有时会有问题，编辑 `/etc/default/locale`：
 
-{{{sh
-LANG="en_US.UTF-8"
-LANGUAGE="en_US.UTF-8"
-LC_ALL="en_US.UTF-8"
+{{{text
+LANG=C.UTF-8
+LANGUAGE=C.UTF-8
+LC_ALL=C.UTF-8
 }}}
 
 Script: `/debian.sh`
@@ -13,6 +13,11 @@ Script: `/debian.sh`
 === 使用镜像 ===
 
 https://mirrors.163.com/.help/debian.html
+
+可以粗暴点：
+{{{sh
+echo 'deb http://mirrors.163.com/debian/ buster main non-free contrib' >/etc/apt/sources.list
+}}}
 
 === net install ===
 
