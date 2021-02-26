@@ -28,5 +28,10 @@ https://mirrors.tuna.tsinghua.edu.cn/debian/dists/buster/main/installer-amd64/cu
 
 笔记本的行为参考以下配置：`/etc/systemd/logind.conf`。
 
+=== Dockerfile ===
 
-
+{{{sh
+RUN apt update \
+    && apt install -y --no-install-recommends xxx \
+    && rm -rf /var/lib/apt/lists/*
+}}}

@@ -4,6 +4,7 @@
 <link rel="Stylesheet" type="text/css" href="style.css">
 <title>vpn</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 
@@ -97,6 +98,9 @@ ipsec down myvpn
 sshuttle --dns -r hk.remote 0/0
 # or
 sshuttle --dns -r work.remote 192.168.0.0/16 172.16.0.0/12 10.0.0.0/8
+
+# sudo no password
+chmod +s $(which sshuttle)
 </pre>
 
 <p>

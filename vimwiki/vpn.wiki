@@ -70,6 +70,9 @@ https://github.com/sshuttle/sshuttle, poor man's VPN, VPN over ssh.
 sshuttle --dns -r hk.remote 0/0
 # or
 sshuttle --dns -r work.remote 192.168.0.0/16 172.16.0.0/12 10.0.0.0/8
+
+# sudo no password
+chmod +s $(which sshuttle)
 }}}
 
 compose/k8s 上面可以搭建一个 sshd，sshuttle 连上去后可以融入环境，效果和作用和上面一样，额外还能打隧道，参考 `lwzm/sshd` https://hub.docker.com/repository/docker/lwzm/sshd

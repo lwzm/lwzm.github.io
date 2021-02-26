@@ -4,6 +4,7 @@
 <link rel="Stylesheet" type="text/css" href="style.css">
 <title>docker</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 
@@ -154,6 +155,14 @@ debian:buster-slim
 debian:stretch-slim
 
 </ul>
+
+<p>
+alpine 默认没开启 utf-8，可能有的软件会出现功能不全，比如 tmux, htop，设置环境变量 <code>LANG</code> 即可：
+</p>
+
+<pre sh>
+echo 'export LANG=C.UTF-8' &gt;&gt;~/.profile
+</pre>
 
 <div id="Docker-常用容器"><h3 id="常用容器" class="header"><a href="#Docker-常用容器">常用容器</a></h3></div>
 

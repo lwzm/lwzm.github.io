@@ -100,6 +100,12 @@ chmod +x /usr/local/bin/*
 * debian:buster-slim
 * debian:stretch-slim
 
+alpine 默认没开启 utf-8，可能有的软件会出现功能不全，比如 tmux, htop，设置环境变量 `LANG` 即可：
+
+{{{sh
+echo 'export LANG=C.UTF-8' >>~/.profile
+}}}
+
 === 常用容器 ===
 
 * htop `docker run -it --name=htop --pid=host lwzm/htop`

@@ -4,6 +4,7 @@
 <link rel="Stylesheet" type="text/css" href="style.css">
 <title>debian</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 
@@ -48,6 +49,14 @@ echo 'deb http://mirrors.163.com/debian/ buster main non-free contrib' &gt;/etc/
 <p>
 笔记本的行为参考以下配置：<code>/etc/systemd/logind.conf</code>。
 </p>
+
+<div id="Debian-Dockerfile"><h3 id="Dockerfile" class="header"><a href="#Debian-Dockerfile">Dockerfile</a></h3></div>
+
+<pre sh>
+RUN apt update \
+    &amp;&amp; apt install -y --no-install-recommends xxx \
+    &amp;&amp; rm -rf /var/lib/apt/lists/*
+</pre>
 
 </body>
 </html>

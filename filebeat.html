@@ -4,6 +4,7 @@
 <link rel="Stylesheet" type="text/css" href="style.css">
 <title>filebeat</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 
@@ -351,6 +352,50 @@ spec:
         env:
         - name: ES_HOSTS
           value: es
+</pre>
+
+
+<div id="filebeat-Docker"><h3 id="Docker" class="header"><a href="#filebeat-Docker">Docker</a></h3></div>
+
+<pre yaml>
+processors:
+- add_docker_metadata:
+- drop_fields:
+    fields:
+    - input
+    - agent
+    - host
+    - ecs
+    - log
+    - container.labels
+    - container.id
+
+
+filebeat.inputs:
+- type: container
+  paths:
+  - '/var/lib/docker/containers/*/*.log'
+  ignore_older: 10m
+  json.ignore_decoding_error: true
+
+output.elasticsearch:
+  hosts: elasticsearch
+  index: "%{[container.name]}-%{+yyyy.MM.dd}" 
+
+setup.ilm.enabled: false
+setup.template:
+  name: docker
+  pattern: "*"
+  fields: /dev/null
+  append_fields:
+  - name: "@timestamp"
+    type: date
+  settings.index:
+    number_of_replicas: ${REPLICAS:0}
+    translog:
+      durability: async
+      sync_interval: 3s
+  
 </pre>
 
 </body>
