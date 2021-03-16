@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>caddy</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="Caddy"><h1 id="Caddy" class="header"><a href="#Caddy">Caddy</a></h1></div>
+
+<p>
+配置文件为 <code>Caddyfile</code>, <code>caddy run</code> 即可运行。
+</p>
+
+<ul>
+<li>
+<a href="https://caddyserver.com/docs/caddyfile/matchers">https://caddyserver.com/docs/caddyfile/matchers</a>
+
+<li>
+<a href="https://caddyserver.com/docs/caddyfile/directives/root">https://caddyserver.com/docs/caddyfile/directives/root</a>
+
+</ul>
+
+<p>
+例子：
+</p>
+
+<pre txt>
+http://hw-proxy-kv.*.k8ss.cc, http://kv.* {
+    log
+    @get {
+        method GET
+    }
+    reverse_proxy @get https://kv-storage.hw-prod.avlyun.com {
+        flush_interval -1
+        header_up Host {http.reverse_proxy.upstream.hostport}
+        header_up Authorization "Basic {$BASIC_AUTH}"
+    }
+    reverse_proxy https://kv-notice.hw-prod.avlyun.com {
+        flush_interval -1
+        header_up Host {http.reverse_proxy.upstream.hostport}
+        header_up Authorization "Basic {$BASIC_AUTH}"
+    }
+}
+</pre>
+
+</body>
+</html>

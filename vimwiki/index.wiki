@@ -4,6 +4,7 @@
 * [[anaconda]]
 * [[bjoern]] wsgi 容器
 * [[bsddb]]
+* [[caddy]]
 * [[cmd.exe]]
 * [[cms]]
 * [[cordova]]
@@ -53,6 +54,7 @@
 * [[pysnooper]]
 * [[pytest]] 单元测试
 * [[route]]
+* [[sar]]
 * [[selenium]] 桌面浏览器桥梁
 * [[sentry]] 错误收集
 * [[setcap]] 非 root 用户程序使用小于 1024 端口

@@ -1,0 +1,13 @@
+= 系统状态检测 =
+
+sar 命令属于 `sysstat` 包。
+
+{{{sh
+# alpine
+apk add sysstat
+
+#debian
+apt install sysstat
+}}}
+
+todo

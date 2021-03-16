@@ -343,3 +343,50 @@ setup.template:
       sync_interval: 3s
   
 }}}
+
+=== http endpoint ===
+
+启用 http 服务接收日志，限 `application/json`，数据默认放入 `json` 字段(暂时不知道如何放入顶层)。
+可自定义 index，JSON 日志指定 `_` 字段即可。
+
+{{{yaml
+processors:
+- drop_fields:
+    fields:
+    - input
+    - agent
+    - host
+    - ecs
+    - log
+
+
+filebeat.inputs:
+- type: http_endpoint
+  listen_address: 0.0.0.0
+  listen_port: 80
+  content_type: ""
+
+
+output.elasticsearch:
+  hosts: elasticsearch:80
+  indices:
+  - index: "%{[json._]}-%{+yyyy.MM.dd}"
+    when.has_fields:
+    - json._
+  - index: "%{+yyyy.MM.dd}"
+
+
+setup.ilm.enabled: false
+setup.template:
+  name: http-endpoint
+  pattern: "*"
+  fields: /dev/null
+  append_fields:
+  - name: "@timestamp"
+    type: date
+  settings.index:
+    number_of_replicas: ${REPLICAS:0}
+    translog:
+      durability: async
+      sync_interval: 3s
+}}}

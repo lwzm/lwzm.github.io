@@ -1,0 +1,27 @@
+= Caddy =
+
+配置文件为 `Caddyfile`, `caddy run` 即可运行。
+
+* https://caddyserver.com/docs/caddyfile/matchers
+* https://caddyserver.com/docs/caddyfile/directives/root
+
+例子：
+
+{{{txt
+http://hw-proxy-kv.*.k8ss.cc, http://kv.* {
+    log
+    @get {
+        method GET
+    }
+    reverse_proxy @get https://kv-storage.hw-prod.avlyun.com {
+        flush_interval -1
+        header_up Host {http.reverse_proxy.upstream.hostport}
+        header_up Authorization "Basic {$BASIC_AUTH}"
+    }
+    reverse_proxy https://kv-notice.hw-prod.avlyun.com {
+        flush_interval -1
+        header_up Host {http.reverse_proxy.upstream.hostport}
+        header_up Authorization "Basic {$BASIC_AUTH}"
+    }
+}
+}}}

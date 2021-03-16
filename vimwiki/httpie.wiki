@@ -1,6 +1,6 @@
 = HTTPie 比 cURL 更好用 =
 
-https://httpie.org/doc#examples
+https://httpie.io/doc#examples
 
 例子
 {{{
@@ -9,3 +9,7 @@ http patch 'https://ng/api/person?id=eq.1' name=q
 http patch 'https://ng/api/person?id=eq.1' age:=3
 http patch https://ng/api/person id==eq.1 age:=3
 }}}
+
+httpie 还推荐了另一个工具：https://termible.io/，有空在弄。
+
+
