@@ -57,3 +57,13 @@ mount -o vers=4 <NFS>: DIR
 # or
 mount -o vers=4 -o port=22049 <NFS>: m  # custom port
 }}}
+
+在 docker 中，也可挂载 NFS，注意需要加 `SYS_ADMIN` 权限。
+
+{{{sh
+# alpine
+apk add nfs-utils
+
+# debian
+apt install -y nfs-common
+}}}

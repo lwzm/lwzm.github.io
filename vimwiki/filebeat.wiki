@@ -390,3 +390,39 @@ setup.template:
       durability: async
       sync_interval: 3s
 }}}
+
+把 http 日志转存文件，加额外的 `ts` 字段表示时间：
+
+{{{yaml
+processors:
+
+- timestamp:
+    field: '@timestamp'
+    target_field: json.ts
+    layouts:
+    - '2006-01-02T15:04:05Z'
+
+- drop_fields:
+    fields:
+    - input
+    - agent
+    - host
+    - ecs
+    - log
+
+filebeat.inputs:
+- type: http_endpoint
+  listen_address: 0.0.0.0
+  listen_port: 80
+  content_type: ""
+
+output.file:
+  path: foo
+  filename: bar
+  codec.format.string: '%{[json]}'
+}}}
+
+见：
+* https://www.elastic.co/guide/en/beats/filebeat/current/processor-timestamp.html
+* https://www.elastic.co/guide/en/beats/filebeat/current/index.html
+* https://www.elastic.co/guide/en/beats/filebeat/current/configuration-output-codec.html

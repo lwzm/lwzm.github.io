@@ -447,5 +447,53 @@ setup.template:
       sync_interval: 3s
 </pre>
 
+<p>
+把 http 日志转存文件，加额外的 <code>ts</code> 字段表示时间：
+</p>
+
+<pre yaml>
+processors:
+
+- timestamp:
+    field: '@timestamp'
+    target_field: json.ts
+    layouts:
+    - '2006-01-02T15:04:05Z'
+
+- drop_fields:
+    fields:
+    - input
+    - agent
+    - host
+    - ecs
+    - log
+
+filebeat.inputs:
+- type: http_endpoint
+  listen_address: 0.0.0.0
+  listen_port: 80
+  content_type: ""
+
+output.file:
+  path: foo
+  filename: bar
+  codec.format.string: '%{[json]}'
+</pre>
+
+<p>
+见：
+</p>
+<ul>
+<li>
+<a href="https://www.elastic.co/guide/en/beats/filebeat/current/processor-timestamp.html">https://www.elastic.co/guide/en/beats/filebeat/current/processor-timestamp.html</a>
+
+<li>
+<a href="https://www.elastic.co/guide/en/beats/filebeat/current/index.html">https://www.elastic.co/guide/en/beats/filebeat/current/index.html</a>
+
+<li>
+<a href="https://www.elastic.co/guide/en/beats/filebeat/current/configuration-output-codec.html">https://www.elastic.co/guide/en/beats/filebeat/current/configuration-output-codec.html</a>
+
+</ul>
+
 </body>
 </html>

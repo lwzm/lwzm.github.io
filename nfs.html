@@ -4,6 +4,7 @@
 <link rel="Stylesheet" type="text/css" href="style.css">
 <title>nfs</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 
@@ -73,6 +74,18 @@ mount -t nfs4 &lt;NFS&gt;: DIR
 mount -o vers=4 &lt;NFS&gt;: DIR
 # or
 mount -o vers=4 -o port=22049 &lt;NFS&gt;: m  # custom port
+</pre>
+
+<p>
+在 docker 中，也可挂载 NFS，注意需要加 <code>SYS_ADMIN</code> 权限。
+</p>
+
+<pre sh>
+# alpine
+apk add nfs-utils
+
+# debian
+apt install -y nfs-common
 </pre>
 
 </body>
