@@ -453,20 +453,11 @@ setup.template:
 
 <pre yaml>
 processors:
-
 - timestamp:
     field: '@timestamp'
     target_field: json.ts
     layouts:
     - '2006-01-02T15:04:05Z'
-
-- drop_fields:
-    fields:
-    - input
-    - agent
-    - host
-    - ecs
-    - log
 
 filebeat.inputs:
 - type: http_endpoint
@@ -485,15 +476,76 @@ output.file:
 </p>
 <ul>
 <li>
-<a href="https://www.elastic.co/guide/en/beats/filebeat/current/processor-timestamp.html">https://www.elastic.co/guide/en/beats/filebeat/current/processor-timestamp.html</a>
+<a href="https://www.elastic.co/guide/en/beats/filebeat/current/file-output.html">https://www.elastic.co/guide/en/beats/filebeat/current/file-output.html</a>
 
 <li>
-<a href="https://www.elastic.co/guide/en/beats/filebeat/current/index.html">https://www.elastic.co/guide/en/beats/filebeat/current/index.html</a>
+<a href="https://www.elastic.co/guide/en/beats/filebeat/current/processor-timestamp.html">https://www.elastic.co/guide/en/beats/filebeat/current/processor-timestamp.html</a>
 
 <li>
 <a href="https://www.elastic.co/guide/en/beats/filebeat/current/configuration-output-codec.html">https://www.elastic.co/guide/en/beats/filebeat/current/configuration-output-codec.html</a>
 
 </ul>
+
+<p>
+两个 filebeat 协作，一个 TCP 收日志，存原始数据到文件，一个监听日志文件，发到 ES。这样，es 有日志，日志文件又可以拿别的地方用。
+</p>
+
+<p>
+filebeat-1:
+</p>
+<pre yaml>
+filebeat.inputs:
+- type: tcp
+  host: :1111
+
+output.file:
+  path: foo
+  filename: bar
+  rotate_every_kb: 1048576  # 2**20 k = 1G
+  number_of_files: 256
+  codec.format.string: '%{[message]}'
+</pre>
+
+<p>
+filebeat-2:
+</p>
+<pre yaml>
+processors:
+- drop_fields:
+    fields:
+    - input
+    - agent
+    - host
+    - ecs
+    - log
+
+filebeat.inputs:
+- type: log
+  paths:
+    - /xxx/foo/bar*
+  json.ignore_decoding_error: true
+
+#output.console:
+  #pretty: true
+
+output.elasticsearch:
+  hosts: ${ES_HOSTS:es}
+  index: "log-%{+yyyy.MM.dd}"
+
+setup.ilm.enabled: false
+setup.template:
+  name: test
+  pattern: "*"
+  fields: /dev/null
+  append_fields:
+  - name: "@timestamp"
+    type: date
+  settings.index:
+    number_of_replicas: ${REPLICAS:0}
+    translog:
+      durability: async
+      sync_interval: 3s
+</pre>
 
 </body>
 </html>
