@@ -57,6 +57,7 @@
 * [[sar]]
 * [[selenium]] 桌面浏览器桥梁
 * [[sentry]] 错误收集
+* [[seatable]]
 * [[setcap]] 非 root 用户程序使用小于 1024 端口
 * [[shadowsocks]]
 * [[sqlite]] 拾零

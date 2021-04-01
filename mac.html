@@ -4,6 +4,7 @@
 <link rel="Stylesheet" type="text/css" href="style.css">
 <title>mac</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 
@@ -97,6 +98,7 @@ resolve.conf search 总是有效
 <pre sh>
 dns=/Library/Preferences/com.apple.mDNSResponder.plist
 sudo defaults write $dns AlwaysAppendSearchDomains -bool true
+# reboot?
 sudo launchctl unload -w $dns
 sudo launchctl load -w $dns
 </pre>

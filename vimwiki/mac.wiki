@@ -68,6 +68,7 @@ resolve.conf search 总是有效
 {{{sh
 dns=/Library/Preferences/com.apple.mDNSResponder.plist
 sudo defaults write $dns AlwaysAppendSearchDomains -bool true
+# reboot?
 sudo launchctl unload -w $dns
 sudo launchctl load -w $dns
 }}}

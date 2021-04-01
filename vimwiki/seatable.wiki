@@ -1,0 +1,54 @@
+SeaTable
+
+在线协同表格和信息管理系统，可以基于它的 API 做开发和扩展。
+
+https://docs.seatable.cn/published/seatable-api/dtable-server
+
+参考安装
+https://docs.seatable.cn/published/seatable-manual/docker/seatable-ce/Deploy%20SeaTable%20with%20Docker.md
+
+{{{yaml
+version: '3.7'
+
+services:
+  mysql:
+    image: mariadb
+    environment:
+    - MYSQL_ROOT_PASSWORD=x
+    volumes:
+    - ./mysql:/var/lib/mysql
+
+  memcached:
+    image: memcached:alpine
+
+  redis:
+    image: redis:alpine
+
+  seatable:
+    image: seatable/seatable
+    ports:
+    - "80:80"
+    volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - ./seatable:/shared
+    environment:
+    - DB_HOST=mysql
+    - DB_ROOT_PASSWD=x
+    - SEATABLE_SERVER_HOSTNAME=t.tyio.net
+    depends_on:
+    - mysql
+    - memcached
+    - redis
+}}}
+
+启动服务需要手动：
+
+{{{sh
+docker-compose exec -T seatable /shared/seatable/scripts/seatable.sh start
+}}}
+
+需要手动添加第一个管理员：
+
+{{{sh
+docker-compose exec seatable /shared/seatable/scripts/seatable.sh superuser
+}}}
