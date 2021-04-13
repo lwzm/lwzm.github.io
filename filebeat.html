@@ -522,7 +522,7 @@ processors:
 filebeat.inputs:
 - type: log
   paths:
-    - /xxx/foo/bar*
+  - /xxx/foo/bar*
   json.ignore_decoding_error: true
 
 #output.console:
@@ -530,6 +530,61 @@ filebeat.inputs:
 
 output.elasticsearch:
   hosts: ${ES_HOSTS:es}
+  index: "log-%{+yyyy.MM.dd}"
+
+setup.ilm.enabled: false
+setup.template:
+  name: test
+  pattern: "*"
+  fields: /dev/null
+  append_fields:
+  - name: "@timestamp"
+    type: date
+  settings.index:
+    number_of_replicas: ${REPLICAS:0}
+    translog:
+      durability: async
+      sync_interval: 3s
+</pre>
+
+<p>
+filebeat-2, 改进版，先主动解析 JSON，再取 ts 字段为真实的时间：
+</p>
+  
+<pre yaml>
+processors:
+- decode_json_fields:
+    target: ""
+    fields:
+    - message
+
+- timestamp:
+    field: ts
+    ignore_missing: true
+    ignore_failure: true
+    layouts:
+    - UNIX
+
+- drop_fields:
+    fields:
+    - input
+    - agent
+    - host
+    - ecs
+    - log
+    - ts
+    - message
+
+filebeat.inputs:
+- type: log
+  paths:
+  - /xxx/foo/bar*
+
+#output.console:
+  #pretty: true
+
+output.elasticsearch:
+  hosts: es
   index: "log-%{+yyyy.MM.dd}"
 
 setup.ilm.enabled: false
