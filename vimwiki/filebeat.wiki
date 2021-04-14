@@ -91,7 +91,7 @@ filebeat.inputs:
 
 
 output.elasticsearch:
-  hosts: ${ES_HOSTS:elasticsearch}
+  hosts: ${ES:es}
 
 
 setup:
@@ -149,7 +149,7 @@ filebeat.inputs:
 
 
 output.elasticsearch:
-  hosts: ${ES_HOSTS:elasticsearch}
+  hosts: ${ES:es}
 
 
 setup:
@@ -325,7 +325,7 @@ filebeat.inputs:
   json.ignore_decoding_error: true
 
 output.elasticsearch:
-  hosts: elasticsearch
+  hosts: ${ES:es}
   index: "%{[container.name]}-%{+yyyy.MM.dd}" 
 
 setup.ilm.enabled: false
@@ -368,7 +368,7 @@ filebeat.inputs:
 
 
 output.elasticsearch:
-  hosts: elasticsearch:80
+  hosts: ${ES:es}
   indices:
   - index: "%{[json._]}-%{+yyyy.MM.dd}"
     when.has_fields:
@@ -451,23 +451,20 @@ filebeat.inputs:
   - /xxx/foo/bar*
   json.ignore_decoding_error: true
 
-#output.console:
-  #pretty: true
-
 output.elasticsearch:
-  hosts: ${ES_HOSTS:es}
+  hosts: ${ES:es}
   index: "log-%{+yyyy.MM.dd}"
 
 setup.ilm.enabled: false
 setup.template:
-  name: test
+  name: whatever
   pattern: "*"
   fields: /dev/null
   append_fields:
   - name: "@timestamp"
     type: date
   settings.index:
-    number_of_replicas: ${REPLICAS:0}
+    number_of_replicas: 0
     translog:
       durability: async
       sync_interval: 3s
@@ -477,8 +474,20 @@ filebeat-2, 改进版，先主动解析 JSON，再取 ts 字段为真实的时�
   
 {{{yaml
 processors:
+- drop_fields:
+    fields:
+    - input
+    - agent
+    - host
+    - ecs
+    - log
+	
 - decode_json_fields:
     target: ""
+    fields:
+    - message
+
+- drop_fields:
     fields:
     - message
 
@@ -489,31 +498,22 @@ processors:
     layouts:
     - UNIX
 
-- drop_fields:
-    fields:
-    - input
-    - agent
-    - host
-    - ecs
-    - log
-    - ts
-    - message
-
 filebeat.inputs:
 - type: log
   paths:
   - /xxx/foo/bar*
 
-#output.console:
-  #pretty: true
-
 output.elasticsearch:
-  hosts: es
-  index: "log-%{+yyyy.MM.dd}"
+  hosts: ${ES:es}
+  indices:
+  - index: "%{[_]}-%{+yyyy.MM.dd}"
+    when.has_fields:
+    - _
+  - index: "${NAME:default}-%{+yyyy.MM.dd}"
 
 setup.ilm.enabled: false
 setup.template:
-  name: test
+  name: whatever
   pattern: "*"
   fields: /dev/null
   append_fields:
