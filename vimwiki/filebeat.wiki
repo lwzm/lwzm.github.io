@@ -117,6 +117,8 @@ setup:
 
 环境变量可以在配置文件中出现，https://www.elastic.co/guide/en/beats/packetbeat/current/using-environ-vars.html#_specify_complex_objects_in_environment_variables
 
+输出到 elasticsearch 时使用 `%{+yyyy.MM.dd}` 这种时，以 filebeat 所在机器的时间为准(可以通过 `%{+yyyy.MM.dd..HH}` 验证)，所以建议挂载宿主机的 `/etc/localtime`。
+
 === 来总结一下配置： ===
 
 {{{yaml
@@ -525,3 +527,6 @@ setup.template:
       durability: async
       sync_interval: 3s
 }}}
+
+简单情况下，上面两个可以去掉中间文件，合并成一个。
+
