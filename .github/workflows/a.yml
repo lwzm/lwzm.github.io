@@ -6,3 +6,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: date && ps && free -m && df && curl cip.cc
+      - run: pwd && ls -lah
