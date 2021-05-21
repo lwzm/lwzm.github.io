@@ -1,9 +1,8 @@
-name: learn-github-actions
 on:
 - push
 jobs:
-  check-bats-version:
-    runs-on: ubuntu-latest
+  my-job-1:
+    runs-on: macos-latest
     steps:
-      - run: date && ps && free -m && df && curl cip.cc
+      - run: date && df && curl cip.cc
       - run: pwd && ls -lah
