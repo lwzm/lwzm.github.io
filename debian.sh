@@ -1,5 +1,5 @@
-cat >/etc/default/locale <<EOF
-LANG="en_US.UTF-8"
-LANGUAGE="en_US.UTF-8"
-LC_ALL="en_US.UTF-8"
+cat >/etc/default/locale <<'EOF'
+LANG=C.UTF-8
+LANGUAGE=C.UTF-8
+LC_ALL=C.UTF-8
 EOF
