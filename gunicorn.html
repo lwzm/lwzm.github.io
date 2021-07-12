@@ -4,13 +4,18 @@
 <link rel="Stylesheet" type="text/css" href="style.css">
 <title>gunicorn</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 
 <div id="Gunicorn"><h1 id="Gunicorn" class="header"><a href="#Gunicorn">Gunicorn</a></h1></div>
 
 <p>
-<a href="http://docs.gunicorn.org/en/latest/settings.html">http://docs.gunicorn.org/en/latest/settings.html</a>
+配置详见：<a href="http://docs.gunicorn.org/en/latest/settings.html">http://docs.gunicorn.org/en/latest/settings.html</a>
+</p>
+
+<p>
+<code>./gunicorn.conf.py</code>
 </p>
 
 <pre py>
@@ -25,6 +30,7 @@ worker_class = 'tornado'
 worker_class = 'meinheld.gmeinheld.MeinheldWorker'
 worker_class = 'gevent'
 worker_class = 'sync'
+worker_class = 'uvicorn.workers.UvicornWorker'
 
 accesslog = '-'
 access_log_format = '%(t)s %(h)s "%(r)s" %(s)s %(b)s %(D)s "%(a)s"'

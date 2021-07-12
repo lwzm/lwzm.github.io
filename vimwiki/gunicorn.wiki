@@ -1,6 +1,8 @@
 = Gunicorn =
 
-http://docs.gunicorn.org/en/latest/settings.html
+配置详见：http://docs.gunicorn.org/en/latest/settings.html
+
+`./gunicorn.conf.py`
 
 {{{py
 #!/usr/bin/env python3
@@ -14,6 +16,7 @@ worker_class = 'tornado'
 worker_class = 'meinheld.gmeinheld.MeinheldWorker'
 worker_class = 'gevent'
 worker_class = 'sync'
+worker_class = 'uvicorn.workers.UvicornWorker'
 
 accesslog = '-'
 access_log_format = '%(t)s %(h)s "%(r)s" %(s)s %(b)s %(D)s "%(a)s"'
