@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>k3s</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="K3S"><h1 id="K3S" class="header"><a href="#K3S">K3S</a></h1></div>
+
+<p>
+安装参考：<a href="https://docs.rancher.cn/docs/k3s/quick-start/_index">https://docs.rancher.cn/docs/k3s/quick-start/_index</a>
+</p>
+
+<pre sh>
+curl -L http://rancher-mirror.cnrancher.com/k3s/k3s-install.sh &gt;k3s.sh
+INSTALL_K3S_MIRROR=cn sh k3s.sh --cluster-domain cc
+</pre>
+
+<p>
+上面强行借用了 <code>cc</code> 作为域名，之后访问服务就可以使用 <code>&lt;foobar&gt;.&lt;namespace&gt;.svc.cc</code> 的方式。
+</p>
+
+<p>
+最好是通过路由配置，直接接入 k3s 的网络，把 DNS 也设置成 <code>10.43.0.10</code>。
+</p>
+
+</body>
+</html>

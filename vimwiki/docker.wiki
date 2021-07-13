@@ -123,7 +123,7 @@ Run a program with namespaces of other processes.
 nsenter -t 30069 -u hostname
 
 # 查看 traefik 的网络链接
-nsenter -t 30069 -n netstat -ntp
+nsenter -t $(pgrep traefik) -n netstat -ntp
 }}}
 
 参考：https://stackoverflow.com/questions/40350456/docker-any-way-to-list-open-sockets-inside-a-running-docker-container

@@ -1,0 +1,13 @@
+= K3S =
+
+安装参考：https://docs.rancher.cn/docs/k3s/quick-start/_index
+
+{{{sh
+curl -L http://rancher-mirror.cnrancher.com/k3s/k3s-install.sh >k3s.sh
+INSTALL_K3S_MIRROR=cn sh k3s.sh --cluster-domain cc
+}}}
+
+上面强行借用了 `cc` 作为域名，之后访问服务就可以使用 `<foobar>.<namespace>.svc.cc` 的方式。
+
+最好是通过路由配置，直接接入 k3s 的网络，把 DNS 也设置成 `10.43.0.10`。
+

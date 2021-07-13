@@ -28,6 +28,7 @@
 * [[inotify]] Linux 专用的文件改动监测
 * [[jenkins]]
 * [[jupyter]]
+* [[k3s]]
 * [[k8s]]
 * [[loguru]] logger
 * [[mac]]
