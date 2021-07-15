@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>apm</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="APM"><h1 id="APM" class="header"><a href="#APM">APM</a></h1></div>
+
+<ul>
+<li>
+<a href="https://www.elastic.co/guide/en/apm/agent/python/current/api.html">https://www.elastic.co/guide/en/apm/agent/python/current/api.html</a>
+
+<li>
+<a href="https://www.elastic.co/guide/en/apm/agent/python/current/configuration.html">https://www.elastic.co/guide/en/apm/agent/python/current/configuration.html</a>
+
+</ul>
+
+<pre py>
+from elasticapm import Client
+
+c = Client(server_url="http://apm.tyio.net:8200")
+
+try:
+    x = int("five")
+except ValueError:
+    c.capture_exception()
+</pre>
+
+</body>
+</html>

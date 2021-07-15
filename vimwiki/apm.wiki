@@ -1,0 +1,15 @@
+= APM =
+
+* https://www.elastic.co/guide/en/apm/agent/python/current/api.html
+* https://www.elastic.co/guide/en/apm/agent/python/current/configuration.html
+
+{{{py
+from elasticapm import Client
+
+c = Client(server_url="http://apm.tyio.net:8200")
+
+try:
+    x = int("five")
+except ValueError:
+    c.capture_exception()
+}}}
