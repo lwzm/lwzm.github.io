@@ -4,10 +4,10 @@
 
 {{{sh
 curl -L http://rancher-mirror.cnrancher.com/k3s/k3s-install.sh >k3s.sh
-INSTALL_K3S_MIRROR=cn sh k3s.sh --cluster-domain cc
+INSTALL_K3S_MIRROR=cn sh k3s.sh --cluster-domain c.c
 }}}
 
-上面强行借用了 `cc` 作为域名，之后访问服务就可以使用 `<foobar>.<namespace>.svc.cc` 的方式。
+上面强行借用了 `c.c` 作为域名，之后访问服务就可以使用 `<foobar>.<namespace>.svc.c.c` 的方式。之前想用 `cc`，但是发现影响 `*.cc` 的解析，作罢。
 
-最好是通过路由配置，直接接入 k3s 的网络，把 DNS 也设置成 `10.43.0.10`。
+最好是通过路由配置，直接接入 k3s 的网络，`10.42.0.0/15 (10.42.0.0-10.43.255.255)`，然后把 DNS 也设置成 `10.43.0.10`。
 
