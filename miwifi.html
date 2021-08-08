@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>miwifi</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="小米路由器"><h1 id="小米路由器" class="header"><a href="#小米路由器">小米路由器</a></h1></div>
+
+<div id="小米路由器-开启 ssh："><h3 id="开启 ssh：" class="header"><a href="#小米路由器-开启 ssh：">开启 ssh：</a></h3></div>
+
+<p>
+a. 获取 SSH 权限
+</p>
+
+<p>
+<a href="http://miwifi.com/cgi-bin/luci/;stok=&lt;STOK&gt;/api/misystem/set_config_iotdev?bssid=Xiaomi&amp;user_id=longdike&amp;ssid=-h%3B%20nvram%20set%20ssh_en%3D1%3B%20nvram%20commit%3B%20sed%20-i%20's%2Fchannel%3D.*%2Fchannel%3D%5C%22debug%5C%22%2Fg'%20%2Fetc%2Finit.d%2Fdropbear%3B%20%2Fetc%2Finit.d%2Fdropbear%20start%3B">http://miwifi.com/cgi-bin/luci/;stok=&lt;STOK&gt;/api/misystem/set_config_iotdev?bssid=Xiaomi&amp;user_id=longdike&amp;ssid=-h%3B%20nvram%20set%20ssh_en%3D1%3B%20nvram%20commit%3B%20sed%20-i%20's%2Fchannel%3D.*%2Fchannel%3D%5C%22debug%5C%22%2Fg'%20%2Fetc%2Finit.d%2Fdropbear%3B%20%2Fetc%2Finit.d%2Fdropbear%20start%3B</a>
+</p>
+
+<p>
+b. 修改 root 用户密码为 admin
+</p>
+
+<p>
+<a href="http://miwifi.com/cgi-bin/luci/;stok=&lt;STOK&gt;/api/misystem/set_config_iotdev?bssid=Xiaomi&amp;user_id=longdike&amp;ssid=-h%3B%20echo%20-e%20'admin%5Cnadmin'%20%7C%20passwd%20root%3B">http://miwifi.com/cgi-bin/luci/;stok=&lt;STOK&gt;/api/misystem/set_config_iotdev?bssid=Xiaomi&amp;user_id=longdike&amp;ssid=-h%3B%20echo%20-e%20'admin%5Cnadmin'%20%7C%20passwd%20root%3B</a>
+</p>
+
+<p>
+参考 <a href="https://zhuanlan.zhihu.com/p/260531160">https://zhuanlan.zhihu.com/p/260531160</a>
+</p>
+
+<div id="小米路由器-静态路由"><h3 id="静态路由" class="header"><a href="#小米路由器-静态路由">静态路由</a></h3></div>
+
+<pre sh>
+/usr/sbin/ip route add 172.16.0.0/12 via 10.0.0.xxx
+</pre>
+
+<p>
+需要持久化就加到 <code>/etc/rc.local</code> 。
+</p>
+
+<p>
+防火墙也要调整，编辑 <code>/etc/config/firewall</code>，把 config defaults / config zone name lan 的 REJECT 改成 ACCEPT，把 config defaults 中的 option drop_invalid 改为 0。
+</p>
+
+<p>
+参考 <a href="http://wxxnb.com/archives/xiaomi-router-how-to-open-ssh">http://wxxnb.com/archives/xiaomi-router-how-to-open-ssh</a>
+</p>
+
+</body>
+</html>

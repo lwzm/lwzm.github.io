@@ -1,15 +1,61 @@
 = APM =
 
-* https://www.elastic.co/guide/en/apm/agent/python/current/api.html
-* https://www.elastic.co/guide/en/apm/agent/python/current/configuration.html
+elastic 自带的应用性能监控，配置省心，启动服务后，自带 index pattern, lifecycle 等。
+
+
+* https://www.elastic.co/guide/en/apm/agent/python/current/api.html Python API
+* https://www.elastic.co/guide/en/apm/agent/python/current/configuration.html agent 配置，注意它还支持中心化动态配置
+* https://www.elastic.co/guide/en/apm/server/current/configuring-howto-apm-server.html 服务配置
+
+docker-compose:
+
+{{{yaml
+version: "3.7"
+
+services:
+
+  elasticsearch:
+    image: elastic/elasticsearch:7.13.3
+    volumes:
+    - ./es:/usr/share/elasticsearch/data
+    environment:
+      discovery.type: single-node
+      bootstrap.memory_lock: "true"
+      ES_JAVA_OPTS: "-Xms128m -Xmx256m"
+
+  kibana:
+    image: elastic/kibana:7.13.3
+    ports:
+    - '5601:5601'
+
+  apm-server:
+    image: elastic/apm-server:7.13.3
+    ports:
+    - 8200:8200
+
+}}}
+
+
+python:
 
 {{{py
+#!/usr/bin/env python3
+
 from elasticapm import Client
 
-c = Client(server_url="http://apm.tyio.net:8200")
+c = Client(service_name="test", server_url="http://apm.tyio.net:8200")
 
-try:
-    x = int("five")
-except ValueError:
-    c.capture_exception()
+def main():
+    while True:
+        s = input()
+        try:
+            i = int(s)
+            print(i)
+        except ValueError:
+            c.capture_exception()
+
+
+if __name__ == '__main__':
+    main()
+
 }}}

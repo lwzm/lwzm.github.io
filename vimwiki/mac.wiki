@@ -72,3 +72,9 @@ sudo defaults write $dns AlwaysAppendSearchDomains -bool true
 sudo launchctl unload -w $dns
 sudo launchctl load -w $dns
 }}}
+
+开启路由功能
+
+{{{sh
+sudo sysctl -w net.inet.ip.forwarding=1
+}}}

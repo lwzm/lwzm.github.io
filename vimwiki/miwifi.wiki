@@ -1,0 +1,25 @@
+= 小米路由器 =
+
+=== 开启 ssh： ===
+
+a. 获取 SSH 权限
+
+http://miwifi.com/cgi-bin/luci/;stok=<STOK>/api/misystem/set_config_iotdev?bssid=Xiaomi&user_id=longdike&ssid=-h%3B%20nvram%20set%20ssh_en%3D1%3B%20nvram%20commit%3B%20sed%20-i%20's%2Fchannel%3D.*%2Fchannel%3D%5C%22debug%5C%22%2Fg'%20%2Fetc%2Finit.d%2Fdropbear%3B%20%2Fetc%2Finit.d%2Fdropbear%20start%3B
+
+b. 修改 root 用户密码为 admin
+
+http://miwifi.com/cgi-bin/luci/;stok=<STOK>/api/misystem/set_config_iotdev?bssid=Xiaomi&user_id=longdike&ssid=-h%3B%20echo%20-e%20'admin%5Cnadmin'%20%7C%20passwd%20root%3B
+
+参考 https://zhuanlan.zhihu.com/p/260531160
+
+=== 静态路由 ===
+
+{{{sh
+/usr/sbin/ip route add 172.16.0.0/12 via 10.0.0.xxx
+}}}
+
+需要持久化就加到 `/etc/rc.local` 。
+
+防火墙也要调整，编辑 `/etc/config/firewall`，把 config defaults / config zone name lan 的 REJECT 改成 ACCEPT，把 config defaults 中的 option drop_invalid 改为 0。
+
+参考 http://wxxnb.com/archives/xiaomi-router-how-to-open-ssh
