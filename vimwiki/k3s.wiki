@@ -11,3 +11,6 @@ INSTALL_K3S_MIRROR=cn sh k3s.sh --cluster-domain c.c
 
 最好是通过路由配置，直接接入 k3s 的网络，`10.42.0.0/15 (10.42.0.0-10.43.255.255)`，然后把 DNS 也设置成 `10.43.0.10`。
 
+{{{sh
+ip route add 10.42.0.0/15 via 10.0.0.123
+}}}
