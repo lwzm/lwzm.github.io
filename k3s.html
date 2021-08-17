@@ -24,11 +24,28 @@ INSTALL_K3S_MIRROR=cn sh k3s.sh --cluster-domain c.c
 </p>
 
 <p>
-最好是通过路由配置，直接接入 k3s 的网络，<code>10.42.0.0/15 (10.42.0.0-10.43.255.255)</code>，然后把 DNS 也设置成 <code>10.43.0.10</code>。
+(当然也可以直接用 <code>c</code>，以下的 <code>c.c</code> 皆可替换为 <code>c</code>)
+</p>
+
+<p>
+最好是通过路由配置，直接接入 k3s 的网络，<code>10.42.0.0/15 (10.42.0.0-10.43.255.255)</code>：
 </p>
 
 <pre sh>
 ip route add 10.42.0.0/15 via 10.0.0.123
+</pre>
+
+<p>
+然后把 DNS 也设置成 <code>10.43.0.10</code>，
+或者把它作为 <code>*.c.c</code> 的上游，比如 openwrt dnsmasq 可以编辑 <code>/etc/dnsmasq.conf</code>, 加一行：<code>server=/c.c/10.43.0.10</code> 。
+</p>
+
+<p>
+版本迭代很快啊，经过测试，v1.21.x 有问题，回退到 v1.19.x 就好了，自己去 github 下载 k3s 二进制 到 /usr/local/bin/ , 然后：
+</p>
+
+<pre sh>
+INSTALL_K3S_SKIP_DOWNLOAD=true INSTALL_K3S_MIRROR=cn sh k3s.sh --cluster-domain c.c                                                                                                                              
 </pre>
 
 </body>
