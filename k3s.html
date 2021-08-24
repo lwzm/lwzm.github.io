@@ -48,5 +48,13 @@ ip route add 10.42.0.0/15 via 10.0.0.123
 INSTALL_K3S_SKIP_DOWNLOAD=true INSTALL_K3S_MIRROR=cn sh k3s.sh --cluster-domain c.c                                                                                                                              
 </pre>
 
+<p>
+注意，<code>ulimit -n</code> 要给够，系统默认 1024 不行，要改。
+</p>
+
+<p>
+可以自己手动启动：<code>k3s server --cluster-domain c.c</code>。
+</p>
+
 </body>
 </html>
