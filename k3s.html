@@ -56,5 +56,35 @@ INSTALL_K3S_SKIP_DOWNLOAD=true INSTALL_K3S_MIRROR=cn sh k3s.sh --cluster-domain 
 可以自己手动启动：<code>k3s server --cluster-domain c.c</code>。
 </p>
 
+<div id="K3S-docker image mirror"><h3 id="docker image mirror" class="header"><a href="#K3S-docker image mirror">docker image mirror</a></h3></div>
+
+<p>
+官方的仓库可能比较慢，建议使用镜像。编辑 <code>/etc/rancher/k3s/registries.yaml</code>:
+</p>
+
+<pre yaml>
+mirrors:
+  docker.io:
+    endpoint:
+    - https://hub-mirror.c.163.com
+    - https://ustc-edu-cn.mirror.aliyuncs.com
+</pre>
+
+<p>
+重启：<code>systemctl restart k3s</code> or <code>systemctl restart k3s-agent</code>，看效果：<code>crictl info | jq .config.registry.mirrors</code>。
+</p>
+
+<p>
+参考：
+</p>
+<ul>
+<li>
+<a href="https://rancher.com/docs/k3s/latest/en/installation/private-registry/#mirrors">https://rancher.com/docs/k3s/latest/en/installation/private-registry/#mirrors</a>
+
+<li>
+<a href="https://yeasy.gitbook.io/docker_practice/install/mirror">https://yeasy.gitbook.io/docker_practice/install/mirror</a>
+
+</ul>
+
 </body>
 </html>
