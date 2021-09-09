@@ -30,6 +30,19 @@ https://cdimage.debian.org/cdimage/unofficial/non-free/cd-including-firmware/cur
 或
 https://cdimage.debian.org/cdimage/unofficial/non-free/cd-including-firmware/archive/10.10.0+nonfree/amd64/iso-cd/ 下载镜像。
 
+=== 静态 IP ===
+
+eth0 举例，编辑 `/etc/network/interfaces`，然后 `systemctl restart networking`
+
+{{{txt
+auto eth0
+iface eth0 inet static
+address 10.0.0.250/24
+gateway 10.0.0.1
+dns-nameservers 10.0.0.1 8.8.8.8
+dns-search svc.c q.svc.c
+}}}
+ 
 === 电源管理 ===
 
 笔记本的行为参考以下配置：`/etc/systemd/logind.conf`。

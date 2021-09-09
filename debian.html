@@ -52,6 +52,21 @@ echo 'deb http://mirrors.163.com/debian/ buster main non-free contrib' &gt;/etc/
 <a href="https://cdimage.debian.org/cdimage/unofficial/non-free/cd-including-firmware/archive/10.10.0+nonfree/amd64/iso-cd/">https://cdimage.debian.org/cdimage/unofficial/non-free/cd-including-firmware/archive/10.10.0+nonfree/amd64/iso-cd/</a> 下载镜像。
 </p>
 
+<div id="Debian-静态 IP"><h3 id="静态 IP" class="header"><a href="#Debian-静态 IP">静态 IP</a></h3></div>
+
+<p>
+eth0 举例，编辑 <code>/etc/network/interfaces</code>，然后 <code>systemctl restart networking</code>
+</p>
+
+<pre txt>
+auto eth0
+iface eth0 inet static
+address 10.0.0.250/24
+gateway 10.0.0.1
+dns-nameservers 10.0.0.1 8.8.8.8
+dns-search svc.c q.svc.c
+</pre>
+ 
 <div id="Debian-电源管理"><h3 id="电源管理" class="header"><a href="#Debian-电源管理">电源管理</a></h3></div>
 
 <p>

@@ -16,3 +16,8 @@ net.ipv4.ip_forward = 1
 EOF
 
 sysctl -w net.ipv4.ip_forward=1
+
+for i in $(seq 2 6); do
+  systemctl mask getty@tty${i}
+done
+

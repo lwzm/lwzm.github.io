@@ -106,6 +106,13 @@ search tyio.net
 
 这个 search 用好了, 会很方便.
 
+dnsmasq 也可以下发这个配置：
+
+{{{txt
+domain=svc.c
+}}}
+
+
 === DNS 本地缓存 ===
 
 Linux 本身是没有 dns 缓存的, 想使用 dns 缓存的话需要自己安装 NSCD, 自己去网上找资料吧. 其实我觉得没缓存也好, 除非你请求 dns 非常频繁.

@@ -33,6 +33,8 @@ INSTALL_K3S_MIRROR=cn sh k3s.sh --cluster-domain c.c
 
 <pre sh>
 ip route add 10.42.0.0/15 via 10.0.0.123
+# or
+route add 10.42.0.0/15 10.0.0.123
 </pre>
 
 <p>
@@ -41,7 +43,7 @@ ip route add 10.42.0.0/15 via 10.0.0.123
 </p>
 
 <p>
-版本迭代很快啊，经过测试，v1.21.x 有问题，回退到 v1.19.x 就好了，自己去 github 下载 k3s 二进制 到 /usr/local/bin/ , 然后：
+还可以自己去 github 下载指定版本 k3s 二进制 到 /usr/local/bin/ , 然后：
 </p>
 
 <pre sh>
@@ -85,6 +87,31 @@ mirrors:
 <a href="https://yeasy.gitbook.io/docker_practice/install/mirror">https://yeasy.gitbook.io/docker_practice/install/mirror</a>
 
 </ul>
+
+<div id="K3S-Dashboard"><h3 id="Dashboard" class="header"><a href="#K3S-Dashboard">Dashboard</a></h3></div>
+
+<p>
+可以选装仪表盘，比如：
+</p>
+
+<ul>
+<li>
+官方自带的 <a href="https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/">https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/</a>
+
+<li>
+kuboard <a href="https://kuboard.cn/install/install-dashboard.html">https://kuboard.cn/install/install-dashboard.html</a> 
+
+</ul>
+
+<p>
+这里会经常用到 <code>kubectl get secret</code>, <code>kubectl describe secret</code> 两组指令去看登录的 token。
+</p>
+
+<div id="K3S-Others"><h3 id="Others" class="header"><a href="#K3S-Others">Others</a></h3></div>
+
+<p>
+日志有观察到 <code>orphaned pod</code> 时，可以去 <code>/var/lib/kubelet/pods</code> 清理。
+</p>
 
 </body>
 </html>
