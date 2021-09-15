@@ -59,6 +59,13 @@ mirrors:
 
 这里会经常用到 `kubectl get secret`, `kubectl describe secret` 两组指令去看登录的 token。
 
+=== PVC ===
+
+k3s 文档介绍的 Local Storage Provider 和 Longhorn 都不错。
+
+简单用就选 Local，注意第一次分配 pod 时才真正绑定，pod 所在的初始节点决定了 pvc 的 node，用此 pvc 的 pod 以后也只能在此 node 上调度。
+可以去 node 主机的 /var/lib/rancher/k3s/storage/ 找对应的 pvc。
+
 === Others ===
 
 日志有观察到 `orphaned pod` 时，可以去 `/var/lib/kubelet/pods` 清理。

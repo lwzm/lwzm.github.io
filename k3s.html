@@ -107,6 +107,17 @@ kuboard <a href="https://kuboard.cn/install/install-dashboard.html">https://kubo
 这里会经常用到 <code>kubectl get secret</code>, <code>kubectl describe secret</code> 两组指令去看登录的 token。
 </p>
 
+<div id="K3S-PVC"><h3 id="PVC" class="header"><a href="#K3S-PVC">PVC</a></h3></div>
+
+<p>
+k3s 文档介绍的 Local Storage Provider 和 Longhorn 都不错。
+</p>
+
+<p>
+简单用就选 Local，注意第一次分配 pod 时才真正绑定，pod 所在的初始节点决定了 pvc 的 node，用此 pvc 的 pod 以后也只能在此 node 上调度。
+可以去 node 主机的 /var/lib/rancher/k3s/storage/ 找对应的 pvc。
+</p>
+
 <div id="K3S-Others"><h3 id="Others" class="header"><a href="#K3S-Others">Others</a></h3></div>
 
 <p>

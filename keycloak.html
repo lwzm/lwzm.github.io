@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>keycloak</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="Keycloak"><h1 id="Keycloak" class="header"><a href="#Keycloak">Keycloak</a></h1></div>
+
+<p>
+认证服务，可提供 OAuth，带用户管理后台，可以作为账号中心。
+</p>
+
+<p>
+<a href="https://www.keycloak.org/">https://www.keycloak.org/</a>
+</p>
+
+<p>
+docker-compose 例子：
+</p>
+
+<pre yaml>
+  keycloak:
+    image: jboss/keycloak
+    environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      DB_VENDOR: postgres
+      DB_ADDR: postgres
+      DB_USER: postgres
+      DB_PASSWORD: xxx
+    labels:
+      traefik.enable: true
+</pre>
+
+</body>
+</html>

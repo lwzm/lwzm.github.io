@@ -1,0 +1,21 @@
+= Keycloak =
+
+认证服务，可提供 OAuth，带用户管理后台，可以作为账号中心。
+
+https://www.keycloak.org/
+
+docker-compose 例子：
+
+{{{yaml
+  keycloak:
+    image: jboss/keycloak
+    environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      DB_VENDOR: postgres
+      DB_ADDR: postgres
+      DB_USER: postgres
+      DB_PASSWORD: xxx
+    labels:
+      traefik.enable: true
+}}}

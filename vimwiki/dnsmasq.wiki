@@ -130,7 +130,7 @@ no-resolv
 server=114.114.114.114
 cache-size=10000
 # from https://github.com/StevenBlack/hosts
-addn-hosts=/etc/dnsmasq.d/hosts
+addn-hosts=/etc/hosts-black
 }}}
 
 === 特定域名 ===
