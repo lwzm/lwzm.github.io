@@ -26,15 +26,22 @@ docker-compose 例子：
   keycloak:
     image: jboss/keycloak
     environment:
+      PROXY_ADDRESS_FORWARDING: 'true'
       KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: admin
+      KEYCLOAK_PASSWORD: xxx
       DB_VENDOR: postgres
       DB_ADDR: postgres
       DB_USER: postgres
       DB_PASSWORD: xxx
     labels:
       traefik.enable: true
+      traefik.http.routers.keycloak.middlewares: gz@file
+      traefik.http.routers.keycloak.tls: true
 </pre>
+
+<p>
+如果要启用 https，环境变量要配置 <code>PROXY_ADDRESS_FORWARDING=true</code>。
+</p>
 
 </body>
 </html>
