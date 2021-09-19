@@ -24,3 +24,18 @@ docker-compose 例子：
 }}}
 
 如果要启用 https，环境变量要配置 `PROXY_ADDRESS_FORWARDING=true`。
+
+=== portainer ===
+
+参考 https://documentation.portainer.io/v2.0/auth/oauth/ 来配置。注意 portainer 用 email 做登录 ID，所以 keycloak 的用户需要配一个 email。
+
+不知道 scope 怎么搞，照抄，先不折腾。
+
+
+=== gitea ===
+
+参考 https://docs.gitea.io/en-us/oauth2-provider/
+
+OAuth2 提供程序：`OpenID Connect`
+
+自动发现 URL：`https://keycloak.xxx.xx/auth/realms/<xxxx>/.well-known/openid-configuration`

@@ -170,6 +170,14 @@ dnsmasq 也可以下发这个配置：
 domain=svc.c
 </pre>
 
+<p>
+如果需要多个 search 字段：
+</p>
+
+<pre txt>
+dhcp-option=option:domain-search,q.svc.c,dev.svc.c,test.svc.c,svc.c
+</pre>
+
 
 <div id="DNSmasq-DNS 本地缓存"><h3 id="DNS 本地缓存" class="header"><a href="#DNSmasq-DNS 本地缓存">DNS 本地缓存</a></h3></div>
 
@@ -192,7 +200,7 @@ no-resolv
 server=114.114.114.114
 cache-size=10000
 # from https://github.com/StevenBlack/hosts
-addn-hosts=/etc/dnsmasq.d/hosts
+addn-hosts=/etc/hosts-black
 </pre>
 
 <div id="DNSmasq-特定域名"><h3 id="特定域名" class="header"><a href="#DNSmasq-特定域名">特定域名</a></h3></div>

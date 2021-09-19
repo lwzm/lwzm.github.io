@@ -112,6 +112,12 @@ dnsmasq 也可以下发这个配置：
 domain=svc.c
 }}}
 
+如果需要多个 search 字段：
+
+{{{txt
+dhcp-option=option:domain-search,q.svc.c,dev.svc.c,test.svc.c,svc.c
+}}}
+
 
 === DNS 本地缓存 ===
 

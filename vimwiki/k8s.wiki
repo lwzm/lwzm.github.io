@@ -65,3 +65,65 @@ users:
 }}}
 
 还可用 [[https://github.com/ahmetb/kubectx|kubectx]] 作为辅助。
+
+=== StatefulSet ===
+
+StatefulSet + Headless Service + PVC，可以拥有稳定的域名，稳定的存储。参考：
+https://kubernetes.io/zh/docs/concepts/workloads/controllers/statefulset/
+
+例子：
+
+{{{yaml
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: webdav
+spec:
+  serviceName: i  # same as Headless Service .metadata.name
+  replicas: 8
+  selector:
+    matchLabels:
+      x: webdav
+  template:
+    metadata:
+      labels:
+        x: webdav
+    spec:
+      containers:
+      - name: http
+        image: lwzm/webdav
+        volumeMounts:
+        - name: data
+          mountPath: /data
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      storageClassName: longhorn
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 100Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: i  # same as StatefulSet .spec.serviceName
+spec:
+  clusterIP: None
+  selector:
+    x: webdav
+}}}
+
+测试
+{{{sh
+for i in $(seq 0 7); do
+	curl -X PUT -d $i webdav-$i.i.q/ok
+done
+
+curl webdav-1.i.q
+curl webdav-2.i.q
+# ...
+}}}

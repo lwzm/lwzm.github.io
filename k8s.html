@@ -4,6 +4,7 @@
 <link rel="Stylesheet" type="text/css" href="style.css">
 <title>k8s</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 
@@ -82,6 +83,74 @@ users:
 <p>
 还可用 <a href="https://github.com/ahmetb/kubectx">kubectx</a> 作为辅助。
 </p>
+
+<div id="K8S-StatefulSet"><h3 id="StatefulSet" class="header"><a href="#K8S-StatefulSet">StatefulSet</a></h3></div>
+
+<p>
+StatefulSet + Headless Service + PVC，可以拥有稳定的域名，稳定的存储。参考：
+<a href="https://kubernetes.io/zh/docs/concepts/workloads/controllers/statefulset/">https://kubernetes.io/zh/docs/concepts/workloads/controllers/statefulset/</a>
+</p>
+
+<p>
+例子：
+</p>
+
+<pre yaml>
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: webdav
+spec:
+  serviceName: i  # same as Headless Service .metadata.name
+  replicas: 8
+  selector:
+    matchLabels:
+      x: webdav
+  template:
+    metadata:
+      labels:
+        x: webdav
+    spec:
+      containers:
+      - name: http
+        image: lwzm/webdav
+        volumeMounts:
+        - name: data
+          mountPath: /data
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      storageClassName: longhorn
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 100Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: i  # same as StatefulSet .spec.serviceName
+spec:
+  clusterIP: None
+  selector:
+    x: webdav
+</pre>
+
+<p>
+测试
+</p>
+<pre sh>
+for i in $(seq 0 7); do
+	curl -X PUT -d $i webdav-$i.i.q/ok
+done
+
+curl webdav-1.i.q
+curl webdav-2.i.q
+# ...
+</pre>
 
 </body>
 </html>
