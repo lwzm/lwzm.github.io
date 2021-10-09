@@ -4,6 +4,7 @@
 <link rel="Stylesheet" type="text/css" href="style.css">
 <title>postgresql</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 
@@ -12,7 +13,7 @@
 <div id="PostgreSQL-yum source"><h3 id="yum source" class="header"><a href="#PostgreSQL-yum source">yum source</a></h3></div>
 
 <p>
-<a href="http://yum.postgresql.org/repopackages.php">http://yum.postgresql.org/repopackages.php</a>
+Python:
 </p>
 
 <pre>
@@ -27,7 +28,7 @@ yum install postgresql-devel
 </p>
 
 <pre>
-/usr/pgsql-11/bin/postgresql-11-setup initdb
+initdb
 systemctl enable postgresql
 systemctl start postgresql
 </pre>
@@ -130,7 +131,7 @@ EOF
 create time：
 </p>
 
-<pre psql>
+<pre sql>
 create table TTTT {
     ...
     ts timestamptz default now()
@@ -671,6 +672,69 @@ $ tar czf /tmp/pg_bak.tgz data/
 把 pg_bak.tgz 拷贝到备机, 解压, 当作备机的数据库主目录, 修改好配置文件, 启动备机. 最后, 主机结束备份状态:
 
 # select pg_stop_backup();
+</pre>
+
+<div id="PostgreSQL-分区"><h3 id="分区" class="header"><a href="#PostgreSQL-分区">分区</a></h3></div>
+
+<p>
+可以参考 
+</p>
+
+<ul>
+<li>
+<a href="https://www.postgresql.org/docs/current/ddl-partitioning.html">https://www.postgresql.org/docs/current/ddl-partitioning.html</a>
+
+<li>
+<a href="https://blog.dbi-services.com/postgresql-partitioning-3-list-partitioning/">https://blog.dbi-services.com/postgresql-partitioning-3-list-partitioning/</a>
+
+</ul>
+
+<p>
+按天分区，适用于日志：
+</p>
+
+<pre sql>
+create table log (
+	dt timestamp default now(),
+	x jsonb
+) partition by list (date_part('day', dt));
+
+create index idx_log_dt on log(dt);
+
+create table _log partition of log default;
+create table _log01 partition of log for values in (1);
+create table _log02 partition of log for values in (2);
+create table _log03 partition of log for values in (3);
+create table _log04 partition of log for values in (4);
+create table _log05 partition of log for values in (5);
+create table _log06 partition of log for values in (6);
+create table _log07 partition of log for values in (7);
+create table _log08 partition of log for values in (8);
+create table _log09 partition of log for values in (9);
+create table _log10 partition of log for values in (10);
+create table _log11 partition of log for values in (11);
+create table _log12 partition of log for values in (12);
+create table _log13 partition of log for values in (13);
+create table _log14 partition of log for values in (14);
+create table _log15 partition of log for values in (15);
+create table _log16 partition of log for values in (16);
+create table _log17 partition of log for values in (17);
+create table _log18 partition of log for values in (18);
+create table _log19 partition of log for values in (19);
+create table _log20 partition of log for values in (20);
+create table _log21 partition of log for values in (21);
+create table _log22 partition of log for values in (22);
+create table _log23 partition of log for values in (23);
+create table _log24 partition of log for values in (24);
+create table _log25 partition of log for values in (25);
+create table _log26 partition of log for values in (26);
+create table _log27 partition of log for values in (27);
+create table _log28 partition of log for values in (28);
+create table _log29 partition of log for values in (29);
+create table _log30 partition of log for values in (30);
+create table _log31 partition of log for values in (31);
+create table _log32 partition of log for values in (32);
+create table _log33 partition of log for values in (33);
 </pre>
 
 </body>
