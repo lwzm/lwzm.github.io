@@ -66,6 +66,48 @@ k3s 文档介绍的 Local Storage Provider 和 Longhorn 都不错。
 简单用就选 Local，注意第一次分配 pod 时才真正绑定，pod 所在的初始节点决定了 pvc 的 node，用此 pvc 的 pod 以后也只能在此 node 上调度。
 可以去 node 主机的 /var/lib/rancher/k3s/storage/ 找对应的 pvc。
 
+=== TLS ===
+
+可以用开源的 jetstack/cert-manager。也可以自己用 lego 生成证书，然后自己写入一个 `secret/tls`，大概长这样：
+
+{{{yaml
+# https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets
+apiVersion: v1                                                                                                                                                                  
+kind: Secret                                                                                                                                                                    
+metadata:                                                                                                                                                                       
+  name: lego-svc-cool                                                                                                                                                           
+type: kubernetes.io/tls                                                                                                                                                         
+data:                                                                                                                                                                           
+  tls.crt: LS0tLS1CRUdJTiBDRVJ........
+  tls.key: LS0tLS1CRUdJTiBFQyB........
+}}}
+
+接下来可以给 ingress 用了：
+
+{{{yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: registry
+spec:
+  tls:
+  - secretName: lego-svc-cool
+  rules:
+  - host: svc.cool
+    http: &http
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: registry
+            port:
+              number: 5000
+}}}
+
+注意，上面用了 traefik 的一个特性，载入证书后可以给匹配的域名使用，所以不用指定 `spec.tls[0].hosts`，
+而且其它的 ingress 也能不写 `spec.tls` 而直接使用 https 。
+
 === Others ===
 
 日志有观察到 `orphaned pod` 时，可以去 `/var/lib/kubelet/pods` 清理。

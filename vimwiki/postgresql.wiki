@@ -76,19 +76,16 @@ ALTER USER q WITH PASSWORD 'xxxx';
 https://www.postgresql.org/docs/current/sql-copy.html
 
 有时候为了避免 postgres 用户权限不够的问题，可以用 `STDIN/STDOUT`
+
 {{{sh
-psql >db_backup/$(date +"%Y-%m-%dT%H:%M:%S").txt <<EOF
-COPY "user" TO STDOUT;
-COPY "keyword" TO STDOUT;
-EOF
-
-# or
-
-psql >db_backup/$(date +"%Y-%m-%dT%H:%M:%S").csv <<EOF
-COPY "user" TO STDOUT WITH CSV;
-COPY "keyword" TO STDOUT WITH CSV;
-EOF
+psql -c 'COPY "xxx" TO STDOUT' >db_backup/$(date +"%Y-%m-%dT%H:%M:%S").txt
 }}}
+
+{{{sh
+psql -c 'COPY "xxx" FROM STDIN' <xxx.txt
+}}}
+
+
 
 
 === 自动时间戳 ===
