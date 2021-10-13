@@ -1,0 +1,24 @@
+= OpenSSL =
+
+基础工具，证书相关的操作都基于这个，这里收集一些常见用法。
+
+查看证书信息：
+{{{sh
+openssl x509 -text -in your.domain.crt
+}}}
+
+查看证书元信息：
+{{{sh
+openssl x509 -text -noout -in your.domain.crt
+}}}
+
+查看证书有效时间：
+{{{sh
+openssl x509 -noout -dates -in your.domain.crt
+openssl x509 -noout -enddate -in your.domain.crt
+}}}
+
+检查证书 10 天后是否到期：
+{{{sh
+openssl x509 -checkend 864000 -in your.domain.crt
+}}}

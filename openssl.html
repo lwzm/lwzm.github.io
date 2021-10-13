@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>openssl</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="OpenSSL"><h1 id="OpenSSL" class="header"><a href="#OpenSSL">OpenSSL</a></h1></div>
+
+<p>
+基础工具，证书相关的操作都基于这个，这里收集一些常见用法。
+</p>
+
+<p>
+查看证书信息：
+</p>
+<pre sh>
+openssl x509 -text -in your.domain.crt
+</pre>
+
+<p>
+查看证书元信息：
+</p>
+<pre sh>
+openssl x509 -text -noout -in your.domain.crt
+</pre>
+
+<p>
+查看证书有效时间：
+</p>
+<pre sh>
+openssl x509 -noout -dates -in your.domain.crt
+openssl x509 -noout -enddate -in your.domain.crt
+</pre>
+
+<p>
+检查证书 10 天后是否到期：
+</p>
+<pre sh>
+openssl x509 -checkend 864000 -in your.domain.crt
+</pre>
+
+</body>
+</html>

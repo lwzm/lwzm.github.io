@@ -121,20 +121,17 @@ k3s 文档介绍的 Local Storage Provider 和 Longhorn 都不错。
 <div id="K3S-TLS"><h3 id="TLS" class="header"><a href="#K3S-TLS">TLS</a></h3></div>
 
 <p>
-可以用开源的 jetstack/cert-manager。也可以自己用 lego 生成证书，然后自己写入一个 <code>secret/tls</code>，大概长这样：
+可以用开源的 jetstack/cert-manager。也可以自己用 lego 生成证书，然后自己写入一个 <code>secret/tls</code>，例子：
 </p>
 
-<pre yaml>
+<pre sh>
 # https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets
-apiVersion: v1                                                                                                                                                                  
-kind: Secret                                                                                                                                                                    
-metadata:                                                                                                                                                                       
-  name: lego-svc-cool                                                                                                                                                           
-type: kubernetes.io/tls                                                                                                                                                         
-data:                                                                                                                                                                           
-  tls.crt: LS0tLS1CRUdJTiBDRVJ........
-  tls.key: LS0tLS1CRUdJTiBFQyB........
+kubectl create secret lego-your-domain --cert your.domain.crt --key your.domain.key --dry-run=client -o yaml | kubectl apply -f -
 </pre>
+
+<p>
+上面的写法兼顾新建和更新，建议直接在外部环境用脚本定时更新这个证书。
+</p>
 
 <p>
 接下来可以给 ingress 用了：
@@ -147,7 +144,7 @@ metadata:
   name: registry
 spec:
   tls:
-  - secretName: lego-svc-cool
+  - secretName: lego-your-domain
   rules:
   - host: svc.cool
     http: &amp;http

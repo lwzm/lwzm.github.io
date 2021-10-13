@@ -46,6 +46,7 @@
 * [[ntp]]
 * [[nvim]] neovim
 * [[oss]]
+* [[openssl]]
 * [[package.json]]
 * [[pip]]
 * [[ponyorm]]
