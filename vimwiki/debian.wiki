@@ -10,6 +10,8 @@ LC_ALL=C.UTF-8
 
 Script: `/debian.sh`
 
+时区修改：`timedatectl set-timezone Asia/Shanghai`
+
 === 使用镜像 ===
 
 https://mirrors.163.com/.help/debian.html

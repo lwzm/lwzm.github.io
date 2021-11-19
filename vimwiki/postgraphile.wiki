@@ -4,6 +4,8 @@
 * https://www.graphile.org/postgraphile/smart-tags/#primarykey
 * https://www.graphile.org/postgraphile/views/#authorization
 * https://www.graphile.org/postgraphile/jwt-guide/#example
+* https://www.graphile.org/postgraphile/postgresql-indexes/
+* https://www.graphile.org/postgraphile/security/
 
 {{{sql
 drop function if exists jwt(integer);
