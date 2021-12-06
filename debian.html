@@ -38,7 +38,8 @@ Script: <code>/debian.sh</code>
 可以粗暴点：
 </p>
 <pre sh>
-echo 'deb http://mirrors.163.com/debian/ buster main non-free contrib' &gt;/etc/apt/sources.list
+#echo 'deb http://mirrors.163.com/debian/ buster main non-free contrib' &gt;/etc/apt/sources.list
+(. /etc/os-release &amp;&amp; echo "deb http://mirrors.163.com/debian/ $VERSION_CODENAME main non-free contrib" &gt;/etc/apt/sources.list)
 </pre>
 
 <div id="Debian-net install"><h3 id="net install" class="header"><a href="#Debian-net install">net install</a></h3></div>
