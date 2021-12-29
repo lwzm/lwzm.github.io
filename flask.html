@@ -8,9 +8,7 @@
 </head>
 <body>
 
-<p>
-Flask
-</p>
+<div id="Flask"><h1 id="Flask" class="header"><a href="#Flask">Flask</a></h1></div>
 
 <ul>
 <li>
@@ -31,61 +29,36 @@ Flask 的 redirect 的目标地址会自动加上 <code>schema://host</code>，�
 其实不支持 <code>relativeURI</code> 才是合规的表现，见 <a href="https://datatracker.ietf.org/doc/html/rfc2616#section-14.30">https://datatracker.ietf.org/doc/html/rfc2616#section-14.30</a> 。
 </p>
 
-<p>
-```py
+<div id="Flask-`wsgi.py`"><h3 id="`wsgi.py`" class="header"><a href="#Flask-`wsgi.py`"><code>wsgi.py</code></a></h3></div>
+
+<pre py>
 #!/usr/bin/env python3
-</p>
 
-<p>
 from flask import Flask, redirect, request
-app = Flask(_<em>name</em>_)
-</p>
+app = Flask(__name__)
 
-<ol>
-<li>
-<a href="https://werkzeug.palletsprojects.com/en/latest/middleware/proxy_fix/">https://werkzeug.palletsprojects.com/en/latest/middleware/proxy_fix/</a>
-
-<li>
-<a href="https://flask.palletsprojects.com/en/2.0.x/quickstart/#hooking-in-wsgi-middleware">https://flask.palletsprojects.com/en/2.0.x/quickstart/#hooking-in-wsgi-middleware</a>
-
-</ol>
-<p>
+# https://werkzeug.palletsprojects.com/en/latest/middleware/proxy_fix/
+# https://flask.palletsprojects.com/en/2.0.x/quickstart/#hooking-in-wsgi-middleware
 from werkzeug.middleware.proxy_fix import ProxyFix
 app.wsgi_app = ProxyFix(app.wsgi_app)
-</p>
 
-<p>
 @app.route("/")
 def root():
-</p>
-<blockquote>
-return redirect("/hello")
-</blockquote>
+    return redirect("/hello")
 
-<p>
 @app.route("/hello")
 def hello():
-</p>
-<blockquote>
-return "hello world: " + request.url
-</blockquote>
+    return "hello world: " + request.url
 
 
-<p>
-if _<em>name</em>_ == "_<em>main</em>_":
-</p>
-<blockquote>
-app.run(host="0.0.0.0", port=8000, debug=True)
-</blockquote>
-<ol>
-<li>
-FLASK_DEBUG=1 flask run -h '' -p 8000
-
-</ol>
-
-<p>
-```
-</p>
+if __name__ == "__main__":
+    # ./wsgi.py
+    if __debug__:
+        app.run(host="0.0.0.0", port=8000, debug=True)  # equivalent to: $ FLASK_DEBUG=1 flask run -h '' -p 8000
+    # PYTHONOPTIMIZE=1 ./wsgi.py
+    import bjoern
+    bjoern.run(app.wsgi_app, "0.0.0.0", 80)
+</pre>
 
 </body>
 </html>

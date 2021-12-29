@@ -1,4 +1,4 @@
-Flask
+= Flask =
 
 * https://flask.palletsprojects.com/
 * https://werkzeug.palletsprojects.com/
@@ -9,7 +9,9 @@ Flask 的 redirect 的目标地址会自动加上 `schema://host`，也就是 `a
 
 其实不支持 `relativeURI` 才是合规的表现，见 https://datatracker.ietf.org/doc/html/rfc2616#section-14.30 。
 
-```py
+=== `wsgi.py` ===
+
+{{{py
 #!/usr/bin/env python3
 
 from flask import Flask, redirect, request
@@ -30,7 +32,10 @@ def hello():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000, debug=True)
-# FLASK_DEBUG=1 flask run -h '' -p 8000
-
-```
+    # ./wsgi.py
+    if __debug__:
+        app.run(host="0.0.0.0", port=8000, debug=True)  # equivalent to: $ FLASK_DEBUG=1 flask run -h '' -p 8000
+    # PYTHONOPTIMIZE=1 ./wsgi.py
+    import bjoern
+    bjoern.run(app.wsgi_app, "0.0.0.0", 80)
+}}}
