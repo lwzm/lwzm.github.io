@@ -1,0 +1,36 @@
+Flask
+
+* https://flask.palletsprojects.com/
+* https://werkzeug.palletsprojects.com/
+
+Flask 的 redirect 的目标地址会自动加上 `schema://host`，也就是 `absoluteURI`。
+在反向代理服务后面时，会有一些问题，需要 `X-Forwarded-*` 系列的 header 来配合，
+且需要相关 fix，见: https://werkzeug.palletsprojects.com/en/latest/middleware/proxy_fix/ https://flask.palletsprojects.com/en/2.0.x/quickstart/#hooking-in-wsgi-middleware 。
+
+其实不支持 `relativeURI` 才是合规的表现，见 https://datatracker.ietf.org/doc/html/rfc2616#section-14.30 。
+
+```py
+#!/usr/bin/env python3
+
+from flask import Flask, redirect, request
+app = Flask(__name__)
+
+# https://werkzeug.palletsprojects.com/en/latest/middleware/proxy_fix/
+# https://flask.palletsprojects.com/en/2.0.x/quickstart/#hooking-in-wsgi-middleware
+from werkzeug.middleware.proxy_fix import ProxyFix
+app.wsgi_app = ProxyFix(app.wsgi_app)
+
+@app.route("/")
+def root():
+    return redirect("/hello")
+
+@app.route("/hello")
+def hello():
+    return "hello world: " + request.url
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8000, debug=True)
+# FLASK_DEBUG=1 flask run -h '' -p 8000
+
+```

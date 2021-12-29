@@ -86,8 +86,6 @@ psql -c 'COPY "xxx" FROM STDIN' <xxx.txt
 }}}
 
 
-
-
 === 自动时间戳 ===
 
 假设我们用 `ts` 命名时间戳
@@ -640,4 +638,14 @@ create table _log30 partition of log for values in (30);
 create table _log31 partition of log for values in (31);
 create table _log32 partition of log for values in (32);
 create table _log33 partition of log for values in (33);
+}}}
+
+
+=== timeout ===
+
+https://stackoverflow.com/questions/24092463/psql-set-default-statement-timeout-as-a-user-in-postgres
+
+e.g.
+{{{sql
+alter role postgres set statement_timeout = '10s';
 }}}

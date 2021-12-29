@@ -116,8 +116,6 @@ psql -c 'COPY "xxx" FROM STDIN' &lt;xxx.txt
 </pre>
 
 
-
-
 <div id="PostgreSQL-自动时间戳"><h3 id="自动时间戳" class="header"><a href="#PostgreSQL-自动时间戳">自动时间戳</a></h3></div>
 
 <p>
@@ -732,6 +730,20 @@ create table _log30 partition of log for values in (30);
 create table _log31 partition of log for values in (31);
 create table _log32 partition of log for values in (32);
 create table _log33 partition of log for values in (33);
+</pre>
+
+
+<div id="PostgreSQL-timeout"><h3 id="timeout" class="header"><a href="#PostgreSQL-timeout">timeout</a></h3></div>
+
+<p>
+<a href="https://stackoverflow.com/questions/24092463/psql-set-default-statement-timeout-as-a-user-in-postgres">https://stackoverflow.com/questions/24092463/psql-set-default-statement-timeout-as-a-user-in-postgres</a>
+</p>
+
+<p>
+e.g.
+</p>
+<pre sql>
+alter role postgres set statement_timeout = '10s';
 </pre>
 
 </body>

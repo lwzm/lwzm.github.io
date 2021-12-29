@@ -8,16 +8,45 @@
 * https://www.graphile.org/postgraphile/security/
 
 {{{sql
-drop function if exists jwt(integer);
-
-create or replace function jwt(i int) returns text language plpython3u stable as $$
-import time
-import jwt
-
-now = int(time.time())
-encoded = jwt.encode({"i": i, "iat": now, "exp": now + 86400 * 30}, "x")
-return "Bearer " + encoded
+create or replace function json(data jsonb) returns jsonb language sql stable as $$
+	select data
 $$;
+
+create or replace
+function test(s varchar) returns text language sql stable as $$
+  select current_setting(s, true)
+$$;
+
+create type jwt as (
+  exp integer,
+  i integer, -- id
+  s text -- session
+);
+
+create or replace function authenticate(email text, password text) returns jwt
+  language plpgsql
+  --strict security definer
+  stable
+as $$
+declare
+  account person_account;
+  token jwt;
+begin
+  select a.* into account from
+    person_account as a
+    where a.email = authenticate.email;
+
+if account.password = authenticate.password then
+    token.exp = extract(epoch from now() + interval '7 days');
+    token.i = 0;
+    token.s = 'xxxxxx';
+    return token;
+end if;
+
+return null;
+end;
+$$
+
 }}}
 
 

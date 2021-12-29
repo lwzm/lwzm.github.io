@@ -16,8 +16,10 @@
 * [[dnsmasq]]
 * [[docker]]
 * [[docker-compose]]
+* [[diagrams]]
 * [[fastapi]]
 * [[falcon]] web 框架
+* [[flask]]
 * [[filebeat]]
 * [[keycloak]]
 * [[git]]
