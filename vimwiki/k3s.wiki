@@ -103,6 +103,58 @@ spec:
 注意，上面用了 traefik 的一个特性，载入证书后可以给匹配的域名使用，所以不用指定 `spec.tls[0].hosts`，
 而且其它的 ingress 也能不写 `spec.tls` 而直接使用 https 。
 
+增加一个默认规则，http redirect to https ：
+
+{{{yaml
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: https-redirect
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: http-redirect-to-https
+spec:
+  entryPoints:
+  - web
+  routes:
+  - kind: Rule
+    match: PathPrefix(`/`)
+    services:
+    - kind: TraefikService
+      name: ping@internal
+    middlewares:
+    - name: https-redirect
+}}}
+
+验证一下：
+
+{{{sh
+kubectl api-versions | grep traefik
+kubectl get middlewares.traefik.containo.us 
+kubectl get ingressroutes.traefik.containo.us
+}}}
+
+接下来的 ingress，如需强制跳转 https ，配置 `metadata.annotations`，指定入口只有 `websecure`：
+
+{{{yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: your-ingress
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure  # https://doc.traefik.io/traefik/routing/providers/kubernetes-ingress/
+spec:
+  ...
+}}}
+
 === Others ===
 
 日志有观察到 `orphaned pod` 时，可以去 `/var/lib/kubelet/pods` 清理。

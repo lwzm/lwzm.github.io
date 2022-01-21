@@ -163,6 +163,64 @@ spec:
 而且其它的 ingress 也能不写 <code>spec.tls</code> 而直接使用 https 。
 </p>
 
+<p>
+增加一个默认规则，http redirect to https ：
+</p>
+
+<pre yaml>
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: https-redirect
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: http-redirect-to-https
+spec:
+  entryPoints:
+  - web
+  routes:
+  - kind: Rule
+    match: PathPrefix(`/`)
+    services:
+    - kind: TraefikService
+      name: ping@internal
+    middlewares:
+    - name: https-redirect
+</pre>
+
+<p>
+验证一下：
+</p>
+
+<pre sh>
+kubectl api-versions | grep traefik
+kubectl get middlewares.traefik.containo.us 
+kubectl get ingressroutes.traefik.containo.us
+</pre>
+
+<p>
+接下来的 ingress，如需强制跳转 https ，配置 <code>metadata.annotations</code>，指定入口只有 <code>websecure</code>：
+</p>
+
+<pre yaml>
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: your-ingress
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure  # https://doc.traefik.io/traefik/routing/providers/kubernetes-ingress/
+spec:
+  ...
+</pre>
+
 <div id="K3S-Others"><h3 id="Others" class="header"><a href="#K3S-Others">Others</a></h3></div>
 
 <p>

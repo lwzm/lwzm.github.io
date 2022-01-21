@@ -111,5 +111,14 @@ sudo launchctl load -w $dns
 sudo sysctl -w net.inet.ip.forwarding=1
 </pre>
 
+<p>
+cert.pem
+</p>
+
+<p>
+如果根证书 <code>/etc/ssl/cert.pem</code> 太老，有些工具比如 curl, wget 会有安全警告，可以从其他 mac 拷贝一份。
+也可以直接用 Linux 的文件，alpine apk add curl，然后拷贝其 <code>/etc/ssl/certs/ca-certificates.crt</code> 到 MacOS 的 <code>/etc/ssl/cert.pem</code>。
+</p>
+
 </body>
 </html>
