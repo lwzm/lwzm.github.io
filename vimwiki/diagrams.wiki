@@ -1,3 +1,29 @@
 生成图表的工具
 
 https://github.com/seflless/diagrams
+
+例子：
+
+{{{text
+UA->WB: /entry
+WB-->UA: 302 INFO?appid=<>&redirect=WB/entry
+note left of UA: 2
+UA->INFO:
+INFO-->UA: 302 WX?appid=<>&redirect_uri=INFO&state=<>
+note left of UA: 3
+UA->WX:
+note right of WX: Authorization Yes!
+WX-->UA: 302 INFO?code=<>&state=<>&appid=<>
+note left of UA: 4
+UA->INFO:
+INFO->>WX: /access_token?code=<>&appid=<>
+WX-->>INFO: access_token,openid
+note right of WX: 150ms+
+INFO->>WX: /userinfo?access_token=<>&openid=<>
+WX-->>INFO: userinfo-json
+note right of WX: 160ms+
+INFO-->UA: 302 WB/entry?userinfo=JWT(userinfo-json)
+note left of UA: 5
+UA->WB: /entry?userinfo=JWT(userinfo-json)
+WB-->UA: OK
+}}}

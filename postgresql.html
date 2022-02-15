@@ -732,6 +732,33 @@ create table _log32 partition of log for values in (32);
 create table _log33 partition of log for values in (33);
 </pre>
 
+<p>
+hash partition
+</p>
+
+<pre sql>
+create table hp (
+  ns text,
+  foo text,
+  primary key(ns, foo)
+) partition by hash (ns, foo);
+create table hp_0 partition of hp for values with (modulus 3, remainder 0);
+create table hp_1 partition of hp for values with (modulus 3, remainder 1);
+create table hp_2 partition of hp for values with (modulus 3, remainder 2);
+
+--- or
+create table hp (
+  ns text,
+  foo text,
+  primary key(ns, foo)
+) partition by hash (ns);
+CREATE TABLE tmp.hp_0 PARTITION OF hp FOR VALUES WITH (MODULUS 3, REMAINDER 0);
+CREATE TABLE tmp.hp_1 PARTITION OF hp FOR VALUES WITH (MODULUS 3, REMAINDER 1);
+CREATE TABLE tmp.hp_2 PARTITION OF hp FOR VALUES WITH (MODULUS 3, REMAINDER 2);
+INSERT INTO hp SELECT 'q', md5(v::text) FROM generate_series(1,1000000) v;
+INSERT INTO hp SELECT 'w', md5(v::text) FROM generate_series(1,1000000) v;
+INSERT INTO hp SELECT 't', md5(v::text) FROM generate_series(1,1000000) v;
+</pre>
 
 <div id="PostgreSQL-timeout"><h3 id="timeout" class="header"><a href="#PostgreSQL-timeout">timeout</a></h3></div>
 

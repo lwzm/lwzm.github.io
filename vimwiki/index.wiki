@@ -6,7 +6,7 @@
 * [[bjoern]] wsgi 容器
 * [[bsddb]]
 * [[caddy]]
-* [[cmd.exe]]
+* [[cmd]]
 * [[cms]]
 * [[cordova]]
 * [[crontab]]

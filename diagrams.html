@@ -16,5 +16,33 @@
 <a href="https://github.com/seflless/diagrams">https://github.com/seflless/diagrams</a>
 </p>
 
+<p>
+例子：
+</p>
+
+<pre text>
+UA-&gt;WB: /entry
+WB--&gt;UA: 302 INFO?appid=&lt;&gt;&amp;redirect=WB/entry
+note left of UA: 2
+UA-&gt;INFO:
+INFO--&gt;UA: 302 WX?appid=&lt;&gt;&amp;redirect_uri=INFO&amp;state=&lt;&gt;
+note left of UA: 3
+UA-&gt;WX:
+note right of WX: Authorization Yes!
+WX--&gt;UA: 302 INFO?code=&lt;&gt;&amp;state=&lt;&gt;&amp;appid=&lt;&gt;
+note left of UA: 4
+UA-&gt;INFO:
+INFO-&gt;&gt;WX: /access_token?code=&lt;&gt;&amp;appid=&lt;&gt;
+WX--&gt;&gt;INFO: access_token,openid
+note right of WX: 150ms+
+INFO-&gt;&gt;WX: /userinfo?access_token=&lt;&gt;&amp;openid=&lt;&gt;
+WX--&gt;&gt;INFO: userinfo-json
+note right of WX: 160ms+
+INFO--&gt;UA: 302 WB/entry?userinfo=JWT(userinfo-json)
+note left of UA: 5
+UA-&gt;WB: /entry?userinfo=JWT(userinfo-json)
+WB--&gt;UA: OK
+</pre>
+
 </body>
 </html>
