@@ -10,6 +10,20 @@
 
 <div id="PostgreSQL"><h1 id="PostgreSQL" class="header"><a href="#PostgreSQL">PostgreSQL</a></h1></div>
 
+<div id="PostgreSQL-apt source"><h3 id="apt source" class="header"><a href="#PostgreSQL-apt source">apt source</a></h3></div>
+
+<p>
+<a href="https://www.postgresql.org/download/linux/debian/">https://www.postgresql.org/download/linux/debian/</a>
+</p>
+
+<pre sh>
+apt install -y gnupg1
+echo "deb https://mirrors.tuna.tsinghua.edu.cn/postgresql/repos/apt $(lsb_release -cs)-pgdg main" &gt;&gt;/etc/apt/sources.list
+curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+apt update
+apt install -y postgresql-14
+</pre>
+
 <div id="PostgreSQL-yum source"><h3 id="yum source" class="header"><a href="#PostgreSQL-yum source">yum source</a></h3></div>
 
 <p>
@@ -669,6 +683,43 @@ $ tar czf /tmp/pg_bak.tgz data/
 # select pg_stop_backup();
 </pre>
 
+<div id="PostgreSQL-外健"><h3 id="外健" class="header"><a href="#PostgreSQL-外健">外健</a></h3></div>
+
+<pre sql>
+drop schema t cascade;
+create schema t;
+create table z (
+  id text primary key,
+  note text
+);
+
+create table "group" (
+  z text,
+  id text,
+  note text,
+  foreign key (z) references z on update cascade,
+  primary key (z, id)
+);
+
+create table "user" (
+  z text,
+  id text,
+  phone text,
+  foreign key (z) references z on update cascade,
+  primary key (z, id)
+);
+
+create table group_user (
+  z text,
+  "group" text,
+  "user" text,
+  -- foreign key (z) references z on update cascade,
+  foreign key (z, "group") references "group" on update cascade,
+  foreign key (z, "user") references "user" on update cascade,
+  primary key (z, "group", "user")
+);
+</pre>
+
 <div id="PostgreSQL-分区"><h3 id="分区" class="header"><a href="#PostgreSQL-分区">分区</a></h3></div>
 
 <p>
@@ -678,6 +729,9 @@ $ tar czf /tmp/pg_bak.tgz data/
 <ul>
 <li>
 <a href="https://www.postgresql.org/docs/current/ddl-partitioning.html">https://www.postgresql.org/docs/current/ddl-partitioning.html</a>
+
+<li>
+<a href="https://www.postgresql.org/docs/current/manage-ag-tablespaces.html">https://www.postgresql.org/docs/current/manage-ag-tablespaces.html</a>
 
 <li>
 <a href="https://blog.dbi-services.com/postgresql-partitioning-3-list-partitioning/">https://blog.dbi-services.com/postgresql-partitioning-3-list-partitioning/</a>
@@ -736,6 +790,10 @@ create table _log33 partition of log for values in (33);
 hash partition
 </p>
 
+<p>
+注意，索引也可以选择 tablespace，要使用 alter 语句来调整。
+</p>
+
 <pre sql>
 create table hp (
   ns text,
@@ -746,18 +804,99 @@ create table hp_0 partition of hp for values with (modulus 3, remainder 0);
 create table hp_1 partition of hp for values with (modulus 3, remainder 1);
 create table hp_2 partition of hp for values with (modulus 3, remainder 2);
 
---- or
+-- or
+create tablespace _0 location '/0';
+create tablespace _1 location '/1';
+create tablespace _2 location '/2';
+create tablespace _3 location '/3';
+-- select spcname from pg_tablespace;
+
+
+--SET default_tablespace = xxx;
+
 create table hp (
-  ns text,
-  foo text,
-  primary key(ns, foo)
-) partition by hash (ns);
-CREATE TABLE tmp.hp_0 PARTITION OF hp FOR VALUES WITH (MODULUS 3, REMAINDER 0);
-CREATE TABLE tmp.hp_1 PARTITION OF hp FOR VALUES WITH (MODULUS 3, REMAINDER 1);
-CREATE TABLE tmp.hp_2 PARTITION OF hp FOR VALUES WITH (MODULUS 3, REMAINDER 2);
-INSERT INTO hp SELECT 'q', md5(v::text) FROM generate_series(1,1000000) v;
-INSERT INTO hp SELECT 'w', md5(v::text) FROM generate_series(1,1000000) v;
-INSERT INTO hp SELECT 't', md5(v::text) FROM generate_series(1,1000000) v;
+  z text,
+  id text,
+  primary key(z, id)
+) partition by hash (z);
+create table tmp._0 partition of hp for values with (modulus 4, remainder 0) tablespace _0;
+create table tmp._1 partition of hp for values with (modulus 4, remainder 1) tablespace _1;
+create table tmp._2 partition of hp for values with (modulus 4, remainder 2) tablespace _2;
+create table tmp._3 partition of hp for values with (modulus 4, remainder 3) tablespace _3;
+alter index tmp._0_pkey set tablespace _0;
+alter index tmp._1_pkey set tablespace _1;
+alter index tmp._2_pkey set tablespace _2;
+alter index tmp._3_pkey set tablespace _3;
+insert into hp select '1', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '2', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '3', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '4', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '5', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '6', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '7', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '8', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '9', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '10', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '11', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '12', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '13', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '14', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '15', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '16', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '17', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '18', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '19', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '20', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '21', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '22', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '23', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '24', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '25', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '26', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '27', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '28', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '29', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '30', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '31', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '32', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '33', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '34', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '35', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '36', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '37', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '38', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '39', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '40', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '41', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '42', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '43', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '44', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '45', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '46', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '47', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '48', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '49', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '50', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '51', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '52', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '53', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '54', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '55', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '56', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '57', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '58', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '59', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '60', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '61', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '62', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '63', md5(now()::text||v::text) from generate_series(1, 100000) v;
+insert into hp select '64', md5(now()::text||v::text) from generate_series(1, 100000) v;
+
+--- count partitions
+select tableoid::regclass, count(*) from hp group by 1 order by 1
+
+---
+insert into test select md5(now()::text||v::text) from generate_series(1, 100000) v;
 </pre>
 
 <div id="PostgreSQL-timeout"><h3 id="timeout" class="header"><a href="#PostgreSQL-timeout">timeout</a></h3></div>
