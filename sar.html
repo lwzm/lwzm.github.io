@@ -11,7 +11,7 @@
 <div id="系统状态检测"><h1 id="系统状态检测" class="header"><a href="#系统状态检测">系统状态检测</a></h1></div>
 
 <p>
-sar 命令属于 <code>sysstat</code> 包。
+sar 命令属于 <code>sysstat</code> 包，大部分发行版都带，家用路由器也有。
 </p>
 
 <pre sh>
@@ -23,8 +23,12 @@ apt install sysstat
 </pre>
 
 <p>
-todo
+查看网速
 </p>
+
+<pre sh>
+sar –n DEV 1
+</pre>
 
 </body>
 </html>

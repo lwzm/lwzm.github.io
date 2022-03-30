@@ -1,6 +1,6 @@
 = 系统状态检测 =
 
-sar 命令属于 `sysstat` 包。
+sar 命令属于 `sysstat` 包，大部分发行版都带，家用路由器也有。
 
 {{{sh
 # alpine
@@ -10,4 +10,8 @@ apk add sysstat
 apt install sysstat
 }}}
 
-todo
+查看网速
+
+{{{sh
+sar –n DEV 1
+}}}

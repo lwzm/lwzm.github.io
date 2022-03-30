@@ -636,6 +636,41 @@ create table group_user (
 );
 }}}
 
+测试 partition + postgraphile, 目前需要创建 view 来达到效果，社区支持表继承后就不用 view 了。
+
+{{{sql
+create table group_user (
+  z text,
+  "group" text,
+  "user" text,
+  foreign key (z, "group") references "group" on update cascade,
+  foreign key (z, "user") references "user" on update cascade,
+  primary key (z, "group", "user")
+) partition by hash (z);
+create table ps.group_user_0 partition of group_user for values with (modulus 2, remainder 0) tablespace _0;
+create table ps.group_user_1 partition of group_user for values with (modulus 2, remainder 1) tablespace _1;
+alter index ps.group_user_0_pkey set tablespace _0;
+alter index ps.group_user_1_pkey set tablespace _1;
+
+create view gu as select * from group_user;
+-- postgraphile smart tags
+comment on view gu is '
+@primaryKey z,group,user
+@foreignKey (z,group) references group
+@foreignKey (z,user) references user
+';
+
+insert into z(id) values ('q'), ('w');
+insert into "group"(z, id) values ('q','g1'), ('q','g2'), ('w','g1'), ('w','g2');
+insert into "user"(z, id) values ('q','u1'), ('q','u2'), ('q','u3'), ('w','u1'), ('w','u2'), ('w','u3'), ('w','u4');
+insert into gu(z, "group", "user") values ('q','g1','u1'),('q','g1','u2'),('q','g1','u3'),('q','g2','u1');
+
+select * from gu
+left join "group" as g on gu.z=g.z and gu."group"=g.id
+left join "user" as u on gu.z=u.z and gu."user"=u.id
+where u.z = 'q';
+}}}
+
 === 分区 ===
 
 可以参考 
