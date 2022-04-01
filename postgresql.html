@@ -757,6 +757,33 @@ left join "user" as u on gu.z=u.z and gu."user"=u.id
 where u.z = 'q';
 </pre>
 
+<p>
+另，可以配合 postgraphile 的 jwt 来实现约束命名空间的功能：
+</p>
+
+<pre sql>
+create view gu as select * from group_user where z = current_setting('jwt.claims.z', true);
+create view g as select * from "group" where z = current_setting('jwt.claims.z', true);
+create view u as select * from "user" where z = current_setting('jwt.claims.z', true);
+
+
+</pre>
+
+<p>
+查询就可简化成这样(性能存疑)：
+</p>
+
+<pre sql>
+begin;
+set local jwt.claims.z to 'q';
+select * from gu
+left join g on gu."group"=g.id
+left join u on gu."user"=u.id
+;
+commit;
+</pre>
+
+
 <div id="PostgreSQL-分区"><h3 id="分区" class="header"><a href="#PostgreSQL-分区">分区</a></h3></div>
 
 <p>
