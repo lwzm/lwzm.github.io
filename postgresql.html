@@ -766,7 +766,17 @@ create view gu as select * from group_user where z = current_setting('jwt.claims
 create view g as select * from "group" where z = current_setting('jwt.claims.z', true);
 create view u as select * from "user" where z = current_setting('jwt.claims.z', true);
 
-
+comment on view gu is '
+@primaryKey group,user
+@foreignKey (group) references g
+@foreignKey (user) references u
+';
+comment on view g is '
+@primaryKey id
+';
+comment on view u is '
+@primaryKey id
+';
 </pre>
 
 <p>
@@ -783,6 +793,16 @@ left join u on gu."user"=u.id
 commit;
 </pre>
 
+<p>
+还能利用 simple view 的特性，无需主动指定 z，自动拥有 update, insert, delete 特性，实现 insert 操作需要做一点调整，如：
+</p>
+<pre sql>
+create table "group" (
+  z text default current_setting('jwt.claims.z', true),
+  ...
+-- or
+alter table "group" alter z set default current_setting('jwt.claims.z', true);
+</pre>
 
 <div id="PostgreSQL-分区"><h3 id="分区" class="header"><a href="#PostgreSQL-分区">分区</a></h3></div>
 
