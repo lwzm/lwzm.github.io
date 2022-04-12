@@ -674,14 +674,18 @@ where u.z = 'q';
 另，可以配合 postgraphile 的 jwt 来实现约束命名空间的功能：
 
 {{{sql
-create view gu as select * from group_user where z = current_setting('jwt.claims.z');
-create view g as select * from "group" where z = current_setting('jwt.claims.z');
-create view u as select * from "user" where z = current_setting('jwt.claims.z');
+set search_path to api;
+drop view gu;
+drop view g;
+drop view u;
+create view gu as select "group" as g, "user" as u from public.group_user where z = current_setting('jwt.claims.z');
+create view g as select id, note from public."group" where z = current_setting('jwt.claims.z');
+create view u as select id, phone from public."user" where z = current_setting('jwt.claims.z');
 
 comment on view gu is '
-@primaryKey group,user
-@foreignKey (group) references g
-@foreignKey (user) references u
+@primaryKey g,u
+@foreignKey (g) references g
+@foreignKey (u) references u
 ';
 comment on view g is '
 @primaryKey id
@@ -691,7 +695,7 @@ comment on view u is '
 ';
 }}}
 
-查询就可简化成这样(性能存疑)：
+查询就可简化一个维度，这样：
 
 {{{sql
 begin;
@@ -702,6 +706,8 @@ left join u on gu."user"=u.id
 ;
 commit;
 }}}
+
+性能存疑，推测可以用到索引，简单实践符合预期。
 
 还能利用 simple view 的特性，无需主动指定 z，自动拥有 update, insert, delete 特性，实现 insert 操作需要做一点调整，如：
 {{{sql
