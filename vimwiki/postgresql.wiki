@@ -604,35 +604,35 @@ $ tar czf /tmp/pg_bak.tgz data/
 {{{sql
 drop schema t cascade;
 create schema t;
+set search_path to t;
+
 create table z (
   id text primary key,
   note text
 );
 
 create table "group" (
-  z text,
+  z text references z on update cascade,
   id text,
-  note text,
-  foreign key (z) references z on update cascade,
-  primary key (z, id)
+  primary key (z, id),
+  note text
 );
 
 create table "user" (
-  z text,
+  z text references z on update cascade,
   id text,
-  phone text,
-  foreign key (z) references z on update cascade,
-  primary key (z, id)
+  primary key (z, id),
+  phone text
 );
 
 create table group_user (
-  z text,
+  z text references z on update cascade,
   "group" text,
   "user" text,
-  -- foreign key (z) references z on update cascade,
+  primary key (z, "group", "user"),
   foreign key (z, "group") references "group" on update cascade,
   foreign key (z, "user") references "user" on update cascade,
-  primary key (z, "group", "user")
+  ts timestamptz default now()
 );
 }}}
 
