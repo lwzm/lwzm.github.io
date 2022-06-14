@@ -636,6 +636,37 @@ create table group_user (
 );
 }}}
 
+以上 DDL  可以选择生成：
+
+{{{yaml
+- t: group
+  fs:
+    - id text
+    - note text
+    - ts timestamptz default now()
+  pk: id
+
+- t: user
+  fs:
+    - id text
+    - phone text
+    - ts timestamptz default now()
+  pk: id
+
+- t: group_user
+  fs:
+    - group text
+    - user text
+    - ts timestamptz default now()
+  pk:
+    - group
+    - user
+  fks:
+    - group
+    - key: user
+      ref: user
+}}}
+
 测试 partition + postgraphile, 目前需要创建 view 来达到效果，社区支持表继承后就不用 view 了。
 
 {{{sql
