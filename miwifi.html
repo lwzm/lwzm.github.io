@@ -50,5 +50,38 @@ b. 修改 root 用户密码为 admin
 参考 <a href="http://wxxnb.com/archives/xiaomi-router-how-to-open-ssh">http://wxxnb.com/archives/xiaomi-router-how-to-open-ssh</a>
 </p>
 
+<div id="小米路由器-编译程序参数"><h3 id="编译程序参数" class="header"><a href="#小米路由器-编译程序参数">编译程序参数</a></h3></div>
+
+<p>
+举例：
+</p>
+
+<pre sh>
+CGO_ENABLED=0 GOOS=linux GOARCH=mipsle go build ./cmd/notice
+</pre>
+
+<div id="小米路由器-端口转发"><h3 id="端口转发" class="header"><a href="#小米路由器-端口转发">端口转发</a></h3></div>
+
+<p>
+可在 web 控制台配置，如果有限制不许转发到路由器本机，可以自己编辑 <code>/etc/config/firewall</code>，照抄其它的转发配置，保存后 <code>/etc/init.d/firewall reload</code>。
+</p>
+
+<p>
+例子：
+</p>
+
+<pre text>
+config redirect 'wan1111rdr1'
+        option proto 'tcp'
+        option src_dport '1111'
+        option dest_ip '10.0.0.1'
+        option dest_port '1111'
+        option src 'wan'
+        option name 'notice'
+        option target 'DNAT'
+        option ftype '1'
+        option dest 'lan'
+</pre>
+
 </body>
 </html>

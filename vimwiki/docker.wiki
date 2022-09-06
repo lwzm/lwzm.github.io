@@ -1,5 +1,7 @@
 = Docker =
 
+（ 建议使用 [[containerd]] ）
+
 https://hub.docker.com/
 
 入门教程 https://docker_practice.gitee.io/

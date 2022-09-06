@@ -23,3 +23,30 @@ http://miwifi.com/cgi-bin/luci/;stok=<STOK>/api/misystem/set_config_iotdev?bssid
 防火墙也要调整，编辑 `/etc/config/firewall`，把 config defaults / config zone name lan 的 REJECT 改成 ACCEPT，把 config defaults 中的 option drop_invalid 改为 0。
 
 参考 http://wxxnb.com/archives/xiaomi-router-how-to-open-ssh
+
+=== 编译程序参数 ===
+
+举例：
+
+{{{sh
+CGO_ENABLED=0 GOOS=linux GOARCH=mipsle go build ./cmd/notice
+}}}
+
+=== 端口转发 ===
+
+可在 web 控制台配置，如果有限制不许转发到路由器本机，可以自己编辑 `/etc/config/firewall`，照抄其它的转发配置，保存后 `/etc/init.d/firewall reload`。
+
+例子：
+
+{{{text
+config redirect 'wan1111rdr1'
+        option proto 'tcp'
+        option src_dport '1111'
+        option dest_ip '10.0.0.1'
+        option dest_port '1111'
+        option src 'wan'
+        option name 'notice'
+        option target 'DNAT'
+        option ftype '1'
+        option dest 'lan'
+}}}

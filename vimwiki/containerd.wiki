@@ -1,0 +1,7 @@
+= containerd =
+
+containerd 可替代 docker，建议搭配 nerdctl 使用。
+
+在 https://github.com/containerd/nerdctl/releases 下载二进制 Full 版，即可从 docker 无缝切换过来。
+
+`nerdctl compose` 可替换掉 `docker-compose`。
