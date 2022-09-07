@@ -37,9 +37,30 @@ Script: <code>/debian.sh</code>
 <p>
 可以粗暴点：
 </p>
+
 <pre sh>
 #echo 'deb http://mirrors.163.com/debian/ buster main non-free contrib' &gt;/etc/apt/sources.list
-(. /etc/os-release &amp;&amp; echo "deb http://mirrors.163.com/debian/ $VERSION_CODENAME main non-free contrib" &gt;/etc/apt/sources.list)
+(. /etc/os-release &amp;&amp; echo "deb http://mirrors.163.com/debian/ $VERSION_CODENAME main" &gt;/etc/apt/sources.list)
+</pre>
+
+<p>
+Debian 的版本代号说明见 <a href="https://www.debian.org/releases/index.zh-cn.html">https://www.debian.org/releases/index.zh-cn.html</a>
+</p>
+
+<p>
+使用最新的软件包：
+</p>
+
+<pre sh>
+echo 'deb http://mirrors.163.com/debian/ testing main' &gt;&gt;/etc/apt/sources.list
+</pre>
+
+<p>
+查看某包的文件列表：
+</p>
+
+<pre sh>
+dpkg-query -L &lt;package_name&gt;
 </pre>
 
 <div id="Debian-net install"><h3 id="net install" class="header"><a href="#Debian-net install">net install</a></h3></div>
