@@ -720,37 +720,46 @@ create table group_user (
 </pre>
 
 <p>
-以上 DDL  可以选择生成：
+以上 DDL  可以根据自定义的配置生成：
 </p>
 
 <pre yaml>
-- t: group
-  fs:
+- table: group
+  columns:
     - id text
     - note text
     - ts timestamptz default now()
-  pk: id
+  primary_key: id
+  indexes:
+    - ts
+    - ts,note
 
-- t: user
-  fs:
+- table: user
+  columns:
     - id text
     - phone text
     - ts timestamptz default now()
-  pk: id
+  primary_key: id
 
-- t: group_user
-  fs:
+- table: group_user
+  columns:
     - group text
     - user text
     - ts timestamptz default now()
-  pk:
-    - group
-    - user
-  fks:
-    - group
+  primary_key: group,user
+  foreign_keys:
+    - key: group
+      reference: group
+    #- group
     - key: user
-      ref: user
+      reference: user
+    #- user
+
 </pre>
+
+<p>
+转换程序 <span class="todo">TODO</span> 。
+</p>
 
 <p>
 测试 partition + postgraphile, 目前需要创建 view 来达到效果，社区支持表继承后就不用 view 了。
