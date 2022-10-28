@@ -606,26 +606,28 @@ create schema t;
 set search_path to t;
 
 create table z (
-  id text primary key,
+  id serial primary key,
+  key text unique not null,
   note text
 );
 
 create table "group" (
-  z text references z on update cascade,
+  -- z text references z on update cascade,
+  z int references z,
   id text,
   primary key (z, id),
   note text
 );
 
 create table "user" (
-  z text references z on update cascade,
+  z int references z,
   id text,
   primary key (z, id),
   phone text
 );
 
 create table group_user (
-  z text references z on update cascade,
+  z int references z,
   "group" text,
   "user" text,
   primary key (z, "group", "user"),
