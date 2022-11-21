@@ -53,3 +53,9 @@ todo
 {{{sh
 ss://YWVzLTI1Ni1jZmI6eg==@your.ss.host:58388/?#ss
 }}}
+
+=== go-shadowsocks2 ===
+
+{{{sh
+go-shadowsocks2 -s ss://AEAD_AES_128_GCM:x@:8388
+}}}
