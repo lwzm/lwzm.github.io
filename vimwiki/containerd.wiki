@@ -5,3 +5,16 @@ containerd 可替代 docker，建议搭配 nerdctl 使用。
 在 https://github.com/containerd/nerdctl/releases 下载二进制 Full 版，即可从 docker 无缝切换过来。
 
 `nerdctl compose` 可替换掉 `docker-compose`。
+
+建议开启镜像加速 pull ：
+
+`/etc/containerd/config.toml`
+
+{{{toml
+[plugins.cri.registry]
+[plugins.cri.registry.mirrors]
+[plugins.cri.registry.mirrors."quay.io"]
+endpoint = ["https://quay.tencentcloudcr.com"]
+[plugins.cri.registry.mirrors."docker.io"]
+endpoint = ["https://mirror.ccs.tencentyun.com"]
+}}}

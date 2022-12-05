@@ -144,7 +144,7 @@ metadata:
   name: registry
 spec:
   tls:
-  - secretName: lego-your-domain
+  - secretName: lego-your.domain
   rules:
   - host: svc.cool
     http: &amp;http
@@ -172,7 +172,7 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: https-redirect
+  name: https
 spec:
   redirectScheme:
     scheme: https
@@ -193,7 +193,7 @@ spec:
     - kind: TraefikService
       name: ping@internal
     middlewares:
-    - name: https-redirect
+    - name: https
 </pre>
 
 <p>
@@ -207,7 +207,7 @@ kubectl get ingressroutes.traefik.containo.us
 </pre>
 
 <p>
-接下来的 ingress，如需强制跳转 https ，配置 <code>metadata.annotations</code>，指定入口只有 <code>websecure</code>：
+接下来的 ingress，如需强制跳转 https ，配置 <code>metadata.annotations</code>，指定入口只有 <code>websecure</code>，<code>web</code> 入口就走了上面的 IngressRoute：
 </p>
 
 <pre yaml>
@@ -219,6 +219,32 @@ metadata:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure  # https://doc.traefik.io/traefik/routing/providers/kubernetes-ingress/
 spec:
   ...
+</pre>
+
+<p>
+启用 gzip，需要先建一个 Middleware ，假设在 namespace q:
+</p>
+
+<pre yaml>
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: compress
+spec:
+  compress:
+    minResponseBodyBytes: 1000
+</pre>
+
+<p>
+然后 ingress 就可以配置来启用，注意 Middleware 的名字的格式：<code>Namespace-MiddlewareName@kubernetescrd</code>
+</p>
+<pre yaml>
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: your-ingress
+  annotations:
+    traefik.ingress.kubernetes.io/router.middlewares: q-compress@kubernetescrd
 </pre>
 
 <div id="K3S-Others"><h3 id="Others" class="header"><a href="#K3S-Others">Others</a></h3></div>

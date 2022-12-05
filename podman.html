@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>podman</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="podman"><h1 id="podman" class="header"><a href="#podman">podman</a></h1></div>
+
+<p>
+和 docker 的使用方法基本一致，不需要 daemon，且普通用户可使用。
+</p>
+
+<p>
+<a href="https://docs.podman.io/en/latest/Commands.html">https://docs.podman.io/en/latest/Commands.html</a>
+</p>
+
+<p>
+<code>/etc/containers/registries.conf</code>
+</p>
+
+<pre toml>
+unqualified-search-registries = ["docker.io"]
+#[[registry]]
+#prefix = "docker.io"
+#location = "hub-mirror.c.163.com"
+</pre>
+
+<p>
+容器内的 <code>/etc/hosts</code> 会跟随宿主机的，且宿主机的 IP 是可以从容器内直连，宿主可以识别到容器的真实 IP。
+</p>
+
+<p>
+如宿主的 hosts 含 <code>10.0.0.10 foo</code>，启动 <code>python3 -m http.server</code>，则容器内 <code>curl foo:8000</code> 可访问到宿主机，且宿主机可发现访问者的 IP。
+</p>
+
+</body>
+</html>

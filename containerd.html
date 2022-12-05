@@ -22,5 +22,22 @@ containerd 可替代 docker，建议搭配 nerdctl 使用。
 <code>nerdctl compose</code> 可替换掉 <code>docker-compose</code>。
 </p>
 
+<p>
+建议开启镜像加速 pull ：
+</p>
+
+<p>
+<code>/etc/containerd/config.toml</code>
+</p>
+
+<pre toml>
+[plugins.cri.registry]
+[plugins.cri.registry.mirrors]
+[plugins.cri.registry.mirrors."quay.io"]
+endpoint = ["https://quay.tencentcloudcr.com"]
+[plugins.cri.registry.mirrors."docker.io"]
+endpoint = ["https://mirror.ccs.tencentyun.com"]
+</pre>
+
 </body>
 </html>
