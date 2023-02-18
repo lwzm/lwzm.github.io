@@ -125,8 +125,9 @@ k3s 文档介绍的 Local Storage Provider 和 Longhorn 都不错。
 </p>
 
 <pre sh>
+cd .lego/certificates
 # https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets
-kubectl create secret tls lego-your-domain --cert your.domain.crt --key your.domain.key --dry-run=client -o yaml | kubectl apply -f -
+kubectl create secret tls lego-your.domain --cert your.domain.crt --key your.domain.key --dry-run=client -o yaml | kubectl apply -f -
 </pre>
 
 <p>
