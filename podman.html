@@ -37,5 +37,15 @@ unqualified-search-registries = ["docker.io"]
 如宿主的 hosts 含 <code>10.0.0.10 foo</code>，启动 <code>python3 -m http.server</code>，则容器内 <code>curl foo:8000</code> 可访问到宿主机，且宿主机可发现访问者的 IP。
 </p>
 
+<p>
+例子：
+</p>
+<pre sh>
+podman run --name ss -e PASSWORD=x*** -e METHOD=aes-256-cfb -p 127.1.1.1:58388:8388 -d shadowsocks/shadowsocks-libev
+#
+# ...
+podman container start ss
+</pre>
+
 </body>
 </html>

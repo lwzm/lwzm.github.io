@@ -16,3 +16,11 @@ unqualified-search-registries = ["docker.io"]
 容器内的 `/etc/hosts` 会跟随宿主机的，且宿主机的 IP 是可以从容器内直连，宿主可以识别到容器的真实 IP。
 
 如宿主的 hosts 含 `10.0.0.10 foo`，启动 `python3 -m http.server`，则容器内 `curl foo:8000` 可访问到宿主机，且宿主机可发现访问者的 IP。
+
+例子：
+{{{sh
+podman run --name ss -e PASSWORD=x*** -e METHOD=aes-256-cfb -p 127.1.1.1:58388:8388 -d shadowsocks/shadowsocks-libev
+#
+# ...
+podman container start ss
+}}}
