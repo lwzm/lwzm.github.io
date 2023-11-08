@@ -13,5 +13,5 @@ apt install sysstat
 查看网速
 
 {{{sh
-sar –n DEV 1
+sar -n DEV 1
 }}}
