@@ -12,15 +12,15 @@ sh Anaconda3-*.sh -b -f -p /usr/local/
 
 Script: `conda.sh`
 
-可以升级一下：
+可以默认进入 conda 环境：
 
 {{{sh
-conda update --all
+conda init
 }}}
 
 安装其他版本的 Python:
 {{{sh
-conda create -n py36 python=3.6
+conda create -n env_py39 python=3.9
 }}}
 
 快速安装可以选择 `miniconda`，安装好后再 `conda install anaconda`。

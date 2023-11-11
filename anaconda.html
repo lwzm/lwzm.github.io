@@ -4,6 +4,7 @@
 <link rel="Stylesheet" type="text/css" href="style.css">
 <title>anaconda</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 
@@ -34,18 +35,18 @@ Script: <code>conda.sh</code>
 </p>
 
 <p>
-可以升级一下：
+可以默认进入 conda 环境：
 </p>
 
 <pre sh>
-conda update --all
+conda init
 </pre>
 
 <p>
 安装其他版本的 Python:
 </p>
 <pre sh>
-conda create -n py36 python=3.6
+conda create -n env_py39 python=3.9
 </pre>
 
 <p>
