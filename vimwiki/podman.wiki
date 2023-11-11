@@ -4,13 +4,16 @@
 
 https://docs.podman.io/en/latest/Commands.html
 
+启用镜像默认前缀，启用镜像加速：
+
 `/etc/containers/registries.conf`
 
 {{{toml
 unqualified-search-registries = ["docker.io"]
-#[[registry]]
-#prefix = "docker.io"
-#location = "hub-mirror.c.163.com"
+[[registry]]
+prefix = "docker.io"
+location = "lwdakpha.mirror.aliyuncs.com"
+# https://cr.console.aliyun.com/cn-shanghai/instances/mirrors
 }}}
 
 容器内的 `/etc/hosts` 会跟随宿主机的，且宿主机的 IP 是可以从容器内直连，宿主可以识别到容器的真实 IP。

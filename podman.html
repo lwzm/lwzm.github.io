@@ -19,14 +19,19 @@
 </p>
 
 <p>
+启用镜像默认前缀，启用镜像加速：
+</p>
+
+<p>
 <code>/etc/containers/registries.conf</code>
 </p>
 
 <pre toml>
 unqualified-search-registries = ["docker.io"]
-#[[registry]]
-#prefix = "docker.io"
-#location = "hub-mirror.c.163.com"
+[[registry]]
+prefix = "docker.io"
+location = "lwdakpha.mirror.aliyuncs.com"
+# https://cr.console.aliyun.com/cn-shanghai/instances/mirrors
 </pre>
 
 <p>
