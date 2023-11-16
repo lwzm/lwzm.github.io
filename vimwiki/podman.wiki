@@ -27,3 +27,104 @@ podman run --name ss -e PASSWORD=x*** -e METHOD=aes-256-cfb -p 127.1.1.1:58388:8
 # ...
 podman container start ss
 }}}
+
+nginx 做网关：
+
+先创建个网络方便互通 `podman network create q` ，然后
+
+{{{sh
+podman run \
+-v /etc/localtime:/etc/localtime:ro \
+-v ./conf.d:/etc/nginx/conf.d \
+-v ./.lego/certificates:/certificates \
+-v ./log:/var/log/nginx \
+-v ./html:/html \
+-p 80:80 \
+-p 443:443 \
+--network q \
+--name nginx \
+nginx:alpine
+
+# podman start nginx
+}}}
+
+注意如果是普通用户，需要绑定小数字端口，可以 root 先跑 `echo 80 >/proc/sys/net/ipv4/ip_unprivileged_port_start` 。
+
+接下来，创建 container 或 pod 或 kube，指定 `--network q` 就行了。
+
+nginx 有几个问题：获取不了真实的访问者 IP、无法及时发现上游 IP 的变更，可以中间加个 caddy 解决，这时，nginx 不用容器跑。
+
+`./caddy/Caddyfile`:
+{{{txt
+http://adminer.*.* {
+        reverse_proxy adminer:8080
+}
+
+http://whoami.*.* {
+        reverse_proxy {
+                to whoami-pod-0
+                to whoami-pod-1
+        }
+}
+
+:80 {
+        reverse_proxy {
+                to {labels.2}:80
+        }
+}
+}}}
+
+caddy 用容器跑：
+
+{{{sh
+podman run -d --network q \
+-v ./caddy:/etc/caddy \
+--name caddy \
+-p 127.255.255.254:58888:80 \
+caddy
+}}}
+
+nginx:
+{{{txt
+server {
+        listen 80 default_server;
+        return 301 https://$host$request_uri;
+}
+
+server {
+        listen 443 ssl http2 default_server;
+
+        if ( $host !~ ^(.+)\.tyio\.net$ ) {
+                return 403;
+        }
+
+        root /html/$1;
+
+        autoindex on;
+        autoindex_exact_size off;
+        autoindex_localtime on;
+}
+
+server {
+    server_name tyio.net;
+        root /html/www;
+}
+
+upstream caddy {
+    server 127.255.255.254:58888;
+    keepalive 64;
+}
+
+server {
+    server_name
+        adminer.tyio.net
+        whoami.tyio.net
+        ...
+        ;
+        listen 443 ssl http2;
+
+    location / {
+                proxy_pass http://caddy;
+    }
+}
+}}}

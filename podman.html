@@ -2,6 +2,7 @@
 <html>
 <head>
 <link rel="Stylesheet" type="text/css" href="style.css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
 <title>podman</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -50,6 +51,123 @@ podman run --name ss -e PASSWORD=x*** -e METHOD=aes-256-cfb -p 127.1.1.1:58388:8
 #
 # ...
 podman container start ss
+</pre>
+
+<p>
+nginx 做网关：
+</p>
+
+<p>
+先创建个网络方便互通 <code>podman network create q</code> ，然后
+</p>
+
+<pre sh>
+podman run \
+-v /etc/localtime:/etc/localtime:ro \
+-v ./conf.d:/etc/nginx/conf.d \
+-v ./.lego/certificates:/certificates \
+-v ./log:/var/log/nginx \
+-v ./html:/html \
+-p 80:80 \
+-p 443:443 \
+--network q \
+--name nginx \
+nginx:alpine
+
+# podman start nginx
+</pre>
+
+<p>
+注意如果是普通用户，需要绑定小数字端口，可以 root 先跑 <code>echo 80 &gt;/proc/sys/net/ipv4/ip_unprivileged_port_start</code> 。
+</p>
+
+<p>
+接下来，创建 container 或 pod 或 kube，指定 <code>--network q</code> 就行了。
+</p>
+
+<p>
+nginx 有几个问题：获取不了真实的访问者 IP、无法及时发现上游 IP 的变更，可以中间加个 caddy 解决，这时，nginx 不用容器跑。
+</p>
+
+<p>
+<code>./caddy/Caddyfile</code>:
+</p>
+<pre txt>
+http://adminer.*.* {
+        reverse_proxy adminer:8080
+}
+
+http://whoami.*.* {
+        reverse_proxy {
+                to whoami-pod-0
+                to whoami-pod-1
+        }
+}
+
+:80 {
+        reverse_proxy {
+                to {labels.2}:80
+        }
+}
+</pre>
+
+<p>
+caddy 用容器跑：
+</p>
+
+<pre sh>
+podman run -d --network q \
+-v ./caddy:/etc/caddy \
+--name caddy \
+-p 127.255.255.254:58888:80 \
+caddy
+</pre>
+
+<p>
+nginx:
+</p>
+<pre txt>
+server {
+        listen 80 default_server;
+        return 301 https://$host$request_uri;
+}
+
+server {
+        listen 443 ssl http2 default_server;
+
+        if ( $host !~ ^(.+)\.tyio\.net$ ) {
+                return 403;
+        }
+
+        root /html/$1;
+
+        autoindex on;
+        autoindex_exact_size off;
+        autoindex_localtime on;
+}
+
+server {
+    server_name tyio.net;
+        root /html/www;
+}
+
+upstream caddy {
+    server 127.255.255.254:58888;
+    keepalive 64;
+}
+
+server {
+    server_name
+        adminer.tyio.net
+        whoami.tyio.net
+        ...
+        ;
+        listen 443 ssl http2;
+
+    location / {
+                proxy_pass http://caddy;
+    }
+}
 </pre>
 
 </body>
