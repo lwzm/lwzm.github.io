@@ -14,7 +14,7 @@ http://hw-proxy-kv.*.k8ss.cc, http://kv.* {
         method GET
     }
     reverse_proxy @get https://kv-storage.hw-prod.avlyun.com {
-        flush_interval -1
+        flush_interval -1  # 对 stream 类型数据友好，不会因缓冲大量数据消耗很多内存
         header_up Host {http.reverse_proxy.upstream.hostport}
         header_up Authorization "Basic {$BASIC_AUTH}"
     }
