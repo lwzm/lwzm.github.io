@@ -9,7 +9,7 @@ x.tgz 的作用:
 * 配置 sshd
 * 配置 root authorized_keys
 * resolve.conf and ifcfg-XXX
- 
+
 在控制台申请机器时, 用户自定义数据如下
 
 {{{
@@ -100,6 +100,7 @@ iptables -t nat -I POSTROUTING -s 10.0.0.0/24 -j SNAT --to-source 10.0.0.91
 === 卸载云盾 ===
 
 {{{sh
-systemctl stop aliyun
-/etc/init.d/aegis uninstall
+#systemctl stop aliyun
+#/etc/init.d/aegis uninstall
+systemctl disable AssistDaemon aliyun aegis
 }}}

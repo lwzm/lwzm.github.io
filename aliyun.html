@@ -2,6 +2,7 @@
 <html>
 <head>
 <link rel="Stylesheet" type="text/css" href="style.css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
 <title>aliyun</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -35,7 +36,6 @@ x.tgz 的作用:
 resolve.conf and ifcfg-<span class="todo">XXX</span>
 
 </ul>
- 
 <p>
 在控制台申请机器时, 用户自定义数据如下
 </p>
@@ -130,7 +130,6 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHWrD5V10X9SWTYnfIGQcglQmjiCK6KyMDKyTgwb3V
 ...
 
 </ul>
-
 <p>
 <code>ECS-1</code>:
 </p>
@@ -156,8 +155,9 @@ iptables -t nat -I POSTROUTING -s 10.0.0.0/24 -j SNAT --to-source 10.0.0.91
 <div id="Aliyun-卸载云盾"><h3 id="卸载云盾" class="header"><a href="#Aliyun-卸载云盾">卸载云盾</a></h3></div>
 
 <pre sh>
-systemctl stop aliyun
-/etc/init.d/aegis uninstall
+#systemctl stop aliyun
+#/etc/init.d/aegis uninstall
+systemctl disable AssistDaemon aliyun aegis
 </pre>
 
 </body>
