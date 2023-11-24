@@ -306,11 +306,11 @@ col text;
 begin
     ref := TG_ARGV[0];
     col := TG_ARGV[1];
-    
+
     execute
     format('insert into history_update (tab, ref, col, old, new) values ($1, $4."%s", $2, $3."%s", $4."%s")', ref, col, col)
     using TG_TABLE_NAME, col, OLD, NEW;
-    
+
     return NEW;
 end
 $$;
@@ -562,41 +562,35 @@ https://www.postgresql.org/docs/current/sql-listen.html
 
 仅做参考，具体问题具体学习分析。
 
-主机 postgresql.conf
+master 的 postgresql.conf 不需要特殊配置
+
 {{{
-wal_level = hot_standby
-max_wal_senders = 8
+默认
+wal_level = replica
 }}}
 
-主机 pg_hba.conf 不要漏了
+信任网络中，不想要密码，pg_hba.conf 不要漏了
 {{{
 host    replication all         172.16.16.0/24        trust
 }}}
 
-备机 postgresql.conf
-
-{{{
-hot_standby = on
+准备好初始文件：
+{{{sh
+pg_basebackup -D bak
 }}}
 
-备机 recovery.conf
+把初始文件放在 standby 的 `$PGDATA`
+
+切换到 standby，编辑 postgresql.conf
+
 {{{
-standby_mode = on
-primary_conninfo = 'host=<MASTER_HOST>'
+primary_conninfo = 'postgresql://postgres:****@<MASTER_HOST>'           # connection string to sending server
 }}}
 
-初始化操作
-{{{
-# -> psql
-$ -> shell
+然后在当前目录 `touch standby.signal`，有这文件即激活。
 
-# select pg_start_backup('flag_name');
-$ tar czf /tmp/pg_bak.tgz data/
+关键就是有初始数据，有文件 standby.signal，有 master 的连接配置。
 
-把 pg_bak.tgz 拷贝到备机, 解压, 当作备机的数据库主目录, 修改好配置文件, 启动备机. 最后, 主机结束备份状态:
-
-# select pg_stop_backup();
-}}}
 
 === 外健 ===
 
@@ -759,7 +753,7 @@ alter table "group" alter z set default current_setting('jwt.claims.z');
 
 === 分区 ===
 
-可以参考 
+可以参考
 
 * https://www.postgresql.org/docs/current/ddl-partitioning.html
 * https://www.postgresql.org/docs/current/manage-ag-tablespaces.html

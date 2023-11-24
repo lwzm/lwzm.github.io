@@ -2,6 +2,7 @@
 <html>
 <head>
 <link rel="Stylesheet" type="text/css" href="style.css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
 <title>postgresql</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -356,11 +357,11 @@ col text;
 begin
     ref := TG_ARGV[0];
     col := TG_ARGV[1];
-    
+
     execute
     format('insert into history_update (tab, ref, col, old, new) values ($1, $4."%s", $2, $3."%s", $4."%s")', ref, col, col)
     using TG_TABLE_NAME, col, OLD, NEW;
-    
+
     return NEW;
 end
 $$;
@@ -637,50 +638,48 @@ done
 </p>
 
 <p>
-主机 postgresql.conf
+master 的 postgresql.conf 不需要特殊配置
 </p>
+
 <pre>
-wal_level = hot_standby
-max_wal_senders = 8
+默认
+wal_level = replica
 </pre>
 
 <p>
-主机 pg_hba.conf 不要漏了
+信任网络中，不想要密码，pg_hba.conf 不要漏了
 </p>
 <pre>
 host    replication all         172.16.16.0/24        trust
 </pre>
 
 <p>
-备机 postgresql.conf
+准备好初始文件：
 </p>
-
-<pre>
-hot_standby = on
+<pre sh>
+pg_basebackup -D bak
 </pre>
 
 <p>
-备机 recovery.conf
+把初始文件放在 standby 的 <code>$PGDATA</code>
 </p>
+
+<p>
+切换到 standby，编辑 postgresql.conf
+</p>
+
 <pre>
-standby_mode = on
-primary_conninfo = 'host=&lt;MASTER_HOST&gt;'
+primary_conninfo = 'postgresql://postgres:****@&lt;MASTER_HOST&gt;'           # connection string to sending server
 </pre>
 
 <p>
-初始化操作
+然后在当前目录 <code>touch standby.signal</code>，有这文件即激活。
 </p>
-<pre>
-# -&gt; psql
-$ -&gt; shell
 
-# select pg_start_backup('flag_name');
-$ tar czf /tmp/pg_bak.tgz data/
+<p>
+关键就是有初始数据，有文件 standby.signal，有 master 的连接配置。
+</p>
 
-把 pg_bak.tgz 拷贝到备机, 解压, 当作备机的数据库主目录, 修改好配置文件, 启动备机. 最后, 主机结束备份状态:
-
-# select pg_stop_backup();
-</pre>
 
 <div id="PostgreSQL-外健"><h3 id="外健" class="header"><a href="#PostgreSQL-外健">外健</a></h3></div>
 
@@ -858,7 +857,7 @@ alter table "group" alter z set default current_setting('jwt.claims.z');
 <div id="PostgreSQL-分区"><h3 id="分区" class="header"><a href="#PostgreSQL-分区">分区</a></h3></div>
 
 <p>
-可以参考 
+可以参考
 </p>
 
 <ul>
@@ -872,7 +871,6 @@ alter table "group" alter z set default current_setting('jwt.claims.z');
 <a href="https://blog.dbi-services.com/postgresql-partitioning-3-list-partitioning/">https://blog.dbi-services.com/postgresql-partitioning-3-list-partitioning/</a>
 
 </ul>
-
 <p>
 按天分区，适用于日志：
 </p>
