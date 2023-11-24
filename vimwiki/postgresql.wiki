@@ -591,6 +591,15 @@ primary_conninfo = 'postgresql://postgres:****@<MASTER_HOST>'           # connec
 
 关键就是有初始数据，有文件 standby.signal，有 master 的连接配置。
 
+更方便的做法，直接在 standby 上操作：
+
+{{{sh
+pg_basebackup -v -c fast -R -D bak -T /some/dir=/another/dir -d 'postgresql://postgres:x@postgres'
+}}}
+
+上面说的几条要素都为你准备好了，直接就能跑服务了：`postgres -D data`
+
+pg_tblspc 里面存放的是表空间的软连接，虽然官方说只能用绝对路径，这里可以手动魔改为相对路径。
 
 === 外健 ===
 
