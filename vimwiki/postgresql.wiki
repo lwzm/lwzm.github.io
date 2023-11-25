@@ -594,12 +594,24 @@ primary_conninfo = 'postgresql://postgres:****@<MASTER_HOST>'           # connec
 更方便的做法，直接在 standby 上操作：
 
 {{{sh
-pg_basebackup -v -c fast -R -D bak -T /some/dir=/another/dir -d 'postgresql://postgres:x@postgres'
+pg_basebackup -v -c fast -R -D bak -T /some/dir=$PWD/dir -d 'postgresql://postgres:x@postgres'
 }}}
 
-上面说的几条要素都为你准备好了，直接就能跑服务了：`postgres -D data`
+上面说的几条要素都为你准备好了，直接就能跑服务了：`postgres -D bak`
 
 pg_tblspc 里面存放的是表空间的软连接，虽然官方说只能用绝对路径，这里可以手动魔改为相对路径。
+
+=== 时区 ===
+
+{{{sql
+select * from pg_timezone_names where utc_offset = '08:00:00';
+}}}
+
+postgresql.conf
+{{{conf
+timezone = 'Asia/Shanghai'
+log_timezone = 'Asia/Shanghai'
+}}}
 
 === 外健 ===
 

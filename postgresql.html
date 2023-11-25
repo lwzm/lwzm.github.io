@@ -685,16 +685,30 @@ primary_conninfo = 'postgresql://postgres:****@&lt;MASTER_HOST&gt;'           # 
 </p>
 
 <pre sh>
-pg_basebackup -v -c fast -R -D bak -T /some/dir=/another/dir -d 'postgresql://postgres:x@postgres'
+pg_basebackup -v -c fast -R -D bak -T /some/dir=$PWD/dir -d 'postgresql://postgres:x@postgres'
 </pre>
 
 <p>
-上面说的几条要素都为你准备好了，直接就能跑服务了：<code>postgres -D data</code>
+上面说的几条要素都为你准备好了，直接就能跑服务了：<code>postgres -D bak</code>
 </p>
 
 <p>
 pg_tblspc 里面存放的是表空间的软连接，虽然官方说只能用绝对路径，这里可以手动魔改为相对路径。
 </p>
+
+<div id="PostgreSQL-时区"><h3 id="时区" class="header"><a href="#PostgreSQL-时区">时区</a></h3></div>
+
+<pre sql>
+select * from pg_timezone_names where utc_offset = '08:00:00';
+</pre>
+
+<p>
+postgresql.conf
+</p>
+<pre conf>
+timezone = 'Asia/Shanghai'
+log_timezone = 'Asia/Shanghai'
+</pre>
 
 <div id="PostgreSQL-外健"><h3 id="外健" class="header"><a href="#PostgreSQL-外健">外健</a></h3></div>
 
