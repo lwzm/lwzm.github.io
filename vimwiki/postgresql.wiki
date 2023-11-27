@@ -594,24 +594,47 @@ primary_conninfo = 'postgresql://postgres:****@<MASTER_HOST>'           # connec
 更方便的做法，直接在 standby 上操作：
 
 {{{sh
-pg_basebackup -v -c fast -R -D bak -T /some/dir=$PWD/dir -d 'postgresql://postgres:x@postgres'
+pg_basebackup -v -N -R -D bak -h POSTGRES-HOST
+# or
+pg_basebackup -v -N -R -D bak -d 'postgresql://postgres:x@postgres'
+# or
+pg_basebackup -v -N -R -D bak -T /some/dir=$PWD/dir -d 'postgresql://postgres:x@postgres'
 }}}
 
 上面说的几条要素都为你准备好了，直接就能跑服务了：`postgres -D bak`
 
 pg_tblspc 里面存放的是表空间的软连接，虽然官方说只能用绝对路径，这里可以手动魔改为相对路径。
 
+tips:
+
+podman 跑 standby:
+
+{{{sh
+# 这里 postgres 程序使用了镜像的默认环境变量 PGDATA=/var/lib/postgresql/data ，也可以自己指定：postgres -D xxx
+podman run --name bak -it -u postgres postgres:15 sh -c 'cd; postgres || bash'
+# 使用 postgres 用户，进入 $HOME，第一次跑 postgres 肯定会出错，然后自动转入 shell，这时候可以手动初始化数据库，
+# 比如：
+initdb  # 初始化新库
+# 再比如
+pg_basebackup -v -N -R -D data -h 10.1.0.94 && chmod 700 data  # 创建一个热备份
+}}}
+
 === 时区 ===
 
-{{{sql
-select * from pg_timezone_names where utc_offset = '08:00:00';
-}}}
+虽说 select now() 遵循系统的  /etc/localtime 但是服务的日志打印不遵循，所以主动设置吧：
 
 postgresql.conf
 {{{conf
 timezone = 'Asia/Shanghai'
 log_timezone = 'Asia/Shanghai'
 }}}
+
+参考
+
+{{{sql
+select * from pg_timezone_names where utc_offset = '08:00:00';
+}}}
+
 
 === 外健 ===
 
