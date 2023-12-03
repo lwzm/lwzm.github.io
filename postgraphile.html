@@ -2,6 +2,7 @@
 <html>
 <head>
 <link rel="Stylesheet" type="text/css" href="style.css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
 <title>postgraphile</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -28,9 +29,6 @@
 
 <li>
 <a href="https://www.graphile.org/postgraphile/security/">https://www.graphile.org/postgraphile/security/</a>
-
-</ul>
-
 <pre sql>
 create or replace function json(data jsonb) returns jsonb language sql stable as $$
 	select data
@@ -72,8 +70,6 @@ end;
 $$
 
 </pre>
-
-
 <pre sql>
 drop function if exists current_user_id() cascade;
 
@@ -113,7 +109,7 @@ comment on table volumn is '
 
 drop view user_all_groups;
 create view user_all_groups as
-select distinct u.id as user, g2.id as group 
+select distinct u.id as user, g2.id as group
 from "user" as u
 join group_user as x on u.id = x.user
 join "group" as g on x.group = g.id
@@ -126,7 +122,7 @@ comment on view user_all_groups is '
 
 drop view user_sub_groups;
 create view user_sub_groups as
-select distinct u.id as user, g2.id as group 
+select distinct u.id as user, g2.id as group
 from "user" as u
 join group_user as x on u.id = x.user
 join "group" as g on x.group = g.id
@@ -149,6 +145,76 @@ comment on view user_group_volumns is '
 @foreignKey (user) references user(id)
 @foreignKey (volumn) references volumn(id)|@manyToManyFieldName groupVolumns
 ';
+</pre>
+
+</ul>
+<p>
+尝试增加一个隐藏维度：
+</p>
+
+<pre sql>
+
+drop schema z cascade;
+create schema z;
+set search_path to z;
+
+create function z() returns int language sql stable as $$
+  select current_setting('jwt.claims.z')::int;
+$$;
+
+create table z (
+  id serial primary key,
+  key text unique not null,
+  note text
+);
+
+create table g (
+  z int references z default z(),
+  id text,
+  primary key (z, id),
+  note text
+);
+
+create table u (
+  z int references z default z(),
+  id text,
+  primary key (z, id),
+  phone text
+);
+
+create table gu (
+  z int references z default z(),
+  g text,
+  u text,
+  primary key (z, g, u),
+  foreign key (z, g) references g on update cascade,
+  foreign key (z, u) references u on update cascade,
+  ts timestamptz default now()
+);
+
+
+set search_path to public;
+
+create view g as select id, note from z.g where z = z.z();
+create view u as select id, phone from z.u where z = z.z();
+create view gu as select g, u from z.gu where z = z.z();
+comment on view g is '
+@primaryKey id
+';
+comment on view u is '
+@primaryKey id
+';
+comment on view gu is '
+@primaryKey g,u
+';
+</pre>
+
+<p>
+<code>.psqlrc</code>
+</p>
+
+<pre sql>
+set jwt.claims.z to 3;
 </pre>
 
 </body>
