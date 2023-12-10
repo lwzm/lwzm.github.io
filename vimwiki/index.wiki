@@ -37,6 +37,7 @@
 * [[k8s]]
 * [[loguru]] logger
 * [[mac]]
+* [[matplotlib]]
 * [[mir]]
 * [[mitmproxy]]
 * [[miwifi]]
