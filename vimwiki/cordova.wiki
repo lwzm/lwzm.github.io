@@ -54,7 +54,7 @@ cordova 会把
 ./platforms/android/platform_www/
 ./www
 }}}
-  
+
 下的数据(视情况 release or debug)都拷贝到
 {{{
 ./platforms/android/app/build/intermediates/assets/release/www/
@@ -77,6 +77,30 @@ cordova 会把
 
 
 === Linux 搭建编译环境===
+{{{sh
+mkdir src
+podman run -v ./src:/opt/src -it hamdifourati/cordova-android-builder bash
+
+# ...
+cordova create k
+cordova platform add android
+cordova build android
+}}}
+
+`config.xml`
+
+{{{xml
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="net.tyio.k" version="1.1.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>k</name>
+    <content src="https://k.tyio.net" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+</widget>
+}}}
+
+以下不用看了。
+
 {{{
 yum install java java-devel
 

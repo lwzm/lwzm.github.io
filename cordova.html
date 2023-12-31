@@ -2,8 +2,10 @@
 <html>
 <head>
 <link rel="Stylesheet" type="text/css" href="style.css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
 <title>cordova</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 
@@ -27,7 +29,6 @@ java
 android sdk
 
 </ol>
-
 <div id="Cordova Hybrid App-简单例子"><h3 id="简单例子" class="header"><a href="#Cordova Hybrid App-简单例子">简单例子</a></h3></div>
 <pre>
 #cordova create &lt;PATH&gt; [ID [NAME [CONFIG]]] [options]
@@ -77,7 +78,7 @@ cordova 会把
 ./platforms/android/platform_www/
 ./www
 </pre>
-  
+
 <p>
 下的数据(视情况 release or debug)都拷贝到
 </p>
@@ -112,6 +113,34 @@ cordova 会把
 
 
 <div id="Cordova Hybrid App-Linux 搭建编译环境"><h3 id="Linux 搭建编译环境" class="header"><a href="#Cordova Hybrid App-Linux 搭建编译环境">Linux 搭建编译环境</a></h3></div>
+<pre sh>
+mkdir src
+podman run -v ./src:/opt/src -it hamdifourati/cordova-android-builder bash
+
+# ...
+cordova create k
+cordova platform add android
+cordova build android
+</pre>
+
+<p>
+<code>config.xml</code>
+</p>
+
+<pre xml>
+&lt;?xml version='1.0' encoding='utf-8'?&gt;
+&lt;widget id="net.tyio.k" version="1.1.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0"&gt;
+    &lt;name&gt;k&lt;/name&gt;
+    &lt;content src="https://k.tyio.net" /&gt;
+    &lt;allow-intent href="http://*/*" /&gt;
+    &lt;allow-intent href="https://*/*" /&gt;
+&lt;/widget&gt;
+</pre>
+
+<p>
+以下不用看了。
+</p>
+
 <pre>
 yum install java java-devel
 
