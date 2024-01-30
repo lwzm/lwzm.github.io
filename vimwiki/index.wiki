@@ -65,6 +65,7 @@
 * [[pytest]] 单元测试
 * [[route]]
 * [[sar]]
+* [[socat]]
 * [[selenium]] 桌面浏览器桥梁
 * [[sentry]] 错误收集
 * [[seatable]]

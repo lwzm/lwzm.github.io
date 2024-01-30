@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
+<title>socat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="socat"><h1 id="socat" class="header"><a href="#socat">socat</a></h1></div>
+
+<p>
+比 netcat 功能更多。
+</p>
+
+<p>
+参考 <a href="https://zhuanlan.zhihu.com/p/347722248">https://zhuanlan.zhihu.com/p/347722248</a>
+</p>
+
+<p>
+创建一个 word count 玩具服务：
+</p>
+<pre sh>
+socat tcp-listen:1,fork exec:wc
+</pre>
+
+<p>
+请求服务：
+</p>
+<pre sh>
+nc xx.xx.xx.xx 1
+....
+
+# or
+{
+    echo ....
+    sleep 5
+} | nc xx.xx.xx.xx 1
+</pre>
+
+<p>
+看可用的环境变量:
+</p>
+<pre sh>
+socat tcp-listen:1,reuseaddr,fork exec:env
+</pre>
+
+<p>
+转发 http 服务：
+</p>
+<pre sh>
+socat TCP-LISTEN:80,fork,reuseaddr TCP:target-xxx.net:80
+socat TCP-LISTEN:443,fork,reuseaddr TCP:target-xxx.net:443
+</pre>
+
+</body>
+</html>

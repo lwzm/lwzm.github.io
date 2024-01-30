@@ -1,0 +1,34 @@
+= socat =
+
+比 netcat 功能更多。
+
+参考 https://zhuanlan.zhihu.com/p/347722248
+
+创建一个 word count 玩具服务：
+{{{sh
+socat tcp-listen:1,fork exec:wc
+}}}
+
+请求服务：
+{{{sh
+nc xx.xx.xx.xx 1
+....
+
+# or
+{
+    echo ....
+    sleep 5
+} | nc xx.xx.xx.xx 1
+}}}
+
+看可用的环境变量:
+{{{sh
+socat tcp-listen:1,reuseaddr,fork exec:env
+}}}
+
+转发 http 服务：
+{{{sh
+socat TCP-LISTEN:80,fork,reuseaddr TCP:target-xxx.net:80
+socat TCP-LISTEN:443,fork,reuseaddr TCP:target-xxx.net:443
+}}}
+
