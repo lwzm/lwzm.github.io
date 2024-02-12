@@ -1,4 +1,9 @@
 = DNSmasq =
+https://www.debian.org/releases/stable/amd64/ch04s05.zh-cn.html
+https://www.colben.cn/post/pxe-dnsmasq/
+https://mirrors.tuna.tsinghua.edu.cn/debian/dists/bookworm/main/installer-amd64/current/images/netboot/
+https://taoshu.in/unix/qemu-bridge-on-macos.html#google_vignette
+inetd 启动 tftpd
 
 参考：https://wiki.archlinux.org/title/Dnsmasq_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)
 
@@ -80,11 +85,11 @@ DNS1=8.8.8.8
 
 手动编辑 /etc/resolv.conf
 {{{
-nameserver 8.8.8.8  
+nameserver 8.8.8.8
 }}}
 配置ip地址文件 /etc/sysconfig/network-scripts/ifcfg-ethXXX 添加
 {{{
-PEERDNS=no    # 添加后不会去打扰 /etc/resolv.conf 文件  
+PEERDNS=no    # 添加后不会去打扰 /etc/resolv.conf 文件
 }}}
 
 实践中, 方案 2 比较好, 方案 1 会添加 search 字段, 有点问题.

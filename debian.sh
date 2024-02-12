@@ -15,9 +15,13 @@ cat >>/etc/sysctl.conf <<'EOF'
 net.ipv4.ip_forward = 1
 EOF
 
-sysctl -w net.ipv4.ip_forward=1
+#sysctl -w net.ipv4.ip_forward=1
 
 for i in $(seq 2 6); do
   systemctl mask getty@tty${i}
 done
 
+cat >/etc/apt/apt.conf <<'EOF'
+APT::Install-Recommends "false";
+APT::Install-Suggests "false";
+EOF

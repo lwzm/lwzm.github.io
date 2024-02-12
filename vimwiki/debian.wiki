@@ -58,7 +58,7 @@ iface eth0 inet static
 address 10.0.0.250/24
 gateway 10.0.0.1
 }}}
- 
+
 === 电源管理 ===
 
 笔记本的行为参考以下配置：`/etc/systemd/logind.conf`。
@@ -80,3 +80,7 @@ socat file:`tty`,raw,echo=0 tcp-listen:2000
 {{{sh
 socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:DOMAIN-NAME-OR-IP:2000
 }}}
+
+=== 升级 ===
+
+低版本升级时，大版本一步步来比较稳，apt update 出现 key 错误时，把新系统的 /etc/apt/trusted.gpg.d 复制过来就好了。

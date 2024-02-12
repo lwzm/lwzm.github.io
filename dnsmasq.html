@@ -2,6 +2,7 @@
 <html>
 <head>
 <link rel="Stylesheet" type="text/css" href="style.css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
 <title>dnsmasq</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,6 +10,13 @@
 <body>
 
 <div id="DNSmasq"><h1 id="DNSmasq" class="header"><a href="#DNSmasq">DNSmasq</a></h1></div>
+<p>
+<a href="https://www.debian.org/releases/stable/amd64/ch04s05.zh-cn.html">https://www.debian.org/releases/stable/amd64/ch04s05.zh-cn.html</a>
+<a href="https://www.colben.cn/post/pxe-dnsmasq/">https://www.colben.cn/post/pxe-dnsmasq/</a>
+<a href="https://mirrors.tuna.tsinghua.edu.cn/debian/dists/bookworm/main/installer-amd64/current/images/netboot/">https://mirrors.tuna.tsinghua.edu.cn/debian/dists/bookworm/main/installer-amd64/current/images/netboot/</a>
+<a href="https://taoshu.in/unix/qemu-bridge-on-macos.html#google_vignette">https://taoshu.in/unix/qemu-bridge-on-macos.html#google_vignette</a>
+inetd 启动 tftpd
+</p>
 
 <p>
 参考：<a href="https://wiki.archlinux.org/title/Dnsmasq_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">https://wiki.archlinux.org/title/Dnsmasq_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)</a>
@@ -120,13 +128,13 @@ DNS1=8.8.8.8
 手动编辑 /etc/resolv.conf
 </p>
 <pre>
-nameserver 8.8.8.8  
+nameserver 8.8.8.8
 </pre>
 <p>
 配置ip地址文件 /etc/sysconfig/network-scripts/ifcfg-ethXXX 添加
 </p>
 <pre>
-PEERDNS=no    # 添加后不会去打扰 /etc/resolv.conf 文件  
+PEERDNS=no    # 添加后不会去打扰 /etc/resolv.conf 文件
 </pre>
 
 <p>

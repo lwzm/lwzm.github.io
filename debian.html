@@ -2,6 +2,7 @@
 <html>
 <head>
 <link rel="Stylesheet" type="text/css" href="style.css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
 <title>debian</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -90,7 +91,7 @@ iface eth0 inet static
 address 10.0.0.250/24
 gateway 10.0.0.1
 </pre>
- 
+
 <div id="Debian-电源管理"><h3 id="电源管理" class="header"><a href="#Debian-电源管理">电源管理</a></h3></div>
 
 <p>
@@ -114,6 +115,12 @@ socat file:`tty`,raw,echo=0 tcp-listen:2000
 <pre sh>
 socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:DOMAIN-NAME-OR-IP:2000
 </pre>
+
+<div id="Debian-升级"><h3 id="升级" class="header"><a href="#Debian-升级">升级</a></h3></div>
+
+<p>
+低版本升级时，大版本一步步来比较稳，apt update 出现 key 错误时，把新系统的 /etc/apt/trusted.gpg.d 复制过来就好了。
+</p>
 
 </body>
 </html>

@@ -2,6 +2,7 @@
 <html>
 <head>
 <link rel="Stylesheet" type="text/css" href="style.css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
 <title>miwifi</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -78,6 +79,17 @@ config redirect 'wan1111rdr1'
         option dest_port '1111'
         option src 'wan'
         option name 'notice'
+        option target 'DNAT'
+        option ftype '1'
+        option dest 'lan'
+
+config redirect 'frp'
+        option name 'frp'
+        option src_dport '7000'
+        option dest_ip '10.0.0.1'
+        option dest_port '7000'
+        option proto 'tcp'
+        option src 'wan'
         option target 'DNAT'
         option ftype '1'
         option dest 'lan'

@@ -47,7 +47,7 @@ location = "lwdakpha.mirror.aliyuncs.com"
 例子：
 </p>
 <pre sh>
-podman run --name ss -e PASSWORD=x*** -e METHOD=aes-256-cfb -p 127.1.1.1:58388:8388 -d shadowsocks/shadowsocks-libev
+podman run --name ss -e PASSWORD=x*** -e METHOD=aes-256-gcm -p 127.1.1.1:58388:8388 -d shadowsocks/shadowsocks-libev
 #
 # ...
 podman container start ss
