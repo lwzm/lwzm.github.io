@@ -466,11 +466,11 @@ for each row
 do language plpython3u $$
 import sys
 import os
-print(os.getpid(), os.getcwd(), sys.path)
-print(SD, GD)
-print(dir(__builtins__))
-print(globals(), flush=True)
-$$
+plpy.info(os.getpid(), os.getcwd(), sys.path)
+plpy.info(SD, GD)
+plpy.info(dir(__builtins__))
+plpy.info(globals())
+$$;
 </pre>
 
 <p>
