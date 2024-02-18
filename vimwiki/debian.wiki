@@ -20,7 +20,8 @@ https://mirrors.163.com/.help/debian.html
 
 {{{sh
 #echo 'deb http://mirrors.163.com/debian/ buster main non-free contrib' >/etc/apt/sources.list
-(. /etc/os-release && echo "deb http://mirrors.163.com/debian/ $VERSION_CODENAME main" >/etc/apt/sources.list)
+#(. /etc/os-release && echo "deb http://mirrors.163.com/debian/ $VERSION_CODENAME main" >/etc/apt/sources.list)
+(cd /etc/apt && rm -f sources.list.d/* && . /etc/os-release && echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian/ $VERSION_CODENAME main" >sources.list)
 }}}
 
 Debian 的版本代号说明见 https://www.debian.org/releases/index.zh-cn.html

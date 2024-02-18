@@ -41,7 +41,8 @@ Script: <code>/debian.sh</code>
 
 <pre sh>
 #echo 'deb http://mirrors.163.com/debian/ buster main non-free contrib' &gt;/etc/apt/sources.list
-(. /etc/os-release &amp;&amp; echo "deb http://mirrors.163.com/debian/ $VERSION_CODENAME main" &gt;/etc/apt/sources.list)
+#(. /etc/os-release &amp;&amp; echo "deb http://mirrors.163.com/debian/ $VERSION_CODENAME main" &gt;/etc/apt/sources.list)
+(cd /etc/apt &amp;&amp; rm -f sources.list.d/* &amp;&amp; . /etc/os-release &amp;&amp; echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian/ $VERSION_CODENAME main" &gt;sources.list)
 </pre>
 
 <p>
