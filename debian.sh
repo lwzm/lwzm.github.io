@@ -1,3 +1,8 @@
+cat >~/.inputrc <<'EOF'
+"\C-p": history-search-backward
+"\C-n": history-search-forward
+EOF
+
 cat >/etc/default/locale <<'EOF'
 LANG=C.UTF-8
 LANGUAGE=C.UTF-8
