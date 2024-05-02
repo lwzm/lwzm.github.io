@@ -4,6 +4,17 @@
 
 https://docs.podman.io/en/latest/Commands.html
 
+Debian 安装后可以直接用，Alpine 下面依赖 cgroups 和 crun ：
+
+{{{sh
+apk add crun
+service cgroups start
+# 或者开机启动: rc-update add cgroups
+}}}
+
+顺便在这里提一句 Alpine 的安装完成后，`apk list -I | grep linux-firmware`, 一般，只需要保留 other 和 有线网卡的包。
+蓝牙、显卡、声音什么的都可以卸载掉，比如 intel 的显卡驱动还有拔掉显示器就死机的坑。
+
 启用镜像默认前缀，启用镜像加速：
 
 `/etc/containers/registries.conf`
