@@ -2,6 +2,7 @@
 <html>
 <head>
 <link rel="Stylesheet" type="text/css" href="style.css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
 <title>mac</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,6 +28,26 @@ ulimit -S -n 1024
 pbcopy
 pbpaste
 </pre>
+
+<p>
+内存盘
+</p>
+
+<p>
+类似 linux 的 <code>/dev/shm</code>
+</p>
+
+<pre sh>
+# NNN 是数字，想要多少 MB 就填多少
+hdiutil attach -nomount ram://$((2 * 1024 * NNN))
+# 如
+hdiutil attach -nomount ram://$((2 * 1024 * 100))
+</pre>
+
+<p>
+然后就可以用“磁盘工具”来初始化，挂载。
+</p>
+
 
 <p>
 Mac 系统输入法长按一个按键不能连续输入，打开终端输入：

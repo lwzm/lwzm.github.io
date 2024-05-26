@@ -15,6 +15,8 @@ service cgroups start
 顺便在这里提一句 Alpine 的安装完成后，`apk list -I | grep linux-firmware`, 一般，只需要保留 other 和 有线网卡的包。
 蓝牙、显卡、声音什么的都可以卸载掉，比如 intel 的显卡驱动还有拔掉显示器就死机的坑。
 
+Alpine 安装时可以利用 answer file，可以指定禁用 swap。
+
 启用镜像默认前缀，启用镜像加速：
 
 `/etc/containers/registries.conf`
