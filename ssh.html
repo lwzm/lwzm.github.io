@@ -2,8 +2,10 @@
 <html>
 <head>
 <link rel="Stylesheet" type="text/css" href="style.css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
 <title>ssh</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 
@@ -18,6 +20,7 @@ ClientAliveInterval 60
 ClientAliveCountMax 3
 PermitRootLogin without-password
 GatewayPorts clientspecified
+AllowTcpForwarding yes
 </pre>
 
 <div id="SSH-~/.ssh/config"><h3 id="~/.ssh/config" class="header"><a href="#SSH-~/.ssh/config">~/.ssh/config</a></h3></div>
@@ -60,7 +63,6 @@ hosts 统一在跳板机设置，所有人都能用到其中的别名
 跳板机的登录用户(e.g. foo)可以最小权限化，大家都用这一个用户也可，<code>yes $(which nologin) | chsh foo</code>
 
 </ul>
-
 <div id="SSH-限制 ip 登录"><h3 id="限制 ip 登录" class="header"><a href="#SSH-限制 ip 登录">限制 ip 登录</a></h3></div>
 
 <p>

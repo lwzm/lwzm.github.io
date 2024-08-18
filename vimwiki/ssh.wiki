@@ -9,6 +9,7 @@ ClientAliveInterval 60
 ClientAliveCountMax 3
 PermitRootLogin without-password
 GatewayPorts clientspecified
+AllowTcpForwarding yes
 }}}
 
 === ~/.ssh/config ===
