@@ -55,6 +55,7 @@
 * [[pip]]
 * [[ponyorm]]
 * [[podman]]
+* [[losetup]]
 * [[posix-message-queue]] 系统自带的消息队列
 * [[postgresql]]
 * [[postgraphile]]

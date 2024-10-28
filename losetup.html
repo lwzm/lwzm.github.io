@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
+<title>losetup</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="losetup"><h1 id="losetup" class="header"><a href="#losetup">losetup</a></h1></div>
+
+<pre sh>
+rm -rf m f?
+dd if=/dev/zero of=f1 bs=1M count=0 seek=200
+dd if=/dev/zero of=f2 bs=1M count=0 seek=200
+dd if=/dev/zero of=f3 bs=1M count=0 seek=200
+losetup /dev/loop1 f1
+losetup /dev/loop2 f2
+losetup /dev/loop3 f3
+
+mkfs.btrfs /dev/loop1
+
+mkdir -p m
+mount /dev/loop1 m
+
+dd if=/dev/zero of=m/f bs=1M count=3
+
+btrfs device add    /dev/loop2 m
+btrfs filesystem show m
+btrfs device delete /dev/loop1 m
+btrfs filesystem show m
+btrfs device add    /dev/loop3 m
+btrfs filesystem show m
+btrfs device delete /dev/loop2 m
+btrfs filesystem show m
+
+
+umount m
+losetup -d /dev/loop1
+losetup -d /dev/loop2
+losetup -d /dev/loop3
+
+du -sh f1 f2 f3
+mount -o loop f3 m
+df
+umount m
+</pre>
+
+</body>
+</html>
