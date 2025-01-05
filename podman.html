@@ -39,6 +39,31 @@ Alpine 安装时可以利用 answer file，可以指定禁用 swap。
 </p>
 
 <p>
+宿主机追求简单，建议用 Alpine Linux，然后在上面跑最新的 debian 来工作，比如我的：
+</p>
+
+<pre sh>
+# 容器名 q
+# 容器内 hostname 为 q
+# 使用宿主的网络、shm 等资源，方便交互
+# 挂载本地重要数据目录
+# 容器内 /tmp 使用内存
+podman run -it -d \
+--name q \
+--net host \
+--ipc host \
+--hostname q \
+-v ./etc:/etc \
+-v ./usr:/usr \
+-v ./var:/var \
+-v ./run:/run \
+-v ./root:/root \
+--tmpfs /tmp \
+docker.io/lwzm/sshd:debian
+</pre>
+
+
+<p>
 启用镜像默认前缀，启用镜像加速：
 </p>
 
