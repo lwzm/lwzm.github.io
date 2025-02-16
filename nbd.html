@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
+<title>nbd</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="nbd"><h1 id="nbd" class="header"><a href="#nbd">nbd</a></h1></div>
+
+<p>
+server，在端口 9 开启服务, 把文件作为 block 供远程使用:
+</p>
+
+<pre sh>
+nbd-server 9 /nbd_disk
+
+# 只读模式
+nbd-server 9 /nbd_disk  -r
+
+# 直接提供原始 block
+nbd-server 9 /dev/sda
+
+</pre>
+
+
+<p>
+client，从 server 端口 9 引入 block：
+</p>
+
+<pre sh>
+nbd-client 10.0.0.xxx 9 /dev/nbd0
+# 最后的 nbd_device 参数须是 /dev/nbd0, /dev/nbd1, ... 这种，我用的版本 3.24 是这样
+
+mkfs.xxx /dev/nbd0
+mount /dev/nbd0 /your-path
+</pre>
+
+</body>
+</html>

@@ -49,6 +49,7 @@
 * [[nfs]]
 * [[ntp]]
 * [[nvim]] neovim
+* [[nbd]]
 * [[oss]]
 * [[openssl]]
 * [[package.json]]
